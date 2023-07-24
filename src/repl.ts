@@ -1,10 +1,13 @@
 import repl from "repl";
+import { compile } from "./environment";
+import { evaluate } from "./evaluator";
 import { parse } from "./parser";
-import { evaluator } from "./evaluator";
+
+const env = compile();
 
 repl.start({
   prompt: "lisp.ts > ",
   eval: (cmd, context, filename, callback) => {
-    callback(null, evaluator(parse(cmd)));
+    callback(null, evaluate(parse(cmd), env));
   },
 });

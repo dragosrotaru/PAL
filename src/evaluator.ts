@@ -1,61 +1,105 @@
 import {
   AST,
-  Identifier,
-  IsIdentifier,
-  Procedure,
-  IsProcedure,
   IsApplyForm,
+  IsBoolean,
+  IsDefineForm,
+  IsEnvForm,
+  IsGUIForm,
+  IsIdentifier,
   IsLambdaForm,
+  IsList,
+  IsNull,
+  IsNumber,
+  IsProcedure,
+  IsProcedureForm,
+  IsString,
 } from "./ast";
+import { Env } from "./environment";
+import { openGUI } from "./gui";
 
-type Env = (id: Identifier) => AST;
+export const evaluate = (ast: AST, env: Env): AST => {
+  console.log(ast);
 
-const Env = (parent: Env) => (x: Identifier, arg: AST) => {
-  console.log(`environment created`, x, arg);
-  return (y: Identifier): AST => {
-    console.log("environment accessed", y, x, arg);
-    if (y === x) return arg;
-    return parent(x);
-  };
-};
-
-const evaluate = (ast: AST, env: Env): AST => {
-  console.log("evaluating", ast);
-  if (IsIdentifier(ast)) {
-    console.log("pattern: identifier", ast);
-    return env(ast);
-  } else if (IsProcedure(ast)) {
-    console.log("pattern: procedure", ast);
-    return ast;
-  } else if (IsLambdaForm(ast)) {
-    const args = ast[1];
-    const body = ast[2];
-    console.log("pattern: lambda", args, body);
-    const firstArg = args[0];
-    const proc: Procedure = (argument: AST) => {
-      console.log("procedure called");
-      return evaluate(body, Env(env)(firstArg, argument));
-    };
-    return proc;
-  } else if (IsApplyForm(ast)) {
-    const applied = ast.map((a) => evaluate(a, env)); // Normal Order Evaluation
-    const rator = applied[0];
-    const rand = applied[1];
-    console.log("pattern: apply", rator, rand);
-    if (IsProcedure(rator)) {
-      console.log("rator procedure applied to rand");
-      return rator(rand);
-    }
-    return applied;
-  } else {
-    throw new Error("invalid expression");
+  if (IsEnvForm(ast)) {
+    return env.getAll();
   }
-};
 
-export const evaluator = (ast: AST): AST => {
-  const env = (id: Identifier) => {
-    if (id === "a") return "hello world";
-    throw new Error(`unbound identifier ${id}`);
-  };
-  return evaluate(ast, env);
+  if (IsString(ast)) {
+    console.log("pattern: string");
+    return ast;
+  }
+
+  if (IsBoolean(ast)) {
+    console.log("pattern: boolean");
+    return ast;
+  }
+
+  if (IsNumber(ast)) {
+    console.log("pattern: number");
+    return ast;
+  }
+
+  if (IsNull(ast)) {
+    console.log("pattern: null");
+    return ast;
+  }
+
+  if (IsProcedure(ast)) {
+    console.log("pattern: procedure");
+    return ast;
+  }
+
+  if (IsIdentifier(ast)) {
+    console.log("pattern: identifier");
+    const value = env.get(ast);
+    if (value === undefined) throw new Error(`${ast.toString()} not defined`);
+    return evaluate(value, env);
+  }
+
+  if (IsProcedureForm(ast)) {
+    console.log("pattern: procedure form");
+    if (IsList(ast[1])) {
+      return evaluate(ast[0](...ast[1]), env);
+    }
+    return evaluate(ast[0](ast[1]), env);
+  }
+
+  if (IsGUIForm(ast)) {
+    console.log("pattern: gui form");
+    openGUI(ast[1], env);
+    return true;
+  }
+
+  if (IsApplyForm(ast)) {
+    console.log("pattern: apply form");
+    const rator = evaluate(ast[0], env);
+    const rand = evaluate(ast[1], env);
+    return evaluate([rator, rand], env);
+  }
+
+  if (IsLambdaForm(ast)) {
+    console.log("pattern: lambda form");
+    const argsIdentifiers = ast[1];
+    const body = ast[2];
+    return (...values: AST[]) => {
+      const cenv = new Env(env);
+      argsIdentifiers.forEach((identifier, i) =>
+        cenv.set(identifier, values[i])
+      );
+      return evaluate(body, cenv);
+    };
+  }
+
+  if (IsDefineForm(ast)) {
+    console.log("pattern: define form");
+    env.set(ast[1], ast[2]);
+    return `${ast[1].toString()} defined`;
+  }
+
+  if (IsList(ast)) {
+    console.log("pattern: list");
+    return ast.map((ast) => evaluate(ast, env));
+  }
+
+  throw new Error("invalid expression");
 };
