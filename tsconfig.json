@@ -4,11 +4,10 @@
     "rootDir": "./src",
     "outDir": "./lib",
     "target": "es5",
-    "module": "commonjs",
+    "jsx": "react",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "removeComments": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "strict": true,
@@ -23,5 +22,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "lib": ["esnext", "dom"]
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "lib", "dist"]
 }
