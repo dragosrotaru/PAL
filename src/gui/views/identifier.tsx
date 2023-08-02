@@ -1,6 +1,6 @@
 import * as React from "react";
-import { type Identifier } from "../ast";
-import { Env } from "../environment";
+import { type Identifier } from "../../language/ast.js";
+import { type Env } from "../../language/environment.js";
 
 type Props = {
   ast: Identifier;

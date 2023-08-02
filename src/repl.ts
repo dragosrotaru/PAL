@@ -1,7 +1,7 @@
 import repl from "repl";
-import { compile } from "./environment";
-import { evaluate } from "./evaluator";
-import { parse } from "./parser";
+import { compile } from "./filesystem/index.js";
+import { evaluate } from "./language/evaluator.js";
+import { parse } from "./language/parser.js";
 
 const env = compile();
 
