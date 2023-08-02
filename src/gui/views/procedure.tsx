@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Procedure } from "../ast";
-import { Env } from "../environment";
+import { Procedure } from "../../language/ast.js";
+import { Env } from "../../language/environment.js";
 
 type Props = {
   ast: Procedure;

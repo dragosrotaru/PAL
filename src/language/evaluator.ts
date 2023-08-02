@@ -1,5 +1,5 @@
+import { openGUI } from "../gui/server.js";
 import {
-  AST,
   IsApplyForm,
   IsBoolean,
   IsDefineForm,
@@ -13,9 +13,10 @@ import {
   IsProcedure,
   IsProcedureForm,
   IsString,
-} from "./ast";
-import { Env } from "./environment";
-import { openGUI } from "./gui";
+  IsUndefined,
+  type AST,
+} from "./ast.js";
+import { Env } from "./environment.js";
 
 export const evaluate = (ast: AST, env: Env): AST => {
   console.log(ast);
@@ -44,6 +45,11 @@ export const evaluate = (ast: AST, env: Env): AST => {
     return ast;
   }
 
+  if (IsUndefined(ast)) {
+    console.log("pattern: undefined");
+    return ast;
+  }
+
   if (IsProcedure(ast)) {
     console.log("pattern: procedure");
     return ast;
@@ -52,9 +58,11 @@ export const evaluate = (ast: AST, env: Env): AST => {
   if (IsIdentifier(ast)) {
     console.log("pattern: identifier");
     const value = env.get(ast);
-    if (value === undefined) throw new Error(`${ast.toString()} not defined`);
     return evaluate(value, env);
   }
+
+  // TODO gui form can be removed from the evaluator, and instead loaded in as a procedure in the environment.
+  // This would make the evaluator platform agnostic.
 
   if (IsProcedureForm(ast)) {
     console.log("pattern: procedure form");

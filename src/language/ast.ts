@@ -13,6 +13,9 @@ export const IsBoolean = (ast: AST): ast is boolean => typeof ast === "boolean";
 //** null */
 export const IsNull = (ast: AST): ast is null => ast === null;
 
+//** undefined */
+export const IsUndefined = (ast: AST): ast is undefined => ast === undefined;
+
 //** Function */
 export type Procedure = (...ast: AST[]) => AST;
 export const IsProcedure = (ast: AST): ast is Procedure =>
@@ -92,4 +95,29 @@ export type AST =
   | string
   | number
   | boolean
-  | null;
+  | null
+  | undefined;
+
+export const Serialize = (ast: AST): any => {
+  if (IsString(ast)) return `"${ast}"`;
+  if (IsNumber(ast)) return ast;
+  if (IsBoolean(ast)) return ast;
+  if (IsNull(ast)) return ast;
+  if (IsUndefined(ast)) return ast;
+  if (IsProcedure(ast)) return ast.toString(); // TODO serialize procedure
+  if (IsList(ast)) return ast.map(Serialize);
+  if (IsIdentifier(ast)) return `@${ast.description}`;
+};
+
+export const Deserialize = (ast: any): AST => {
+  if (Array.isArray(ast)) return ast.map(Deserialize);
+  if (typeof ast === "string") {
+    if (ast.startsWith('"') && ast.endsWith('"')) return ast.slice(1, -1);
+    if (ast.startsWith("@")) return Symbol(ast.slice(1));
+  }
+  if (typeof ast === "number") return ast;
+  if (typeof ast === "boolean") return ast;
+  if (ast === null) return ast;
+  if (ast === undefined) return ast;
+  throw new Error(`Cannot deserialize ${ast}`);
+};

@@ -1,26 +1,25 @@
 import express from "express";
 import open from "open";
-import WebSocket from "ws";
-import { AST } from "./ast";
-import { Env, rootPath } from "./environment";
+import WebSocket, { WebSocketServer } from "ws";
+import { rootPath } from "../filesystem/index.js";
+import { Serialize, type AST } from "../language/ast.js";
+import { type Env } from "../language/environment.js";
+import { port, url, wsPort } from "./common.js";
 
-const serverStarted = false;
+let SERVER_STARTED = false;
 const app = express();
-const port = 3000; // Change this to your desired port number
-const wsPort = 3001; // Change this to your desired port number
-const url = `http://localhost:${port}`;
-export const wsUrl = `ws://localhost:${wsPort}`;
 
-const clients = new Map<string, WebSocket>();
+const continuations = new Map<string, (ws: WebSocket) => void>();
 
 export const startServer = async () => {
+  SERVER_STARTED = true;
   app.use(express.static(rootPath));
 
   const server = app.listen(port, () => {
-    console.log(`Local server is running on ${url}`);
+    console.log(`running on ${url}`);
   });
 
-  const wss = new WebSocket.Server({ port: wsPort });
+  const wss = new WebSocketServer({ port: wsPort });
 
   wss.on("connection", (ws) => {
     console.log(`clients: ${wss.clients.size} `);
@@ -44,20 +43,18 @@ export const startServer = async () => {
       timeout.refresh();
       alive = true;
       const data = JSON.parse(message.toString());
-      console.log(data);
 
-      if (data.type === "login") {
+      if (data.type === "remote-initialization") {
         const id = data.id;
-        clients.set(id, ws);
+        const callback = continuations.get(id);
+        if (callback) callback(ws);
       }
     });
     ws.on("ping", () => {
-      console.log("ws ping");
       timeout.refresh();
       alive = true;
     });
     ws.on("pong", () => {
-      console.log("ws pong");
       timeout.refresh();
       alive = true;
     });
@@ -82,13 +79,12 @@ export const startServer = async () => {
 };
 
 export const openGUI = async (ast: AST, env: Env) => {
-  if (!serverStarted) await startServer();
+  if (!SERVER_STARTED) await startServer();
   const id = crypto.randomUUID();
-  await open(url + `/login?id=${id}`);
-  setTimeout(() => {
-    const ws = clients.get(id);
-    if (!ws) throw new Error("ws not found");
-    // TODO serverside rendering
-    ws.send(JSON.stringify({ type: "view", ast, env }));
-  }, 3000);
+  await open(url + `/src/gui/index.html?gui-id=${id}`);
+  continuations.set(id, (ws) => {
+    ws.send(
+      JSON.stringify({ type: "view", ast: Serialize(ast), env: env.getAll() })
+    );
+  });
 };
