@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Lisp Interpreter in TypeScript",
   "main": "index.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DragosRotaru/lisp.ts.git"
@@ -31,15 +32,21 @@
     "@types/ws": "^8.5.5"
   },
   "scripts": {
-    "start": "npm run build && node lib/repl.js",
+    "start": "npm run build && node build/repl.js",
     "build": "npx tsc"
   },
   "dependencies": {
+    "@notionhq/client": "^2.2.9",
+    "express": "^4.18.2",
+    "mobx": "^6.10.0",
+    "mobx-react-lite": "^4.0.3",
     "open": "^9.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.1.6",
-    "express": "^4.18.2",
     "ws": "^8.13.0"
+  },
+  "imports": {
+    "#src/*": "./build/*"
   }
 }

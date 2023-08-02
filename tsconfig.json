@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "noErrorTruncation": true,
-    "rootDir": "./src",
-    "outDir": "./lib",
-    "target": "es5",
+    "rootDir": "src",
+    "outDir": "build",
+    "target": "es2016",
+    "module": "esnext",
+    "moduleResolution": "NodeNext",
     "jsx": "react",
     "declaration": true,
     "declarationMap": true,
@@ -19,10 +21,12 @@
     "noFallthroughCasesInSwitch": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    "paths": {
+      "#src/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "lib", "dist"]
+  "exclude": ["node_modules"]
 }
