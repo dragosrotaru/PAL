@@ -1,0 +1,51 @@
+namespace system derived from unix filesystem structure
+notion backend
+wikipedia backend
+chatgpt backend
+graph UI
+classic lisp features like `quote` special forms, functions with n-ary inputs, lazy evaluation, continuation passing style, dynamic scope, etc.
+
+the type of /countries is determined: List
+the same way the evaluator matches to the pattern of the expression, the view command matches to the expression, and it loads the view from the namespace.
+implement loading hyper modules
+implement loading native typescript modules
+implement parser that allows spaces in strings
+process entire file structure in compiler
+treat the GUI layout as a function of a lisp template, so for example a button could be tied to the application of a function
+add a color map to distinguish data types
+when opening with the gui command, set the environment symbol using the uuid of the remote-initialization
+the client url should represent the object being viewed
+the ui should show whether the state is memory or file
+there should be a button that allows you to commit memory to file
+clicking a symbol should navigate to the AST stored in environment under its name
+if it doesnt exist, then it shows as undefined
+the current GUI command does not evaluate the right hand expression.
+This will be changed when we move GUI so that its not a special form anymore.
+We will need to introduce the concept of quote, so that we can delay execution
+if we are able to do that, we can incorporate a evaluation feature - a click-command to evaluate individual parts of the AST in view, maybe with a highlight on hover feature
+
+The UI is on the web. The query to view an object can be triggered from the command line first.
+The UI is made of react. the interpreter and data live on the server-side, locally. The UI makes changes to the state of the system and queries its state. As such, the UI should listen to changes continuously via websocket.
+what portion of state is necessary for the UI to be aware of? lets start with an object that is opened.
+
+- (view /countries)
+
+  - show the following in the browser:
+    /countries
+    norway ...
+  - be able to:
+    - mutate
+      - delete elements of the list
+      - delete list and symbol
+      - change list symbol
+    - view
+      - meta-info
+        - permanence: file, cached, in-memory
+        - createdAt
+        - modifiedAt
+        - other file metadata
+      - filter
+        - textual
+      - sort
+        - lexographical order ascending/descending
+        - length ascending/descending
