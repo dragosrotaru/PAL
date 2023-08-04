@@ -26,5 +26,5 @@ Plugins can be loaded from within the language itself as well as from the Progra
 import { Env } from "./environment.js";
 
 export class Program {
-  constructor(private env: Env = new Env()) {}
+  constructor(public env: Env = new Env()) {}
 }
