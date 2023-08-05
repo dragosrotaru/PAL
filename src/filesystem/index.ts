@@ -13,15 +13,25 @@ let unsubscriber;
 export const compile = () => {
   const env = Constructor();
 
-  const processFiles = (filepath: string, stats?: fs.Stats) => {
-    if (stats?.isFile) {
+  const readFiles = (filepath: string, stats?: fs.Stats) => {
+    log("compiler", filepath, stats);
+    if (stats?.isFile() || fs.statSync(filepath).isFile()) {
       const file = fs.readFileSync(filepath, "utf-8");
       const ext = path.extname(filepath);
       if (ext === ".sx") {
         const ast = parse(file);
-        log("compiler", "parsing .sx file", file);
-        env.map.set(Symbol.for(filepath), parse(file));
+        env.map.set(Symbol.for(filepath), ast);
       }
+    }
+  };
+
+  const writeFiles = (filepath: string, stats?: fs.Stats) => {
+    const ext = path.extname(filepath);
+    if (ext === ".sx") {
+      unsubscriber = env.subscribe(Symbol.for(filepath), (ast) => {
+        log("compiler", "file-write", filepath, ast);
+        fs.writeFileSync(filepath, write(ast));
+      });
     }
   };
 
@@ -34,22 +44,12 @@ export const compile = () => {
 
   watcher.on("change", (filepath, stats) => {
     log("compiler", "file-change", filepath);
-    processFiles(filepath, stats);
+    readFiles(filepath, stats);
   });
   watcher.on("add", (filepath, stats) => {
-    log("compiler", "file-change", filepath);
-    processFiles(filepath, stats);
+    log("compiler", "file-add", filepath);
+    readFiles(filepath, stats);
+    writeFiles(filepath, stats);
   });
-
-  watcher.once("change", (filepath: string, stats: fs.Stats) => {
-    const ext = path.extname(filepath);
-    if (ext === ".sx") {
-      unsubscriber = env.subscribe(Symbol.for(filepath), (ast) => {
-        log("compiler", "file-write", filepath, ast);
-        fs.writeFileSync(filepath, write(ast));
-      });
-    }
-  });
-
   return env;
 };

@@ -1,7 +1,7 @@
 const config = {
   compiler: true,
   parser: false,
-  evaluator: false,
+  evaluator: true,
   env: false,
   gui: false,
 } as const;

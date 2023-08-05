@@ -1,18 +1,18 @@
-import { openGUI } from "../gui/server.js";
+import * as apply from "#src/forms/apply.js";
+import * as define from "#src/forms/define.js";
+import * as envF from "#src/forms/env.js";
+import * as evalF from "#src/forms/eval.js";
+import * as gui from "#src/forms/gui.js";
+import * as lambda from "#src/forms/lambda.js";
+import * as procedure from "#src/forms/procedure.js";
 import { log } from "../logger.js";
 import {
-  IsApplyForm,
   IsBoolean,
-  IsDefineForm,
-  IsEnvForm,
-  IsGUIForm,
   IsIdentifier,
-  IsLambdaForm,
   IsList,
   IsNull,
   IsNumber,
   IsProcedure,
-  IsProcedureForm,
   IsString,
   IsUndefined,
   type AST,
@@ -21,91 +21,33 @@ import { Env } from "./environment.js";
 
 export const evaluate = (ast: AST, env: Env): AST => {
   log("evaluator", ast);
-
-  if (IsEnvForm(ast)) {
-    log("evaluator", "pattern: env");
-    return env.getAll();
+  // length of 1
+  if (IsString(ast)) return ast;
+  if (IsProcedure(ast)) return ast;
+  if (IsUndefined(ast)) return ast;
+  if (IsNull(ast)) return ast;
+  if (IsBoolean(ast)) return ast;
+  if (IsNumber(ast)) return ast;
+  if (envF.Is(ast)) return envF.Apply(env)(ast); // order matters
+  if (IsIdentifier(ast)) return evaluate(env.map.get(ast), env); // order matters ^
+  // length of 2
+  if (procedure.Is(ast)) {
+    log("evaluator", "procedure");
+    procedure.Apply(env)(ast); // order matters
   }
-
-  if (IsString(ast)) {
-    log("evaluator", "pattern: string");
-    return ast;
+  if (gui.Is(ast)) return gui.Apply(env)(ast); // order matters
+  if (evalF.Is(ast)) return evalF.Apply(env)(ast); // order matters
+  if (apply.Is(ast)) {
+    log("evaluator", "apply");
+    return apply.Apply(env)(ast); // order matters ^
   }
-
-  if (IsBoolean(ast)) {
-    log("evaluator", "pattern: boolean");
-    return ast;
+  // length of 3
+  if (lambda.Is(ast)) {
+    log("evaluator", "lambda");
+    return lambda.Apply(env)(ast);
   }
-
-  if (IsNumber(ast)) {
-    log("evaluator", "pattern: number");
-    return ast;
-  }
-
-  if (IsNull(ast)) {
-    log("evaluator", "pattern: null");
-    return ast;
-  }
-
-  if (IsUndefined(ast)) {
-    log("evaluator", "pattern: undefined");
-    return ast;
-  }
-
-  if (IsProcedure(ast)) {
-    log("evaluator", "pattern: procedure");
-    return ast;
-  }
-
-  if (IsIdentifier(ast)) {
-    log("evaluator", "pattern: identifier");
-    const value = env.map.get(ast);
-    return evaluate(value, env);
-  }
-
-  if (IsProcedureForm(ast)) {
-    log("evaluator", "pattern: procedure form");
-    if (IsList(ast[1])) {
-      return evaluate(ast[0](...ast[1]), env);
-    }
-    return evaluate(ast[0](ast[1]), env);
-  }
-
-  if (IsGUIForm(ast)) {
-    log("evaluator", "pattern: gui form");
-    openGUI(ast[1], env);
-    return true;
-  }
-
-  if (IsApplyForm(ast)) {
-    log("evaluator", "pattern: apply form");
-    const rator = evaluate(ast[0], env);
-    const rand = evaluate(ast[1], env);
-    return evaluate([rator, rand], env);
-  }
-
-  if (IsLambdaForm(ast)) {
-    log("evaluator", "pattern: lambda form");
-    const argsIdentifiers = ast[1];
-    const body = ast[2];
-    return (...values: AST[]) => {
-      argsIdentifiers.forEach((identifier, i) =>
-        env.map.set(identifier, values[i])
-      );
-      return evaluate(body, env);
-    };
-  }
-
-  if (IsDefineForm(ast)) {
-    log("evaluator", "pattern: define form");
-    env.map.set(ast[1], ast[2]);
-    return `${ast[1].toString()} defined`;
-  }
-
-  if (IsList(ast)) {
-    log("evaluator", "pattern: list");
-    return ast.map((ast) => evaluate(ast, env));
-  }
-
-  throw new Error("invalid expression");
+  if (define.Is(ast)) return define.Apply(env)(ast);
+  // length of N
+  if (IsList(ast)) return ast.map((ast) => evaluate(ast, env)); // order matters
+  return undefined;
 };
