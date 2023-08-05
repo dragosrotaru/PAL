@@ -5,6 +5,7 @@ import { rootPath } from "../filesystem/index.js";
 import { type AST } from "../language/ast.js";
 import { type Env } from "../language/environment.js";
 import { write } from "../language/parser.js";
+import { log } from "../logger.js";
 import { port, url, wsPort } from "./common.js";
 
 let SERVER_STARTED = false;
@@ -17,13 +18,13 @@ export const startServer = async (env: Env) => {
   app.use(express.static(rootPath));
 
   const server = app.listen(port, () => {
-    console.log(`running on ${url}`);
+    log("gui", `running on ${url}`);
   });
 
   const wss = new WebSocketServer({ port: wsPort });
 
   wss.on("connection", (ws) => {
-    console.log(`clients: ${wss.clients.size} `);
+    log("gui", `clients: ${wss.clients.size} `);
     let alive = true;
     const timeout = setTimeout(() => {
       if (alive) {
@@ -35,12 +36,12 @@ export const startServer = async (env: Env) => {
     }, 5000 + 1000);
 
     ws.on("error", () => {
-      console.log("ws error");
+      log("gui", "ws error");
       timeout.refresh();
       alive = true;
     });
     ws.on("message", (message) => {
-      console.log("ws message");
+      log("gui", "ws message");
       timeout.refresh();
       alive = true;
       const data = JSON.parse(message.toString());
@@ -60,18 +61,18 @@ export const startServer = async (env: Env) => {
       alive = true;
     });
     ws.on("unexpected-response", () => {
-      console.log("ws unexpected-response");
+      log("gui", "ws unexpected-response");
       timeout.refresh();
       alive = true;
     });
     ws.on("upgrade", () => {
-      console.log("ws upgrade");
+      log("gui", "ws upgrade");
       timeout.refresh();
       alive = true;
     });
     ws.on("close", () => {
-      console.log(`clients: ${wss.clients.size} `);
-      console.log("ws close");
+      log("gui", `clients: ${wss.clients.size} `);
+      log("gui", "ws close");
       clearTimeout(timeout);
     });
   });

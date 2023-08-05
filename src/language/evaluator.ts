@@ -1,4 +1,5 @@
 import { openGUI } from "../gui/server.js";
+import { log } from "../logger.js";
 import {
   IsApplyForm,
   IsBoolean,
@@ -19,51 +20,51 @@ import {
 import { Env } from "./environment.js";
 
 export const evaluate = (ast: AST, env: Env): AST => {
-  console.log(ast);
+  log("evaluator", ast);
 
   if (IsEnvForm(ast)) {
-    console.log("pattern: env");
+    log("evaluator", "pattern: env");
     return env.getAll();
   }
 
   if (IsString(ast)) {
-    console.log("pattern: string");
+    log("evaluator", "pattern: string");
     return ast;
   }
 
   if (IsBoolean(ast)) {
-    console.log("pattern: boolean");
+    log("evaluator", "pattern: boolean");
     return ast;
   }
 
   if (IsNumber(ast)) {
-    console.log("pattern: number");
+    log("evaluator", "pattern: number");
     return ast;
   }
 
   if (IsNull(ast)) {
-    console.log("pattern: null");
+    log("evaluator", "pattern: null");
     return ast;
   }
 
   if (IsUndefined(ast)) {
-    console.log("pattern: undefined");
+    log("evaluator", "pattern: undefined");
     return ast;
   }
 
   if (IsProcedure(ast)) {
-    console.log("pattern: procedure");
+    log("evaluator", "pattern: procedure");
     return ast;
   }
 
   if (IsIdentifier(ast)) {
-    console.log("pattern: identifier");
+    log("evaluator", "pattern: identifier");
     const value = env.map.get(ast);
     return evaluate(value, env);
   }
 
   if (IsProcedureForm(ast)) {
-    console.log("pattern: procedure form");
+    log("evaluator", "pattern: procedure form");
     if (IsList(ast[1])) {
       return evaluate(ast[0](...ast[1]), env);
     }
@@ -71,20 +72,20 @@ export const evaluate = (ast: AST, env: Env): AST => {
   }
 
   if (IsGUIForm(ast)) {
-    console.log("pattern: gui form");
+    log("evaluator", "pattern: gui form");
     openGUI(ast[1], env);
     return true;
   }
 
   if (IsApplyForm(ast)) {
-    console.log("pattern: apply form");
+    log("evaluator", "pattern: apply form");
     const rator = evaluate(ast[0], env);
     const rand = evaluate(ast[1], env);
     return evaluate([rator, rand], env);
   }
 
   if (IsLambdaForm(ast)) {
-    console.log("pattern: lambda form");
+    log("evaluator", "pattern: lambda form");
     const argsIdentifiers = ast[1];
     const body = ast[2];
     return (...values: AST[]) => {
@@ -96,13 +97,13 @@ export const evaluate = (ast: AST, env: Env): AST => {
   }
 
   if (IsDefineForm(ast)) {
-    console.log("pattern: define form");
+    log("evaluator", "pattern: define form");
     env.map.set(ast[1], ast[2]);
     return `${ast[1].toString()} defined`;
   }
 
   if (IsList(ast)) {
-    console.log("pattern: list");
+    log("evaluator", "pattern: list");
     return ast.map((ast) => evaluate(ast, env));
   }
 
