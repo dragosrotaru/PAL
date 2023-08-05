@@ -1,5 +1,4 @@
-- fix (lambda (x) x) disappearing
-- make compile load file on startup
+- fix parsing of word word word
 - think about potential symbol / namespace issues
 - think about clojures and environment passing or dynamic scope.
 - implement a procedure compare function, perhaps implement a caching/change management system using hashing
