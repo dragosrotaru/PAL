@@ -22,6 +22,7 @@ export const evaluate = (ast: AST, env: Env): AST => {
   console.log(ast);
 
   if (IsEnvForm(ast)) {
+    console.log("pattern: env");
     return env.getAll();
   }
 
@@ -57,12 +58,9 @@ export const evaluate = (ast: AST, env: Env): AST => {
 
   if (IsIdentifier(ast)) {
     console.log("pattern: identifier");
-    const value = env.get(ast);
+    const value = env.map.get(ast);
     return evaluate(value, env);
   }
-
-  // TODO gui form can be removed from the evaluator, and instead loaded in as a procedure in the environment.
-  // This would make the evaluator platform agnostic.
 
   if (IsProcedureForm(ast)) {
     console.log("pattern: procedure form");
@@ -90,17 +88,16 @@ export const evaluate = (ast: AST, env: Env): AST => {
     const argsIdentifiers = ast[1];
     const body = ast[2];
     return (...values: AST[]) => {
-      const cenv = new Env(env);
       argsIdentifiers.forEach((identifier, i) =>
-        cenv.set(identifier, values[i])
+        env.map.set(identifier, values[i])
       );
-      return evaluate(body, cenv);
+      return evaluate(body, env);
     };
   }
 
   if (IsDefineForm(ast)) {
     console.log("pattern: define form");
-    env.set(ast[1], ast[2]);
+    env.map.set(ast[1], ast[2]);
     return `${ast[1].toString()} defined`;
   }
 

@@ -1,5 +1,5 @@
 import * as ReactDOM from "react-dom";
-import { Deserialize } from "../language/ast.js";
+import { parse } from "../language/parser.js";
 import { wsUrl } from "./common.js";
 import { View } from "./views/index.js";
 
@@ -17,7 +17,7 @@ webSocket.onmessage = (event) => {
   if ((data.type = "view")) {
     // Render the view
     ReactDOM.render(
-      View({ ast: Deserialize(data.ast), env: data.env }),
+      View({ ast: parse(data.ast), env: data.env }),
       document.getElementById("root")
     );
   }

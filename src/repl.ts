@@ -4,9 +4,8 @@ import { evaluate } from "./language/evaluator.js";
 import { parse } from "./language/parser.js";
 
 const env = compile();
-
 repl.start({
-  prompt: "lisp.ts > ",
+  prompt: "> ",
   eval: (cmd, context, filename, callback) => {
     callback(null, evaluate(parse(cmd), env));
   },
