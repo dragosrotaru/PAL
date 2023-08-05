@@ -13,6 +13,17 @@ import {
 
 /* 
 
+<program> ::= <exp> | <program> <exp>
+<exp> ::= <symbol> | <boolean> | <number> | <special> | <list> | <string>
+<symbol> ::= { a-z | A-Z } <symbol> | ""
+<boolean> ::= "true" | "false"
+<number> ::= "#" { digit } <number> | ""
+<special> ::= "null" | "undefined"
+<list> ::= "(" <program> ")"
+<string> ::= '"' { any character except '"' or '\' or '(', ')' } '"'
+
+
+
 Lets consider the input to be constrained to ASCII, As such there are 2^8 = 256 possible values per element.
 
 Lets look at the first layer of meaning we can discern from an input of elements, taking a scanning approach from left to right.

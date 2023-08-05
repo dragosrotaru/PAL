@@ -4,8 +4,10 @@ import { AST, compareAST } from "./ast.js";
 type Observer<V> = (value: V) => void;
 type Unsubscribe = () => void;
 
-export function Constructor<K extends symbol, V extends AST>() {
-  const map: Map<K, V> = new Map<K, V>();
+export function Constructor<K extends symbol, V extends AST>(
+  prevMap?: Map<K, V>
+) {
+  const map: Map<K, V> = new Map<K, V>(prevMap);
   const observers: Map<K, Observer<V>[]> = new Map<K, Observer<V>[]>();
 
   const unsubscribe = (key: K, observer: Observer<V>): void => {

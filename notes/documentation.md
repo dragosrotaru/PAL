@@ -1,6 +1,10 @@
-# HyperLang
+# Language Documentation
 
-HyperLang is a Lisp dialect written in TypeScript. It is lexically scoped with an environment passing interpreter, so local names overwrite global ones. by default it evaluates expressions all the way, in normal order.
+@LangName is intended to be a research environment for General Artificial Intelligence. This may sound stupid. Why would you build an AGI in Typescript? Thats for me to know, and for you to find out (when I document it) ;)
+
+## Undefined Behaviour
+
+There are no such things as Exceptions or Errors in @LangName. Instead, the `undefined` primitive represents any and all unexpected behaviour. Expected, yet unintended behaviours will probably be modelled via something like Algebraic Data Types.
 
 ## Main Features
 
