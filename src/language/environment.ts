@@ -1,3 +1,4 @@
+import { log } from "../logger.js";
 import { AST, compareAST } from "./ast.js";
 
 type Observer<V> = (value: V) => void;
@@ -26,9 +27,9 @@ export function Constructor<K extends symbol, V extends AST>() {
             if (prop === "set") {
               const [key, val] = args;
               const oldValue = target.get(key);
-              console.log("Old Value", oldValue);
-              console.log("Value", val);
-              console.log("compare", oldValue !== val);
+              log("env", "old", oldValue);
+              log("env", "new", val);
+              log("env", "compare", oldValue !== val);
               if (!compareAST(oldValue, val)) {
                 Reflect.apply(value, target, args);
                 if (observers.has(key)) {

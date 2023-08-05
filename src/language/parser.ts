@@ -1,3 +1,4 @@
+import { log } from "../logger.js";
 import {
   AST,
   IsBoolean,
@@ -48,12 +49,15 @@ export const write = (ast: AST): string => {
   if (IsUndefined(ast)) return "undefined";
   if (IsList(ast))
     return ast.map(write).reduce((acc, curr, i, arr) => {
+      if (arr.length === 1) return `(${curr})`;
       if (i === 0) return `(${curr}`;
       if (i === arr.length - 1) return `${acc} ${curr})`;
       return `${acc} ${curr}`;
     }, "");
-  if (IsIdentifier(ast)) return ast.description || "";
-  console.log(typeof ast, ast);
+  if (IsIdentifier(ast)) {
+    log("parser", ast.description);
+    return ast.description || "";
+  }
   throw new Error(`Cannot serialize ${ast}`);
 };
 
@@ -91,28 +95,22 @@ const parseToken = (list: List, chars: string[]) => {
 /** accepts an array of tokens and returns an abstract syntax tree (AST). */
 const parser = (
   tokens: string[],
-  list: List = [],
+  list: List,
   chars: string[] = [],
   stringed = false,
   escaped = false
 ): AST => {
-  // console.log(tokens, list, chars, stringed, escaped);
+  log("parser", tokens, list, chars, stringed, escaped);
   const token = tokens.shift();
-  if (!token) {
-    if (chars.length > 0) {
-      list = parseToken(list, chars);
-    }
-    const ast = list.pop();
-    if (ast !== undefined) {
-      return ast;
-    }
-    throw new Error("Invalid");
+  if (token === undefined) {
+    if (chars.length > 0) list = parseToken(list, chars);
+    return list.pop();
   }
 
   if (escaped === false) {
     if (token === "\\") return parser(tokens, list, chars, stringed, true);
     if (token === '"') {
-      if (stringed) {
+      if (stringed === true) {
         list.push(chars.join(""));
       } else {
         list = parseToken(list, chars);
@@ -120,13 +118,10 @@ const parser = (
       return parser(tokens, list, [], !stringed);
     }
 
-    if (!stringed) {
+    if (stringed === false) {
       if (token === "(") {
         list = parseToken(list, chars);
-
-        const ast = parser(tokens);
-        if (ast) list.push(ast);
-
+        list.push(parser(tokens, []));
         return parser(tokens, list);
       }
 
@@ -137,7 +132,7 @@ const parser = (
     }
   }
 
-  if (!stringed) {
+  if (stringed === false) {
     if (token === " ") {
       list = parseToken(list, chars);
       return parser(tokens, list);
@@ -153,5 +148,15 @@ export const tokenizer = (source: string): string[] => source.trim().split("");
 
 export const parse = (source: string) => {
   const tokens = tokenizer(source);
-  return parser(tokens);
+  const parsed = parser(tokens, []);
+  // TODO get rid of this awful hack
+  if (
+    IsList(parsed) &&
+    parsed.length === 0 &&
+    source.replace(/S+/g, "") !== "()"
+  ) {
+    return undefined;
+  }
+  log("parser", "ast:", parsed);
+  return parsed;
 };

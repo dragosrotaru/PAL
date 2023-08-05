@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { Constructor } from "../language/environment.js";
 import { parse, write } from "../language/parser.js";
+import { log } from "../logger.js";
 
 export const rootPath = path.join("test/source.sx");
 
@@ -20,10 +21,12 @@ export const compile = () => {
   });
 
   watcher.on("change", (filepath, stats) => {
-    console.log("filereader");
+    log("compiler", "filereader");
     const file = fs.readFileSync(filepath, "utf-8");
     const ext = path.extname(filepath);
     if (ext === ".sx") {
+      const ast = parse(file);
+      log("compiler", "parsing .sx file", file);
       env.map.set(Symbol.for(filepath), parse(file));
     }
   });
@@ -31,9 +34,9 @@ export const compile = () => {
   watcher.once("change", (filepath: string, stats: fs.Stats) => {
     const ext = path.extname(filepath);
     if (ext === ".sx") {
-      unsubscriber = env.subscribe(Symbol.for(filepath), (value) => {
-        console.log("filewriter");
-        fs.writeFileSync(filepath, write(value));
+      unsubscriber = env.subscribe(Symbol.for(filepath), (ast) => {
+        log("compiler", "filewriter", filepath, ast);
+        fs.writeFileSync(filepath, write(ast));
       });
     }
   });

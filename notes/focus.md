@@ -1,4 +1,3 @@
-- add logging with flags
 - fix (lambda (x) x) disappearing
 - make compile load file on startup
 - think about potential symbol / namespace issues
@@ -7,8 +6,13 @@
 - connect gui to observable env
 
 - should code be evaluated when source is changed? what about garbage collection?
+- should I lazy evaluate, and just give the option to eager evaluate by exposing the eval function? or default to eager and use quote? both?
 - implement language server functionality
 - load gui, env methods as procedures in the env during compilation
+
+- write out a formal definition of the parser in BNF
+- write tests for all possible edge cases
+- fix closing bracket behaviour
 
 - neurosymbolic
 - extensible
