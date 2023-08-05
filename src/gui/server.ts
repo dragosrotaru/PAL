@@ -2,8 +2,9 @@ import express from "express";
 import open from "open";
 import WebSocket, { WebSocketServer } from "ws";
 import { rootPath } from "../filesystem/index.js";
-import { Serialize, type AST } from "../language/ast.js";
+import { type AST } from "../language/ast.js";
 import { type Env } from "../language/environment.js";
+import { write } from "../language/parser.js";
 import { port, url, wsPort } from "./common.js";
 
 let SERVER_STARTED = false;
@@ -11,7 +12,7 @@ const app = express();
 
 const continuations = new Map<string, (ws: WebSocket) => void>();
 
-export const startServer = async () => {
+export const startServer = async (env: Env) => {
   SERVER_STARTED = true;
   app.use(express.static(rootPath));
 
@@ -79,12 +80,12 @@ export const startServer = async () => {
 };
 
 export const openGUI = async (ast: AST, env: Env) => {
-  if (!SERVER_STARTED) await startServer();
+  if (!SERVER_STARTED) await startServer(env);
   const id = crypto.randomUUID();
   await open(url + `/src/gui/index.html?gui-id=${id}`);
   continuations.set(id, (ws) => {
     ws.send(
-      JSON.stringify({ type: "view", ast: Serialize(ast), env: env.getAll() })
+      JSON.stringify({ type: "view", ast: write(ast), env: env.getAll() })
     );
   });
 };

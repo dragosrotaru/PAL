@@ -1,4 +1,14 @@
-import { AST, List } from "./ast.js";
+import {
+  AST,
+  IsBoolean,
+  IsIdentifier,
+  IsList,
+  IsNull,
+  IsNumber,
+  IsString,
+  IsUndefined,
+  List,
+} from "./ast.js";
 
 /* 
 
@@ -30,31 +40,51 @@ The issue with this is that the whitespace all of a sudden matters
 
 */
 
+export const write = (ast: AST): string => {
+  if (IsString(ast)) return `"${ast.replace(/([()\\"])/g, "\\$1")}"`;
+  if (IsNumber(ast)) return ast.toString();
+  if (IsBoolean(ast)) return ast.toString();
+  if (IsNull(ast)) return "null";
+  if (IsUndefined(ast)) return "undefined";
+  if (IsList(ast))
+    return ast.map(write).reduce((acc, curr, i, arr) => {
+      if (i === 0) return `(${curr}`;
+      if (i === arr.length - 1) return `${acc} ${curr})`;
+      return `${acc} ${curr}`;
+    }, "");
+  if (IsIdentifier(ast)) return ast.description || "";
+  console.log(typeof ast, ast);
+  throw new Error(`Cannot serialize ${ast}`);
+};
+
 const parseToken = (list: List, chars: string[]) => {
   const token = chars.join("").trim();
+
   if (token.length === 0) return list;
 
-  if (token.startsWith("##")) {
-    list.push(parseFloat(token.replace("##", "")));
-  }
-  if (token.startsWith("#")) {
-    list.push(parseInt(token.replace("#", "")));
+  if (token.indexOf("#") === 0) {
+    list.push(parseFloat(token.replace("#", "")));
+    return list;
   }
   if (token === "true") {
     list.push(true);
+    return list;
   }
   if (token === "false") {
     list.push(false);
+    return list;
   }
   if (token === "null") {
     list.push(null);
+    return list;
   }
   if (token === "undefined") {
     list.push(undefined);
+    return list;
   }
-  // assume symbol
-  list.push(Symbol(token));
 
+  // assume symbol
+  list.push(Symbol.for(token));
   return list;
 };
 
@@ -66,16 +96,17 @@ const parser = (
   stringed = false,
   escaped = false
 ): AST => {
-  console.log(tokens, list, chars, stringed, escaped);
+  // console.log(tokens, list, chars, stringed, escaped);
   const token = tokens.shift();
   if (!token) {
+    if (chars.length > 0) {
+      list = parseToken(list, chars);
+    }
     const ast = list.pop();
-    console.log(ast);
     if (ast !== undefined) {
       return ast;
-    } else {
-      throw new Error("Invalid");
     }
+    throw new Error("Invalid");
   }
 
   if (escaped === false) {
@@ -122,6 +153,5 @@ export const tokenizer = (source: string): string[] => source.trim().split("");
 
 export const parse = (source: string) => {
   const tokens = tokenizer(source);
-  console.log("tokens", tokens);
   return parser(tokens);
 };

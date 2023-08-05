@@ -9,7 +9,6 @@ the type of /countries is determined: List
 the same way the evaluator matches to the pattern of the expression, the view command matches to the expression, and it loads the view from the namespace.
 implement loading hyper modules
 implement loading native typescript modules
-implement parser that allows spaces in strings
 process entire file structure in compiler
 treat the GUI layout as a function of a lisp template, so for example a button could be tied to the application of a function
 add a color map to distinguish data types

@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Serialize, type AST } from "../../language/ast.js";
+import { type AST } from "../../language/ast.js";
 import { type Env } from "../../language/environment.js";
+import { write } from "../../language/parser.js";
 
 type Props = {
   ast: AST;
@@ -8,7 +9,7 @@ type Props = {
 };
 
 const Default = (props: Props) => {
-  return <>{JSON.stringify(Serialize(props.ast), null, 2)}</>;
+  return <>{JSON.stringify(write(props.ast), null, 2)}</>;
 };
 
 export default Default;
