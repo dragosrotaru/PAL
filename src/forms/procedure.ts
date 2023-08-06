@@ -14,7 +14,7 @@ export const Is = (ast: AST): ast is Form =>
 
 export const Apply = (env: Env) => (ast: Form) => {
   if (IsList(ast[1])) {
-    return evaluate(ast[0](...ast[1]), env);
+    return evaluate(env)(ast[0](...ast[1]));
   }
-  return evaluate(ast[0](ast[1]), env);
+  return evaluate(env)(ast[0](ast[1]));
 };

@@ -27,6 +27,6 @@ export const Apply = (prenv: Env) => (ast: Form) => {
     argsIdentifiers.forEach((identifier, i) =>
       env.map.set(identifier, values[i])
     );
-    return evaluate(body, env);
+    return evaluate(env)(body);
   };
 };

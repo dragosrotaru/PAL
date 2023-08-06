@@ -6,7 +6,7 @@ import { parse } from "./language/parser.js";
 const env = compile();
 repl.start({
   prompt: "> ",
-  eval: (cmd, context, filename, callback) => {
-    callback(null, evaluate(parse(cmd), env));
+  eval: async (cmd, context, filename, callback) => {
+    callback(null, await evaluate(env)(parse(cmd)));
   },
 });

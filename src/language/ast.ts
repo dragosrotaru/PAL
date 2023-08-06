@@ -1,6 +1,8 @@
 // Native Types
 
 export type AST =
+  | AsyncList
+  | AsyncProcedure
   | Identifier
   | Procedure
   | List
@@ -10,8 +12,10 @@ export type AST =
   | null
   | undefined;
 export type List = AST[];
+export type AsyncList = Promise<AST[]>;
 export type Identifier = symbol;
 export type Procedure = (...ast: AST[]) => AST;
+export type AsyncProcedure = (...ast: AST[]) => Promise<AST>;
 
 export const IsString = (ast: AST): ast is string => typeof ast === "string";
 export const IsIdentifier = (ast: AST): ast is Identifier =>

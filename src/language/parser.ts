@@ -20,7 +20,7 @@ import {
 <number> ::= "#" { digit } <number> | ""
 <special> ::= "null" | "undefined"
 <list> ::= "(" <program> ")"
-<string> ::= '"' { any character except '"' or '\' or '(', ')' } '"'
+<string> ::= '"' { any character except '"' or '\' or '(', ')' unless a '\' preceeds it } '"'
 
 
 

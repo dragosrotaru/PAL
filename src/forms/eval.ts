@@ -10,6 +10,6 @@ export const Identifier = Symbol.for("eval");
 export const Is = (ast: AST): ast is Form =>
   apply.Is(ast) && ast[0] === Identifier;
 
-export const Apply = (env: Env) => (ast: Form) => {
-  return evaluate(evaluate(ast[1], env), env);
+export const Apply = (env: Env) => async (ast: Form) => {
+  return evaluate(env)(await evaluate(env)(ast[1]));
 };

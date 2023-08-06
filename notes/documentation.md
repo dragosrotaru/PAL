@@ -1,6 +1,17 @@
 # Language Documentation
 
-@LangName is intended to be a research environment for General Artificial Intelligence. This may sound stupid. Why would you build an AGI in Typescript? Thats for me to know, and for you to find out (when I document it) ;)
+## Syntax
+
+Assuming an ASCII encoding:
+
+- all whitespace characters are ignored and used only to separate symbols
+- \ the backward slash escapes special characters including itself
+- () brackets are used to define a sequence or bound
+- "" quotes are used to define an embedding or string
+- \# at the beginning of a value is used to define a number
+- true and false represent the booleans
+- null represents deliberate non-value, i.e. Nothing
+- undefined represents unexpected behaviour and meaninglessness
 
 ## Undefined Behaviour
 
