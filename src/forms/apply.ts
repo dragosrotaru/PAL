@@ -18,8 +18,8 @@ export const Is = (ast: AST): ast is Form =>
   ast.length === 2 &&
   (IsProcedure(ast[0]) || IsIdentifier(ast[0]) || IsLambda(ast[0]));
 
-export const Apply = (env: Env) => (ast: Form) => {
-  const rator = evaluate(ast[0], env);
-  const rand = evaluate(ast[1], env);
-  return evaluate([rator, rand], env);
+export const Apply = (env: Env) => async (ast: Form) => {
+  const rator = await evaluate(env)(ast[0]);
+  const rand = await evaluate(env)(ast[1]);
+  return evaluate(env)([rator, rand]);
 };
