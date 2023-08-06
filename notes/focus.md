@@ -1,30 +1,42 @@
 # Focus
 
-The purpose of this project is to achieve the right initial conditions to produce AGI. The north star is force multiplication.
-
 ## Areas of Focus
+
+The north star is force multiplication.
+
+- Find the most powerful Kernel possible, pack the language with as much expressiveness and extensibility as possible.
+  - Adaptive grammar and parsing
+  - Adaptive compute/evaluation model
+  - powerful foundational constructs/special forms
+  - expose every internal to the language
+- Implement powerful interfacing capabilities
+  - Adaptive / Generative UX/GUI
+  - REPL/CLI
+  - VSCode Extension
+  - OS Primitives (FileSystem, Processes, Shell)
+  - Web Extension
+  - Web Browsing
+  - Brain-Computer Interface
+
+### Interfaces
 
 ### Bugs
 
 - fix lambda infinite loop (happens in procedure)
 - fix GUI
 
-### Extensibility and Expressiveness
-
-find the correct Kernel or set of abstractions such that the conditions are sufficient enough for the system we envision to develop.
-
-this includes adaptive parsing and grammar, heterogenous compute model, powerful base constructs. If we find the right set of base constructs, we can exponentially increase the expressive power of the system.
-
 #### Host Language
 
-- add embedded js/ts support
-- load js/ts modules
+- add support for importing js/ts Procedures
+- add support for embedded js/ts
+- provide general approach to exposing/accessing js/ts libraries
 
 #### Parsing
 
 - support non-list parsing, multiple statement parsing
 - `quote` and `macro`
 - expose `parse` in language
+- support streaming, non ASCII encodings
 
 #### Environment
 
@@ -32,6 +44,7 @@ this includes adaptive parsing and grammar, heterogenous compute model, powerful
 - add restart method
 - add ability to access/modify core code
 - implement Godel Numbering with Hash functions
+- consider dynamic scoping vs environment passing
 - `self`
 
 ### Evaluation
@@ -43,18 +56,11 @@ this includes adaptive parsing and grammar, heterogenous compute model, powerful
 
 #### New Features
 
-- provide full access to env and parsing within language
-- think about dynamic scoping, env and hashing
 - move everything possible out of language implementation and into language implementation (ts modules or actual code)
 - add adaptive parsing within the evaluator. Should the evaluator AST be typed with an encoding? i.e. UTF-8? so we can include binary data also?
 - should code be evaluated when source is changed? what about garbage collection?
 - should I lazy evaluate, and just give the option to eager evaluate by exposing the eval function? or default to eager and use quote? both?
 - add memoization for dynamic programming to be built in
-
-### Interfaces
-
-Adding connectivenesss and interfacing capabilities to the system will help to bring in the knowledge needed for the AGI to be possible. We can bootstrap by including external AI systems like ChatGPT.
-
 - integrate with chatgpt, the web and other knowledge systems
 - implement language server functionality
 - connect the GUI to the observable environment and make it useful
