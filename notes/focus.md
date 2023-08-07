@@ -64,8 +64,7 @@ The north star is force multiplication.
 
 - support non-list parsing, multiple statement parsing
 - support \n as whitespace
-- `quote` and `macro`
-- expose `parse` in language
+- add `macro`
 - support streaming, non ASCII encodings
 
 ## Environment
