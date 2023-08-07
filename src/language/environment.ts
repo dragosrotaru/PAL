@@ -1,23 +1,34 @@
 import { log } from "../logger.js";
-import { AST, compareAST } from "./ast.js";
+import { ASTEquals, type AST, type Identifier } from "./ast.js";
 
-type Observer<V> = (value: V) => void;
+type Observer<V> = (ast: V) => void;
 type Unsubscribe = () => void;
 
-export function Constructor<K extends symbol, V extends AST>(
+// TODO monitor for memory leaks
+
+export function Constructor<K extends Identifier, V extends AST>(
   prevMap?: Map<K, V>
 ) {
   const map: Map<K, V> = new Map<K, V>(prevMap);
   const observers: Map<K, Observer<V>[]> = new Map<K, Observer<V>[]>();
 
   const unsubscribe = (key: K, observer: Observer<V>): void => {
+    log("env", "unsubscribing", key);
     const observersForKey = observers.get(key);
     if (observersForKey) {
-      observers.set(
-        key,
-        observersForKey.filter((obs) => obs !== observer)
+      const filteredObservers = observersForKey.filter(
+        (obs) => obs !== observer
       );
+      if (filteredObservers.length > 0) {
+        observers.set(
+          key,
+          observersForKey.filter((obs) => obs !== observer)
+        );
+      } else {
+        observers.delete(key);
+      }
     }
+    log("env", "number of observed keys", observers.size);
   };
 
   return {
@@ -29,12 +40,15 @@ export function Constructor<K extends symbol, V extends AST>(
             if (prop === "set") {
               const [key, val] = args;
               const oldValue = target.get(key);
+              log("env", "setting key", key);
+              log("env", "number keys", map.size);
               log("env", "old", oldValue);
               log("env", "new", val);
-              log("env", "compare", oldValue !== val);
-              if (!compareAST(oldValue, val)) {
+              log("env", "compare", ASTEquals(oldValue, val));
+              if (!ASTEquals(oldValue, val)) {
                 Reflect.apply(value, target, args);
                 if (observers.has(key)) {
+                  log("env", "dispatching to observers");
                   observers.get(key)?.forEach((observer) => observer(val));
                 }
               }
@@ -49,6 +63,7 @@ export function Constructor<K extends symbol, V extends AST>(
       },
     }),
     getAll: (): Array<[K, V]> => {
+      log("env", "getting all");
       const list: Array<[K, V]> = [];
       map.forEach((value, key) => {
         list.push([key, value]);
@@ -56,6 +71,8 @@ export function Constructor<K extends symbol, V extends AST>(
       return list;
     },
     subscribe: (key: K, observer: Observer<V>): Unsubscribe => {
+      log("env", "subscribing", key);
+      log("env", "number observed keys", observers.size);
       if (!observers.has(key)) {
         observers.set(key, []);
       }

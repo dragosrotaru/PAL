@@ -4,13 +4,12 @@ import {
   IsProcedure,
   type AST,
 } from "../../language/ast.js";
-import { type Env } from "../../language/environment.js";
 import Default from "./default.js";
 import Identifier from "./identifier.js";
 import List from "./list.js";
 import Procedure from "./procedure.js";
 
-type Props = { ast: AST; env: Env };
+type Props = { ast: AST };
 
 export const View = (props: Props): React.ReactElement => {
   const { ast } = props;
