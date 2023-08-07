@@ -1,16 +1,14 @@
 # Transformers
 
-the input is taken, and vectorized in an embedding with a positional encoding
-
-Multi-headed attention
-Distributed Representations
-
-query key and value vectors
-query x key = scores determines how much focus should a symbol have to another symbol
-scaled down by being divided by the square root of the dimention of the keys , to allow for more stable gradient
-softmax function
-this gives attention weights, multiplied by value vector to get the output vector
-feed it into a linear layer to process
+- input is vectorized in an embedding with a positional encoding
+- Multi-headed attention
+- Distributed Representations
+- query key and value vectors
+- query x key = scores determines how much focus should a symbol have to another symbol
+- scaled down by division by square root of the dimension of the keys for more stable gradient
+- softmax function
+- this gives attention weights, multiplied by value vector to get the output vector
+- feed it into a linear layer
 
 ## References
 

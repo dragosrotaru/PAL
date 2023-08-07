@@ -1,5 +1,0 @@
-implement core in Rust/WebAssembly
-implement a Type System
-implement a P2P "Content-Addressable Expressions" network protocol later for the Interpreter. See Unison Lang for inspiration
-implement the original `evalquote` Meta-Circular Evaluator from John McCarthy's `The Lisp 1.5 Manual`
-implement Church Encodings

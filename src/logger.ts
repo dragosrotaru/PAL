@@ -1,9 +1,9 @@
 const config = {
-  compiler: true,
+  compiler: false,
   parser: false,
-  evaluator: true,
+  evaluator: false,
   env: false,
-  gui: false,
+  gui: true,
 } as const;
 type Module = keyof typeof config;
 

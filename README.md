@@ -1,3 +1,1 @@
 This is an active research project, its hard to document right now as its changing very rapidly. Feel free to peruse the contents, it probably wont make much sense.
-
-Its a neurosymbolic, adaptive grammar, extensible AI, language and computation environment with built in human interfaces (command line, web, filesystem, etc). inspired by transformers, smalltalk, ted nelson, lambda calculus and lots of other nifty stuff. Better to talk to me then to look at the code since its partial and there are over 5 years worth of private code, failed experiments and various notes which I have produced and will be integrating into this as time goes on.
