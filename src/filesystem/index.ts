@@ -5,7 +5,8 @@ import { Constructor } from "../language/environment.js";
 import { parse, write } from "../language/parser.js";
 import { log } from "../logger.js";
 
-export const rootPath = path.join("test/source.sx");
+export const rootPath = path.join("test");
+export const DEFAULT_LANG_EXT = ".pal";
 
 // TODO subscribe to file deletion/namespace changes and delete subsciber
 let unsubscriber;
@@ -18,7 +19,7 @@ export const compile = () => {
     if (stats?.isFile() || fs.statSync(filepath).isFile()) {
       const file = fs.readFileSync(filepath, "utf-8");
       const ext = path.extname(filepath);
-      if (ext === ".sx") {
+      if (ext === DEFAULT_LANG_EXT) {
         const ast = parse(file);
         env.map.set(Symbol.for(filepath), ast);
       }
@@ -27,7 +28,7 @@ export const compile = () => {
 
   const writeFiles = (filepath: string, stats?: fs.Stats) => {
     const ext = path.extname(filepath);
-    if (ext === ".sx") {
+    if (ext === DEFAULT_LANG_EXT) {
       unsubscriber = env.subscribe(Symbol.for(filepath), (ast) => {
         log("compiler", "file-write", filepath, ast);
         fs.writeFileSync(filepath, write(ast));

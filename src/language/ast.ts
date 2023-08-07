@@ -36,7 +36,7 @@ export type IdentifierList = Identifier[];
 export const IsIdentifierList = (ast: AST): ast is Identifier[] =>
   IsList(ast) && ast.every(IsIdentifier);
 
-export function compareAST(a: AST, b: AST): boolean {
+export function ASTEquals(a: AST, b: AST): boolean {
   if (IsString(a) && IsString(b)) return a === b;
   if (IsNumber(a) && IsNumber(b)) return a === b;
   if (IsBoolean(a) && IsBoolean(b)) return a === b;
@@ -45,6 +45,6 @@ export function compareAST(a: AST, b: AST): boolean {
   if (IsProcedure(a) && IsProcedure(b)) return a.toString() === b.toString();
   if (IsIdentifier(a) && IsIdentifier(b)) return a === b;
   if (IsList(a) && IsList(b))
-    return a.length === b.length && a.every((v, i) => compareAST(v, b[i]));
+    return a.length === b.length && a.every((v, i) => ASTEquals(v, b[i]));
   return false;
 }

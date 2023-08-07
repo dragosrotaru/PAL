@@ -5,7 +5,7 @@ import { parse } from "./language/parser.js";
 
 const env = compile();
 repl.start({
-  prompt: "> ",
+  prompt: "repl > ",
   eval: async (cmd, context, filename, callback) => {
     callback(null, await evaluate(env)(parse(cmd)));
   },

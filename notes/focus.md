@@ -33,7 +33,6 @@ The north star is force multiplication.
 
 ## GUI
 
-- set the environment symbol using the uuid of the remote-initialization
 - url should represent the object being viewed
 - add basic style
 - show if object is ephemeral or persisted
@@ -51,10 +50,11 @@ The north star is force multiplication.
 - edit content capability
   - structured text edit
   - drag to rearrange
-- secure web endpoints
+- add authenticaton/security to the web endpoints - prevent leaks of .env for instance
 - add gui observer pattern
 - support layouts as templates.pal
-- remove webextensions.restrictedDomains localhost, fix conflict between import map and extensions or do it differently
+- set the environment symbol using the uuid of the remote-initialization
+- remove webextensions.restrictedDomains localhost, fix conflict between import map and extensions or do it differentlys
 
 ## Host Language
 
@@ -65,6 +65,7 @@ The north star is force multiplication.
 ## Parsing
 
 - support non-list parsing, multiple statement parsing
+- support \n as whitespace
 - `quote` and `macro`
 - expose `parse` in language
 - support streaming, non ASCII encodings
