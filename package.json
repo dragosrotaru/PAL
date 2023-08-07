@@ -1,7 +1,7 @@
 {
-  "name": "lisp.ts",
+  "name": "pal",
   "version": "1.0.0",
-  "description": "A Lisp Interpreter in TypeScript",
+  "description": "PAL Awesome Language",
   "main": "index.ts",
   "type": "module",
   "repository": {
