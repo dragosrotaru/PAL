@@ -36,7 +36,6 @@ The north star is force multiplication.
 - add basic style
 - show if object is ephemeral or persisted
 - add save capability
-- add delete capability
 - add rename capability
 - add undo/redo capability
 - add execute capability
@@ -47,11 +46,12 @@ The north star is force multiplication.
   - sort
   - scroll through view variants
 - edit content capability
+
   - structured text edit
   - drag to rearrange
+
 - add authenticaton/security to the web endpoints - prevent leaks of .env for instance
-- support layouts as templates.pal
-- support showing special symbols (define them as members of the environment instead of implicitly)
+- support showing special identifiers (from special forms) (define them as members of the environment instead of implicitly)
 - remove webextensions.restrictedDomains localhost, fix conflict between import map and extensions or do it differentlys
 
 ## Host Language
