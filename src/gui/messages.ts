@@ -1,6 +1,9 @@
+export type Message = Open | Close | Exec | AST;
+
 export enum Type {
   Open = "Open",
   Close = "Close",
+  Exec = "Exec",
   AST = "AST",
 }
 
@@ -16,8 +19,10 @@ export interface Close extends Generic<Type.Close> {
   id: string;
 }
 
+export interface Exec extends Generic<Type.Exec> {
+  code: string;
+}
+
 export interface AST extends Generic<Type.AST> {
   ast: string;
 }
-
-export type Message = Open | Close | AST;

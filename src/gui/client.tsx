@@ -1,9 +1,10 @@
+import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { parse } from "../language/parser.js";
 import { log } from "../logger.js";
-import { WindowURIToIdentifierString, wsUrl } from "./common.js";
-import { Type, type Message, type Open } from "./messages.js";
-import { View } from "./views/index.js";
+import { CurrentIDToString, wsUrl } from "./common.js";
+import { Type, type Exec, type Message, type Open } from "./messages.js";
+import { Template } from "./views/index.js";
 
 const webSocket = new WebSocket(wsUrl);
 
@@ -12,8 +13,17 @@ webSocket.onopen = () => {
   webSocket.send(
     JSON.stringify({
       type: Type.Open,
-      id: WindowURIToIdentifierString(),
+      id: CurrentIDToString(),
     } as Open)
+  );
+};
+
+const exec = async (code: string) => {
+  webSocket.send(
+    JSON.stringify({
+      type: Type.Exec,
+      code,
+    } as Exec)
   );
 };
 
@@ -22,10 +32,11 @@ webSocket.onmessage = (event) => {
   log("gui", message);
 
   if (message.type === Type.AST) {
+    const ast = parse(message.ast);
     // TODO implement observables
     // Render the view
     ReactDOM.render(
-      View({ ast: parse(message.ast) }),
+      <Template ast={ast} exec={exec}></Template>,
       document.getElementById("root")
     );
     return;

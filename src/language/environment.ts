@@ -6,13 +6,14 @@ type Unsubscribe = () => void;
 
 // TODO monitor for memory leaks
 
-export function Constructor<K extends Identifier, V extends AST>(
-  prevMap?: Map<K, V>
-) {
-  const map: Map<K, V> = new Map<K, V>(prevMap);
-  const observers: Map<K, Observer<V>[]> = new Map<K, Observer<V>[]>();
+export function Constructor(prevMap?: Map<Identifier, AST>) {
+  const map: Map<Identifier, AST> = new Map<Identifier, AST>(prevMap);
+  const observers: Map<Identifier, Observer<AST>[]> = new Map<
+    Identifier,
+    Observer<AST>[]
+  >();
 
-  const unsubscribe = (key: K, observer: Observer<V>): void => {
+  const unsubscribe = (key: Identifier, observer: Observer<AST>): void => {
     log("env", "unsubscribing", key);
     const observersForKey = observers.get(key);
     if (observersForKey) {
@@ -41,7 +42,6 @@ export function Constructor<K extends Identifier, V extends AST>(
               const [key, val] = args;
               const oldValue = target.get(key);
               log("env", "setting key", key);
-              log("env", "number keys", map.size);
               log("env", "old", oldValue);
               log("env", "new", val);
               log("env", "compare", ASTEquals(oldValue, val));
@@ -53,29 +53,39 @@ export function Constructor<K extends Identifier, V extends AST>(
                 }
               }
               return;
-            } else {
-              return Reflect.apply(value, target, args);
             }
+            if (prop === "delete") {
+              const [key] = args;
+              log("env", "deleting key", key);
+              Reflect.apply(value, target, args);
+              if (observers.has(key)) {
+                log("env", "dispatching to observers");
+                observers.get(key)?.forEach((observer) => observer(undefined));
+              }
+              return;
+            }
+
+            return Reflect.apply(value, target, args);
           };
         } else {
           return value;
         }
       },
     }),
-    getAll: (): Array<[K, V]> => {
+    getAll: (): Array<[Identifier, AST]> => {
       log("env", "getting all");
-      const list: Array<[K, V]> = [];
+      const list: Array<[Identifier, AST]> = [];
       map.forEach((value, key) => {
         list.push([key, value]);
       });
       return list;
     },
-    subscribe: (key: K, observer: Observer<V>): Unsubscribe => {
+    subscribe: (key: Identifier, observer: Observer<AST>): Unsubscribe => {
       log("env", "subscribing", key);
-      log("env", "number observed keys", observers.size);
       if (!observers.has(key)) {
         observers.set(key, []);
       }
+      log("env", "number observed keys", observers.size);
       observers.get(key)?.push(observer);
       // Return the unsubscribe function for this observer
       return () => unsubscribe(key, observer);
