@@ -9,30 +9,33 @@ export const rootPath = path.join("test");
 export const DEFAULT_LANG_EXT = ".pal";
 
 // TODO subscribe to file deletion/namespace changes and delete subsciber
-let unsubscriber;
+const subscriptions = new Map<string, () => void>();
 
 export const compile = () => {
   const env = Constructor();
 
-  const readFiles = (filepath: string, stats?: fs.Stats) => {
-    log("compiler", filepath, stats);
+  const syncFileToEnv = (filepath: string, stats?: fs.Stats) => {
     if (stats?.isFile() || fs.statSync(filepath).isFile()) {
       const file = fs.readFileSync(filepath, "utf-8");
       const ext = path.extname(filepath);
+
       if (ext === DEFAULT_LANG_EXT) {
         const ast = parse(file);
-        env.map.set(Symbol.for(filepath), ast);
-      }
-    }
-  };
 
-  const writeFiles = (filepath: string, stats?: fs.Stats) => {
-    const ext = path.extname(filepath);
-    if (ext === DEFAULT_LANG_EXT) {
-      unsubscriber = env.subscribe(Symbol.for(filepath), (ast) => {
-        log("compiler", "file-write", filepath, ast);
-        fs.writeFileSync(filepath, write(ast));
-      });
+        // Before writing to Env, unsubscribe from it to prevent loops
+        const unsub = subscriptions.get(filepath);
+        if (unsub) unsub();
+
+        // write to env
+        env.map.set(Symbol.for(filepath), ast);
+
+        // resubscribe to env
+        const unsubscriber = env.subscribe(Symbol.for(filepath), (ast) => {
+          log("compiler", "file-write", filepath, ast);
+          fs.writeFileSync(filepath, write(ast));
+        });
+        subscriptions.set(filepath, unsubscriber);
+      }
     }
   };
 
@@ -44,13 +47,12 @@ export const compile = () => {
   });
 
   watcher.on("change", (filepath, stats) => {
-    log("compiler", "file-change", filepath);
-    readFiles(filepath, stats);
+    log("compiler", "file-change", filepath, stats);
+    syncFileToEnv(filepath, stats);
   });
   watcher.on("add", (filepath, stats) => {
-    log("compiler", "file-add", filepath);
-    readFiles(filepath, stats);
-    writeFiles(filepath, stats);
+    log("compiler", "file-add", filepath, stats);
+    syncFileToEnv(filepath, stats);
   });
   return env;
 };

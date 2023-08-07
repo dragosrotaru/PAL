@@ -1,6 +1,7 @@
 import * as apply from "#src/forms/apply.js";
 import * as define from "#src/forms/define.js";
-import * as envF from "#src/forms/env.js";
+import * as deleteF from "#src/forms/env/delete.js";
+import * as envF from "#src/forms/env/index.js";
 import * as evalF from "#src/forms/eval.js";
 import * as gpt from "#src/forms/gpt.js";
 import * as gui from "#src/forms/gui.js";
@@ -24,6 +25,9 @@ export const evaluate =
   (env: Env) =>
   async (ast: AST): Promise<AST> => {
     log("evaluator", ast);
+
+    // length 1 or 2
+    if (gui.Is(ast)) return gui.Apply(env)(ast); // order matters
     // length of 1
     if (IsString(ast)) return ast;
     if (IsProcedure(ast)) return ast;
@@ -34,9 +38,8 @@ export const evaluate =
     if (envF.Is(ast)) return envF.Apply(env)(ast); // order matters
     if (IsIdentifier(ast)) return evaluate(env)(env.map.get(ast)); // order matters ^
     // length of 2
-    if (procedure.Is(ast)) procedure.Apply(env)(ast); // order matters
-
-    if (gui.Is(ast)) return gui.Apply(env)(ast); // order matters
+    if (procedure.Is(ast)) return procedure.Apply(env)(ast); // order matters
+    if (deleteF.Is(ast)) return deleteF.Apply(env)(ast); // order matters
     if (gpt.Is(ast)) return gpt.Apply(env)(ast); // order matters
     if (evalF.Is(ast)) return evalF.Apply(env)(ast); // order matters
     if (apply.Is(ast)) return apply.Apply(env)(ast); // order matters ^

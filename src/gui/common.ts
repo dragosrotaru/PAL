@@ -7,5 +7,5 @@ export const wsUrl = `ws://localhost:${wsPort}`;
 
 export const IdentifierToURI = (id: Identifier) =>
   url + `/${encodeURI(id.description || "")}`;
-export const WindowURIToIdentifierString = () =>
+export const CurrentIDToString = () =>
   decodeURI(window.location.pathname).slice(1);
