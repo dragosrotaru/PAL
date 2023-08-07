@@ -24,6 +24,8 @@ export const Template = (props: ExecProps) => (
     <main>
       <View {...props}></View>
     </main>
-    <Executables {...props}></Executables>
+    <aside>
+      <Executables {...props}></Executables>
+    </aside>
   </>
 );
