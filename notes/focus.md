@@ -71,11 +71,9 @@ The north star is force multiplication.
 
 - provide full access to env api
 - add `restart`
-- add `delete`
 - add ability to access/modify core code
 - implement Godel Numbering with Hash functions
 - consider dynamic scoping vs environment passing
-- `self`
 
 ## Evaluation
 

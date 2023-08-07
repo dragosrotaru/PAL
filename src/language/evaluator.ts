@@ -9,6 +9,7 @@ import * as lambda from "#src/forms/lambda.js";
 import * as parse from "#src/forms/parse.js";
 import * as procedure from "#src/forms/procedure.js";
 import * as quote from "#src/forms/quote.js";
+import * as self from "#src/forms/self.js";
 import { log } from "../logger.js";
 import {
   IsBoolean,
@@ -27,6 +28,8 @@ export const evaluate =
   (env: Env) =>
   async (ast: AST): Promise<AST> => {
     log("evaluator", ast);
+
+    if (self.Is(ast)) return self.Apply(env)(ast); // order matters
 
     // length 1 or 2
     if (gui.Is(ast)) return gui.Apply(env)(ast); // order matters
