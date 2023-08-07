@@ -1,3 +1,168 @@
-* {
-  font-family: "Courier New", Courier, monospace;
+/* === Global Setup & Variables === */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition: all var(--transition-duration) ease-out;
+}
+
+:root {
+  --primary-text-color: #2a2a2a;
+  --background-color: #f9f9f9;
+  --link-color: #6e6e6e;
+  --link-hover-color: #4a4a4a;
+  --button-bg-color: #8a8a8a;
+  --button-hover-bg-color: #6e6e6e;
+  --input-border-color: #d1d1d1;
+  --input-focus-border-color: #a1a1a1;
+  --transition-duration: 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary-text-color: #e1e1e1;
+    --background-color: #1f1f1f;
+    --link-color: #a8a8a8;
+    --link-hover-color: #868686;
+    --button-bg-color: #454545;
+    --button-hover-bg-color: #333333;
+    --input-border-color: #444444;
+    --input-focus-border-color: #606060;
+  }
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+  color: var(--primary-text-color);
+  background-color: var(--background-color);
+  animation: fadeIn var(--transition-duration) ease-out;
+}
+
+/* === Typography & Basic Styles === */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+}
+
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  background-color: var(--button-bg-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+input[type="button"]:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+/* === Form Elements === */
+
+input,
+textarea {
+  padding: 10px;
+  border: 1px solid var(--input-border-color);
+  width: 100%;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--input-focus-border-color);
+  outline: none;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* === Main Content & List Styles === */
+
+main {
+  padding: 20px;
+}
+
+main ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+main li {
+  margin-bottom: 8px;
+}
+
+main a {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+}
+
+main a:hover {
+  background-color: var(--button-hover-bg-color);
+}
+
+main ul ul {
+  border-left: 2px solid var(--input-border-color);
+  margin-left: 8px;
+  padding-left: 12px;
+}
+
+/* === FAB Bar === */
+
+aside {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+aside button {
+  font-size: 16px;
+  padding: 10px 20px;
+}
+
+aside button:hover {
+  transform: scale(1.1);
+}
+
+/* === Animations === */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
