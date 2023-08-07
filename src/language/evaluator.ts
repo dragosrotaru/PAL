@@ -6,7 +6,9 @@ import * as evalF from "#src/forms/eval.js";
 import * as gpt from "#src/forms/gpt.js";
 import * as gui from "#src/forms/gui.js";
 import * as lambda from "#src/forms/lambda.js";
+import * as parse from "#src/forms/parse.js";
 import * as procedure from "#src/forms/procedure.js";
+import * as quote from "#src/forms/quote.js";
 import { log } from "../logger.js";
 import {
   IsBoolean,
@@ -41,7 +43,9 @@ export const evaluate =
     if (procedure.Is(ast)) return procedure.Apply(env)(ast); // order matters
     if (deleteF.Is(ast)) return deleteF.Apply(env)(ast); // order matters
     if (gpt.Is(ast)) return gpt.Apply(env)(ast); // order matters
+    if (parse.Is(ast)) return parse.Apply(env)(ast); // order matters
     if (evalF.Is(ast)) return evalF.Apply(env)(ast); // order matters
+    if (quote.Is(ast)) return quote.Apply(env)(ast); // order matters
     if (apply.Is(ast)) return apply.Apply(env)(ast); // order matters ^
 
     // length of 3
