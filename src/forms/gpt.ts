@@ -1,5 +1,4 @@
-import * as apply from "#src/forms/apply.js";
-import { type AST } from "#src/language/ast.js";
+import { IsList, type AST } from "#src/language/ast.js";
 import { type Env } from "#src/language/environment.js";
 import { parse, write } from "#src/language/parser.js";
 import { requestCode } from "../scraper/gpt.js";
@@ -9,11 +8,12 @@ export type Form = [typeof Identifier, AST];
 export const Identifier = Symbol.for("gpt");
 
 export const Is = (ast: AST): ast is Form =>
-  apply.Is(ast) && ast[0] === Identifier;
+  IsList(ast) && ast.length === 2 && ast[0] === Identifier;
 
 export const Apply = (env: Env) => async (ast: Form) => {
+  console.log("prompt", ast[1]);
   const result = await requestPal(write(ast[1]));
-  // console.log(result);
+  console.log("result", result.content);
   const code = result.code ? parse(result.code) : undefined;
   return code;
 };

@@ -4,6 +4,7 @@ import { evaluate } from "./language/evaluator.js";
 import { parse } from "./language/parser.js";
 
 const env = compile();
+
 repl.start({
   prompt: "repl > ",
   eval: async (cmd, context, filename, callback) => {

@@ -29,32 +29,41 @@ export const evaluate =
   async (ast: AST): Promise<AST> => {
     log("evaluator", ast);
 
-    if (self.Is(ast)) return self.Apply(env)(ast); // order matters
+    // Primitives
 
-    // length 1 or 2
-    if (gui.Is(ast)) return gui.Apply(env)(ast); // order matters
-    // length of 1
     if (IsString(ast)) return ast;
     if (IsProcedure(ast)) return ast;
     if (IsUndefined(ast)) return ast;
-    if (IsNull(ast)) return ast;
-    if (IsBoolean(ast)) return ast;
-    if (IsNumber(ast)) return ast;
-    if (envF.Is(ast)) return envF.Apply(env)(ast); // order matters
-    if (IsIdentifier(ast)) return evaluate(env)(env.map.get(ast)); // order matters ^
-    // length of 2
-    if (procedure.Is(ast)) return procedure.Apply(env)(ast); // order matters
-    if (deleteF.Is(ast)) return deleteF.Apply(env)(ast); // order matters
-    if (gpt.Is(ast)) return gpt.Apply(env)(ast); // order matters
-    if (parse.Is(ast)) return parse.Apply(env)(ast); // order matters
-    if (evalF.Is(ast)) return evalF.Apply(env)(ast); // order matters
-    if (quote.Is(ast)) return quote.Apply(env)(ast); // order matters
-    if (apply.Is(ast)) return apply.Apply(env)(ast); // order matters ^
+    if (IsNull(ast)) return await ast;
+    if (IsBoolean(ast)) return await ast;
+    if (IsNumber(ast)) return await ast;
 
-    // length of 3
-    if (lambda.Is(ast)) return lambda.Apply(env)(ast);
-    if (define.Is(ast)) return define.Apply(env)(ast);
+    // Special Forms
+
+    if (define.Is(ast)) return await define.Apply(env)(ast);
+    if (deleteF.Is(ast)) return await deleteF.Apply(env)(ast);
+    if (envF.Is(ast)) return await envF.Apply(env)(ast);
+    if (evalF.Is(ast)) return await evalF.Apply(env)(ast);
+    if (gpt.Is(ast)) return await gpt.Apply(env)(ast);
+    if (gui.Is(ast)) return await gui.Apply(env)(ast);
+    if (lambda.Is(ast)) return await lambda.Apply(env)(ast);
+    if (parse.Is(ast)) return await parse.Apply(env)(ast);
+    if (quote.Is(ast)) return await quote.Apply(env)(ast);
+    if (self.Is(ast)) return self.Apply(env)(ast);
+
+    // Generic Forms
+
+    // length of 1
+    if (IsIdentifier(ast)) return await evaluate(env)(env.map.get(ast));
+
+    // length of 2
+    // todo seems like integrating these two into one makes sense
+    if (procedure.Is(ast)) return await procedure.Apply(env)(ast);
+    if (apply.Is(ast)) return await apply.Apply(env)(ast);
+
     // length of N
-    if (IsList(ast)) return Promise.all(ast.map((ast) => evaluate(env)(ast))); // order matters
+    if (IsList(ast))
+      return await Promise.all(ast.map((ast) => evaluate(env)(ast)));
+
     return undefined;
   };

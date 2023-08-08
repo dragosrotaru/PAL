@@ -1,5 +1,4 @@
-import * as apply from "#src/forms/apply.js";
-import { type AST } from "#src/language/ast.js";
+import { IsList, type AST } from "#src/language/ast.js";
 import { type Env } from "#src/language/environment.js";
 import { evaluate } from "#src/language/evaluator.js";
 
@@ -8,8 +7,7 @@ export type Form = [typeof Identifier, AST];
 export const Identifier = Symbol.for("eval");
 
 export const Is = (ast: AST): ast is Form =>
-  apply.Is(ast) && ast[0] === Identifier;
+  IsList(ast) && ast.length === 2 && ast[0] === Identifier;
 
-export const Apply = (env: Env) => async (ast: Form) => {
-  return evaluate(env)(await evaluate(env)(ast[1]));
-};
+export const Apply = (env: Env) => async (ast: Form) =>
+  evaluate(env)(await evaluate(env)(ast[1]));

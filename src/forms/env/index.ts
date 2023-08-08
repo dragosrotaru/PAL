@@ -7,6 +7,4 @@ export type Form = typeof Identifier;
 
 export const Is = (ast: AST): ast is Form => ast === Identifier;
 
-export const Apply = (env: Env) => (ast: Form) => {
-  return env.getAll();
-};
+export const Apply = (env: Env) => (ast: Form) => env.getAll();

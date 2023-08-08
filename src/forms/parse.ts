@@ -10,6 +10,4 @@ export const Identifier = Symbol.for("parse");
 export const Is = (ast: AST): ast is Form =>
   apply.Is(ast) && ast[0] === Identifier && IsString(ast[1]);
 
-export const Apply = (env: Env) => async (ast: Form) => {
-  return parse(ast[1]);
-};
+export const Apply = (env: Env) => (ast: Form) => parse(ast[1]);
