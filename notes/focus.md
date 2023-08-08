@@ -5,7 +5,7 @@
 The north star is force multiplication.
 
 - Find the most powerful Kernel possible, pack the language with as much expressiveness and extensibility as possible.
-  - Adaptive grammar and parsing
+  - Adaptive grammar and universal parsing
   - Adaptive compute/evaluation model
   - powerful foundational constructs/special forms
   - expose every internal to the language
@@ -17,9 +17,10 @@ The north star is force multiplication.
   - Web Extension
   - Web Browsing
   - Brain-Computer Interface
+  - External Systems
 - Automation and Intelligence
   - Search, Analytics, Inference, Symbolic Engines
-  - TaskGPT
+  - TaskGPT, CodeGPT, Etc
   - Generative Loops
 
 #### Theoretical Force Multiplier
@@ -54,12 +55,6 @@ The north star is force multiplication.
 - support showing special identifiers (from special forms) (define them as members of the environment instead of implicitly)
 - remove webextensions.restrictedDomains localhost, fix conflict between import map and extensions or do it differentlys
 
-## Host Language
-
-- add support for importing js/ts Procedures
-- add support for embedded js/ts
-- provide general approach to exposing/accessing js/ts libraries
-
 ## Parsing
 
 - support non-list parsing, multiple statement parsing
@@ -77,11 +72,17 @@ The north star is force multiplication.
 
 ## Evaluation
 
-- fix lambda infinite loop (happens in procedure)
-- make it lazy evaluate
+- fix `TypeError: Cannot read properties of undefined (reading '1')` from `(define fun (lambda (x) (eval (gpt x) ) ) )`
+
+- implement a typesystem and rewrite the evaluator as a generic pattern-matcher
 - load forms as procedures in the env during compilation
-- rewrite the evaluator as a generic pattern-matcher
 - fix relationship between apply+procedure
+- make it lazy evaluate
+
+- add support for importing js/ts Procedures
+- add support for embedded js/ts
+- provide general approach to exposing/accessing js/ts libraries
+
 - achieve metacircular status
 - implement JIT compilation/transpile to js
 

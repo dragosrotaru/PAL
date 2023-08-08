@@ -12,9 +12,9 @@ export type Form = [Procedure, AST];
 export const Is = (ast: AST): ast is Form =>
   IsList(ast) && ast.length === 2 && IsProcedure(ast[0]);
 
-export const Apply = (env: Env) => (ast: Form) => {
+export const Apply = (env: Env) => async (ast: Form) => {
   if (IsList(ast[1])) {
-    return evaluate(env)(ast[0](...ast[1]));
+    return evaluate(env)(await ast[0](env)(...ast[1]));
   }
-  return evaluate(env)(ast[0](ast[1]));
+  return evaluate(env)(await ast[0](env)(ast[1]));
 };

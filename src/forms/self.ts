@@ -8,9 +8,7 @@ export const Identifier = Symbol.for("self");
 export const Is = (ast: AST): boolean =>
   ast === Identifier || (IsList(ast) && ast.some(Is));
 
-export const Apply = (env: Env) => async (ast: Form) => {
-  return Replace(ast, ast);
-};
+export const Apply = (env: Env) => (ast: Form) => Replace(ast, ast);
 
 const Replace = (node: AST, ast: Form): AST => {
   // Base case: if node is 'self', replace with the whole AST.
