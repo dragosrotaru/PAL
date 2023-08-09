@@ -7,7 +7,7 @@ dotenv.config();
 if (!process.env["OPENAI"]) {
   throw new Error("OPENAI environment variable not set");
 }
-const openai = new OpenAIApi(
+export const openai = new OpenAIApi(
   new Configuration({
     apiKey: process.env["OPENAI"],
   })
