@@ -1,1 +1,1 @@
-(define identity lambda (x) (x "wow" #4))
+undefined

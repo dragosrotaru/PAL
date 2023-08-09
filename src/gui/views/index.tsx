@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IsIdentifier, IsList, IsProcedure } from "../../language/ast.js";
+import { IsIdentifier, IsList, IsProcedure } from "../../languages/pal/ast.js";
 import Default from "./default.js";
 import Delete from "./delete.js";
 import Identifier from "./identifier.js";

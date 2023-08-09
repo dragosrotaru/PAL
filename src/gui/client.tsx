@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { parse } from "../language/parser.js";
+import { parser } from "../languages/parser.js";
 import { log } from "../logger.js";
 import { CurrentIDToString, wsUrl } from "./common.js";
 import { Type, type Exec, type Message, type Open } from "./messages.js";
@@ -32,7 +32,7 @@ webSocket.onmessage = (event) => {
   log("gui", message);
 
   if (message.type === Type.AST) {
-    const ast = parse(message.ast);
+    const ast = parser(message.ast);
     // TODO implement observables
     // Render the view
     ReactDOM.render(

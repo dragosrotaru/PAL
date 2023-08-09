@@ -1,15 +1,15 @@
+import { type Env } from "../../language-core/environment.js";
 import {
   IsIdentifierList,
-  type AST,
   type Identifier as IDType,
-} from "#src/language/ast.js";
-import { type Env } from "#src/language/environment.js";
+  type PAL,
+} from "../../languages/pal/ast.js";
 
 export const Identifier = Symbol.for("env/delete");
 
 export type Form = [typeof Identifier, IDType];
 
-export const Is = (ast: AST): ast is Form =>
+export const Is = (ast: PAL): ast is Form =>
   IsIdentifierList(ast) && ast.length === 2 && ast[0] === Identifier;
 
 export const Apply = (env: Env) => (ast: Form) => {

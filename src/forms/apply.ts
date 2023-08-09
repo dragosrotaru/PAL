@@ -1,19 +1,19 @@
-import { Is as IsLambda, type Form as LambdaForm } from "#src/forms/lambda.js";
+import { type Env } from "../language-core/environment.js";
+import { evaluate } from "../language-core/evaluator.js";
 import {
   IsIdentifier,
   IsList,
   IsProcedure,
-  type AST,
   type Identifier,
+  type PAL,
   type Procedure,
-} from "#src/language/ast.js";
-import { type Env } from "#src/language/environment.js";
-import { evaluate } from "#src/language/evaluator.js";
+} from "../languages/pal/ast.js";
+import { Is as IsLambda, type Form as LambdaForm } from "./lambda.js";
 
 //** ( rator rand ) */
-export type Form = [Procedure | Identifier | LambdaForm, AST];
+export type Form = [Procedure | Identifier | LambdaForm, PAL];
 
-export const Is = (ast: AST): ast is Form =>
+export const Is = (ast: PAL): ast is Form =>
   IsList(ast) &&
   ast.length === 2 &&
   (IsProcedure(ast[0]) || IsIdentifier(ast[0]) || IsLambda(ast[0]));

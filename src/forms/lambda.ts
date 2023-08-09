@@ -1,19 +1,19 @@
+import { Constructor, type Env } from "../language-core/environment.js";
+import { evaluate } from "../language-core/evaluator.js";
 import {
   IsIdentifier,
   IsIdentifierList,
   IsList,
-  type AST,
   type AsyncProcedure,
   type IdentifierList,
-} from "#src/language/ast.js";
-import { Constructor, type Env } from "#src/language/environment.js";
-import { evaluate } from "#src/language/evaluator.js";
+  type PAL,
+} from "../languages/pal/ast.js";
 
 export const Identifier = Symbol.for("lambda");
 
-export type Form = [typeof Identifier, IdentifierList, AST];
+export type Form = [typeof Identifier, IdentifierList, PAL];
 
-export const Is = (ast: AST): ast is Form =>
+export const Is = (ast: PAL): ast is Form =>
   IsList(ast) &&
   ast.length === 3 &&
   IsIdentifier(ast[0]) &&
@@ -26,7 +26,7 @@ export const Apply =
     const argsIdentifiers = ast[1];
     const body = ast[2];
     return (prenv: Env) =>
-      (...values: AST[]) => {
+      (...values: PAL[]) => {
         const env = Constructor(prenv.map);
         argsIdentifiers.forEach((identifier, i) =>
           env.map.set(identifier, values[i])

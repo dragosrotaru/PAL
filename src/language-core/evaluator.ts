@@ -1,16 +1,18 @@
-import * as apply from "#src/forms/apply.js";
-import * as define from "#src/forms/define.js";
-import * as deleteF from "#src/forms/env/delete.js";
-import * as envF from "#src/forms/env/index.js";
-import * as evalF from "#src/forms/eval.js";
-import * as gpt from "#src/forms/gpt.js";
-import * as gui from "#src/forms/gui.js";
-import * as lambda from "#src/forms/lambda.js";
-import * as parse from "#src/forms/parse.js";
-import * as procedure from "#src/forms/procedure.js";
-import * as quote from "#src/forms/quote.js";
-import * as self from "#src/forms/self.js";
+import * as apply from "../forms/apply.js";
+import * as define from "../forms/define.js";
+import * as deleteF from "../forms/env/delete.js";
+import * as envF from "../forms/env/index.js";
+import * as evalF from "../forms/eval.js";
+import * as gpt from "../forms/gpt.js";
+import * as gui from "../forms/gui.js";
+import * as lambda from "../forms/lambda.js";
+import * as parse from "../forms/parse.js";
+import * as procedure from "../forms/procedure.js";
+import * as quote from "../forms/quote.js";
+import * as self from "../forms/self.js";
+
 import { log } from "../logger.js";
+
 import {
   IsBoolean,
   IsIdentifier,
@@ -20,22 +22,54 @@ import {
   IsProcedure,
   IsString,
   IsUndefined,
-  type AST,
-} from "./ast.js";
+  type PAL,
+} from "../languages/pal/ast.js";
+
 import { Env } from "./environment.js";
+
+/* 
+The core of evaluation is the eval apply recursion
+
+const eval = env => ast => IsApplyForm(ast) ? eval(env)(ast[0])(eval(env)(ast[1])) : undefined;
+
+Basis for turing complete lisps:
+
+- combinatory logic - SK, SKI, iota and jot
+- lambda calculus
+- original implementation: assoc label t eval cadr car cdr cons ...
+- macro based
+
+expose the following faculties withn the lang:
+- eval, apply and pattern matching / Is "checking"
+- string, parse, unparse, quote
+- env, define, delete
+- lambda, recursion
+
+
+can we define a set of constructs that lets us "reach out" and replace the evaluator itself?
+Can we merge the evaluator and environment somehow?
+
+
+ocaml attaching "processor" to quote .. like parser?
+
+
+
+
+
+*/
 
 export const evaluate =
   (env: Env) =>
-  async (ast: AST): Promise<AST> => {
+  async (ast: PAL): Promise<PAL> => {
     log("evaluator", ast);
 
     // Primitives
 
+    if (IsBoolean(ast)) return await ast;
     if (IsString(ast)) return ast;
     if (IsProcedure(ast)) return ast;
     if (IsUndefined(ast)) return ast;
     if (IsNull(ast)) return await ast;
-    if (IsBoolean(ast)) return await ast;
     if (IsNumber(ast)) return await ast;
 
     // Special Forms

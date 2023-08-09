@@ -1,6 +1,5 @@
-import { log } from "../logger.js";
+import { log } from "../../logger.js";
 import {
-  AST,
   IsBoolean,
   IsIdentifier,
   IsList,
@@ -9,6 +8,7 @@ import {
   IsString,
   IsUndefined,
   List,
+  PAL,
 } from "./ast.js";
 
 /* 
@@ -52,7 +52,7 @@ The issue with this is that the whitespace all of a sudden matters
 
 */
 
-export const write = (ast: AST): string => {
+export const write = (ast: PAL): string => {
   if (IsString(ast)) return `"${ast.replace(/([()\\"])/g, "\\$1")}"`;
   if (IsNumber(ast)) return ast.toString();
   if (IsBoolean(ast)) return ast.toString();
@@ -110,7 +110,7 @@ const parser = (
   chars: string[] = [],
   stringed = false,
   escaped = false
-): AST => {
+): PAL => {
   log("parser", tokens, list, chars, stringed, escaped);
   const token = tokens.shift();
   if (token === undefined) {

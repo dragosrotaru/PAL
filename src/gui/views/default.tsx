@@ -1,9 +1,9 @@
 import * as React from "react";
-import { write } from "../../language/parser.js";
+import { writer } from "../../languages/parser.js";
 import { DefaultProps } from "./interface.js";
 
 const Default = (props: DefaultProps) => {
-  return <>{write(props.ast)}</>;
+  return <>{writer(props.ast)}</>;
 };
 
 export default Default;

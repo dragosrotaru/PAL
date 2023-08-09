@@ -1,16 +1,16 @@
-import { IsList, type AST } from "#src/language/ast.js";
-import { type Env } from "#src/language/environment.js";
+import { type Env } from "../language-core/environment.js";
+import { IsList, type PAL } from "../languages/pal/ast.js";
 
-export type Form = AST;
+export type Form = PAL;
 
 export const Identifier = Symbol.for("self");
 
-export const Is = (ast: AST): boolean =>
+export const Is = (ast: PAL): boolean =>
   ast === Identifier || (IsList(ast) && ast.some(Is));
 
 export const Apply = (env: Env) => (ast: Form) => Replace(ast, ast);
 
-const Replace = (node: AST, ast: Form): AST => {
+const Replace = (node: PAL, ast: Form): PAL => {
   // Base case: if node is 'self', replace with the whole AST.
   if (node === Identifier) return ast;
 
