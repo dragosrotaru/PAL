@@ -1,8 +1,8 @@
 import express from "express";
 import open from "open";
 import { WebSocketServer } from "ws";
-import { type Env } from "../language-core/environment.js";
-import { evaluate } from "../language-core/evaluator.js";
+import { type Env } from "../core/environment.js";
+import { evaluate } from "../core/evaluator.js";
 import { type Identifier } from "../languages/pal/ast.js";
 import { parser, writer } from "../languages/parser.js";
 import { log } from "../logger.js";

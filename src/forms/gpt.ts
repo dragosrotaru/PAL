@@ -1,4 +1,4 @@
-import { type Env } from "../language-core/environment.js";
+import { type Env } from "../core/environment.js";
 import { IsList, type PAL } from "../languages/pal/ast.js";
 import { parser, writer } from "../languages/parser.js";
 import { requestCode } from "../scraper/gpt.js";

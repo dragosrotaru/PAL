@@ -1,6 +1,6 @@
 // Native Types
 
-import { type Env } from "../../language-core/environment.js";
+import { type Env } from "../../core/environment.js";
 
 export type PAL =
   | Identifier

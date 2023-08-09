@@ -72,9 +72,7 @@ The north star is force multiplication.
 
 ## Evaluation
 
-- fix `TypeError: Cannot read properties of undefined (reading '1')` from `(define fun (lambda (x) (eval (gpt x) ) ) )`
-
-- implement a typesystem and rewrite the evaluator as a generic pattern-matcher
+- rewrite the evaluator as a generic pattern-matcher
 - load forms as procedures in the env during compilation
 - fix relationship between apply+procedure
 - make it lazy evaluate
@@ -88,8 +86,7 @@ The north star is force multiplication.
 
 ## FileSystem
 
-- implement multiple file loading
-- implement namespace transformations
+- implement namespace transformations, deletion, etc
 - implement `save` command
 
 ## Commands

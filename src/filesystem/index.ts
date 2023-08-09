@@ -1,7 +1,7 @@
 import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
-import { Constructor } from "../language-core/environment.js";
+import { Constructor } from "../core/environment.js";
 import { FileExtension, parser, writer } from "../languages/parser.js";
 import { log } from "../logger.js";
 

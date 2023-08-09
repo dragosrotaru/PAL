@@ -1,4 +1,4 @@
-import { type Env } from "../language-core/environment.js";
+import { type Env } from "../core/environment.js";
 import {
   IsIdentifier,
   IsList,

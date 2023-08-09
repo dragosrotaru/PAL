@@ -1,6 +1,6 @@
+import { type Env } from "../core/environment.js";
 import * as apply from "../forms/apply.js";
 import { openGUI } from "../gui/server.js";
-import { type Env } from "../language-core/environment.js";
 import {
   IsIdentifier,
   type Identifier as Id,
