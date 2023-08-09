@@ -89,12 +89,9 @@ The north star is force multiplication.
 - implement namespace transformations, deletion, etc
 - implement `save` command
 
-## Commands
-
-- `exit` and `quit`
-
 ## New Features
 
+- add cli
 - garbage collection
 - memoization for dynamic programming by default
 - implement language server functionality
