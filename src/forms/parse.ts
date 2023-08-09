@@ -1,4 +1,4 @@
-import { type Env } from "../language-core/environment.js";
+import { type Env } from "../core/environment.js";
 import { IsString, type PAL } from "../languages/pal/ast.js";
 import { parser } from "../languages/parser.js";
 import * as apply from "./apply.js";

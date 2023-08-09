@@ -3,12 +3,15 @@ import * as define from "../forms/define.js";
 import * as deleteF from "../forms/env/delete.js";
 import * as envF from "../forms/env/index.js";
 import * as evalF from "../forms/eval.js";
+import * as exit from "../forms/exit.js";
 import * as gpt from "../forms/gpt.js";
 import * as gui from "../forms/gui.js";
 import * as lambda from "../forms/lambda.js";
 import * as parse from "../forms/parse.js";
 import * as procedure from "../forms/procedure.js";
+import * as quit from "../forms/quit.js";
 import * as quote from "../forms/quote.js";
+
 import * as self from "../forms/self.js";
 
 import { log } from "../logger.js";
@@ -78,11 +81,13 @@ export const evaluate =
     if (deleteF.Is(ast)) return await deleteF.Apply(env)(ast);
     if (envF.Is(ast)) return await envF.Apply(env)(ast);
     if (evalF.Is(ast)) return await evalF.Apply(env)(ast);
+    if (exit.Is(ast)) return await exit.Apply(env)(ast);
     if (gpt.Is(ast)) return await gpt.Apply(env)(ast);
     if (gui.Is(ast)) return await gui.Apply(env)(ast);
     if (lambda.Is(ast)) return await lambda.Apply(env)(ast);
     if (parse.Is(ast)) return await parse.Apply(env)(ast);
     if (quote.Is(ast)) return await quote.Apply(env)(ast);
+    if (quit.Is(ast)) return await quit.Apply(env)(ast);
     if (self.Is(ast)) return self.Apply(env)(ast);
 
     // Generic Forms

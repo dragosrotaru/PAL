@@ -1,5 +1,5 @@
-import { type Env } from "../language-core/environment.js";
-import { evaluate } from "../language-core/evaluator.js";
+import { type Env } from "../core/environment.js";
+import { evaluate } from "../core/evaluator.js";
 import {
   IsIdentifier,
   IsList,
