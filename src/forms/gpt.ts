@@ -1,20 +1,20 @@
-import { IsList, type AST } from "#src/language/ast.js";
-import { type Env } from "#src/language/environment.js";
-import { parse, write } from "#src/language/parser.js";
+import { type Env } from "../language-core/environment.js";
+import { IsList, type PAL } from "../languages/pal/ast.js";
+import { parser, writer } from "../languages/parser.js";
 import { requestCode } from "../scraper/gpt.js";
 
-export type Form = [typeof Identifier, AST];
+export type Form = [typeof Identifier, PAL];
 
 export const Identifier = Symbol.for("gpt");
 
-export const Is = (ast: AST): ast is Form =>
+export const Is = (ast: PAL): ast is Form =>
   IsList(ast) && ast.length === 2 && ast[0] === Identifier;
 
 export const Apply = (env: Env) => async (ast: Form) => {
   console.log("prompt", ast[1]);
-  const result = await requestPal(write(ast[1]));
+  const result = await requestPal(writer(ast[1]));
   console.log("result", result.content);
-  const code = result.code ? parse(result.code) : undefined;
+  const code = result.code ? parser(result.code) : undefined;
   return code;
 };
 

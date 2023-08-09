@@ -1,4 +1,4 @@
-import { Identifier } from "#src/language/ast.js";
+import { Identifier } from "../languages/pal/ast.js";
 
 export const port = 3000; // Change this to your desired port number
 export const wsPort = 3001; // Change this to your desired port number

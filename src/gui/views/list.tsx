@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type List } from "../../language/ast.js";
+import { type List } from "../../languages/pal/ast.js";
 import { View } from "./index.js";
 
 type Props = {

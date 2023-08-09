@@ -1,10 +1,10 @@
-import { AST } from "#src/language/ast.js";
+import { PAL } from "../../languages/pal/ast.js";
 
 export type DefaultProps = {
-  ast: AST;
+  ast: PAL;
 };
 
 export type ExecProps = {
-  ast: AST;
+  ast: PAL;
   exec: (code: string) => void;
 };

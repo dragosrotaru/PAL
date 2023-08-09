@@ -1,10 +1,10 @@
-import { type Identifier } from "#src/language/ast.js";
-import { evaluate } from "#src/language/evaluator.js";
 import express from "express";
 import open from "open";
 import { WebSocketServer } from "ws";
-import { type Env } from "../language/environment.js";
-import { parse, write } from "../language/parser.js";
+import { type Env } from "../language-core/environment.js";
+import { evaluate } from "../language-core/evaluator.js";
+import { type Identifier } from "../languages/pal/ast.js";
+import { parser, writer } from "../languages/parser.js";
 import { log } from "../logger.js";
 import { IdentifierToURI, port, url, wsPort } from "./common.js";
 import { Type, type AST as ASTMSG, type Message } from "./messages.js";
@@ -74,7 +74,7 @@ export const startServer = async (env: Env) => {
               log("gui", "subscribing to", sym);
               const unsubscribe = env.subscribe(sym, (ast) => {
                 ws.send(
-                  JSON.stringify({ type: Type.AST, ast: write(ast) } as ASTMSG)
+                  JSON.stringify({ type: Type.AST, ast: writer(ast) } as ASTMSG)
                 );
               });
               openSubs.set(sym, unsubscribe);
@@ -83,7 +83,7 @@ export const startServer = async (env: Env) => {
             // First time send
             const ast = env.map.get(sym);
             ws.send(
-              JSON.stringify({ type: Type.AST, ast: write(ast) } as ASTMSG)
+              JSON.stringify({ type: Type.AST, ast: writer(ast) } as ASTMSG)
             );
 
             return;
@@ -98,7 +98,7 @@ export const startServer = async (env: Env) => {
           }
 
           if (message.type === Type.Exec) {
-            const ast = parse(message.code);
+            const ast = parser(message.code);
             evaluate(env)(ast);
             return;
           }

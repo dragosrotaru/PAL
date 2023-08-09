@@ -1,1 +1,62 @@
-(define identity lambda (x) (x "wow" #4))
+1. branching conditional ie pattern matching, switch, if, some sort of control structure which implies boolean logic
+2. typeof and equality operator so we can return if something is a primitive
+
+
+
+cond
+car
+cdr
+cadr
+caddr
+cadddr
+is. (symbol/string/atom/etc)
+isEqual
+eval but with env exposed
+if
+mapcar
+eval-args
+env/constructor
+
+(env/set eval (ast)
+  (cond
+    ((is.symbol ast)
+        (env/get ast env))
+
+    ((is.atom ast)
+        ast)
+
+    ((isEqual (car ast) (quote quote))
+        (cadr ast))
+
+    ((isEqual (car ast) (quote if))
+        (if (eval (cadr ast) env)
+            (eval (caddr ast) env)
+            (eval (cadddr ast) env)
+        ))
+
+    ((isEqual (car ast) (quote lambda)) 
+        ast)
+
+    (true (apply (eval (car ast) env)
+                    (eval-args (cdr ast) env) env))
+    )
+)
+
+(env/set eval-args (args env)
+  (mapcar (lambda (arg) (eval arg env)) args))
+
+(env/set apply (func args env)
+  (if (symbolp func)
+      (apply (env/get func env) args env)
+      (let ((new-env (extend-env (cadr func) args env)))
+        (eval (caddr func) new-env))))
+
+;; Lambda only
+(define true (lambda (a b) a))
+(define false (lambda (a b) b))
+(define if (lambda (b a b) (b a b)))
+(define and (lambda (p q) (if p q false)))
+(define or (lambda (p q) (if p true q)))
+(define (cons a b) (lambda (f) (f a b)))
+(define (car c) (c (lambda (a b) a)))
+(define (cdr c) (c (lambda (a b) b)))

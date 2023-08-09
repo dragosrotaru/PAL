@@ -1,15 +1,15 @@
+import { Env } from "../language-core/environment.js";
+import { evaluate } from "../language-core/evaluator.js";
 import {
   IsList,
   IsProcedure,
-  type AST,
+  type PAL,
   type Procedure,
-} from "#src/language/ast.js";
-import { Env } from "#src/language/environment.js";
-import { evaluate } from "#src/language/evaluator.js";
+} from "../languages/pal/ast.js";
 
-export type Form = [Procedure, AST];
+export type Form = [Procedure, PAL];
 
-export const Is = (ast: AST): ast is Form =>
+export const Is = (ast: PAL): ast is Form =>
   IsList(ast) && ast.length === 2 && IsProcedure(ast[0]);
 
 export const Apply = (env: Env) => async (ast: Form) => {

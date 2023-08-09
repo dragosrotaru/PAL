@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type Procedure } from "../../language/ast.js";
+import { type Procedure } from "../../languages/pal/ast.js";
 
 type Props = {
   ast: Procedure;

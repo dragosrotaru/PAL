@@ -1,5 +1,5 @@
 import * as React from "react";
-import { type Identifier } from "../../language/ast.js";
+import { type Identifier } from "../../languages/pal/ast.js";
 
 type Props = {
   ast: Identifier;

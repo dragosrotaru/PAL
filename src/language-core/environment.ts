@@ -1,19 +1,19 @@
+import { ASTEquals, type Identifier, type PAL } from "../languages/pal/ast.js";
 import { log } from "../logger.js";
-import { ASTEquals, type AST, type Identifier } from "./ast.js";
 
 type Observer<V> = (ast: V) => void;
 type Unsubscribe = () => void;
 
 // TODO monitor for memory leaks
 
-export function Constructor(prevMap?: Map<Identifier, AST>) {
-  const map: Map<Identifier, AST> = new Map<Identifier, AST>(prevMap);
-  const observers: Map<Identifier, Observer<AST>[]> = new Map<
+export function Constructor(prevMap?: Map<Identifier, PAL>) {
+  const map: Map<Identifier, PAL> = new Map<Identifier, PAL>(prevMap);
+  const observers: Map<Identifier, Observer<PAL>[]> = new Map<
     Identifier,
-    Observer<AST>[]
+    Observer<PAL>[]
   >();
 
-  const unsubscribe = (key: Identifier, observer: Observer<AST>): void => {
+  const unsubscribe = (key: Identifier, observer: Observer<PAL>): void => {
     log("env", "unsubscribing", key);
     const observersForKey = observers.get(key);
     if (observersForKey) {
@@ -72,15 +72,15 @@ export function Constructor(prevMap?: Map<Identifier, AST>) {
         }
       },
     }),
-    getAll: (): Array<[Identifier, AST]> => {
+    getAll: (): Array<[Identifier, PAL]> => {
       log("env", "getting all");
-      const list: Array<[Identifier, AST]> = [];
+      const list: Array<[Identifier, PAL]> = [];
       map.forEach((value, key) => {
         list.push([key, value]);
       });
       return list;
     },
-    subscribe: (key: Identifier, observer: Observer<AST>): Unsubscribe => {
+    subscribe: (key: Identifier, observer: Observer<PAL>): Unsubscribe => {
       log("env", "subscribing", key);
       if (!observers.has(key)) {
         observers.set(key, []);
