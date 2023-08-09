@@ -5,7 +5,7 @@ import {
   type PAL,
 } from "../../languages/pal/ast.js";
 
-export const Identifier = Symbol.for("env/delete");
+export const Identifier = Symbol.for("env/del");
 
 export type Form = [typeof Identifier, IDType];
 

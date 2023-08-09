@@ -1,13 +1,13 @@
-import { type Env } from "../core/environment.js";
+import { type Env } from "../../core/environment.js";
 import {
   IsIdentifier,
   IsList,
   type Identifier as IDType,
   type PAL,
-} from "../languages/pal/ast.js";
+} from "../../languages/pal/ast.js";
 
-//** ( define i x ) */
-export const Identifier = Symbol.for("define");
+//** ( set i x ) */
+export const Identifier = Symbol.for("env/set");
 
 export type Form = [typeof Identifier, IDType, PAL];
 

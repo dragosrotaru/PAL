@@ -1,7 +1,7 @@
 import * as apply from "../forms/apply.js";
-import * as define from "../forms/define.js";
-import * as deleteF from "../forms/env/delete.js";
+import * as del from "../forms/env/del.js";
 import * as envF from "../forms/env/index.js";
+import * as set from "../forms/env/set.js";
 import * as evalF from "../forms/eval.js";
 import * as exit from "../forms/exit.js";
 import * as gpt from "../forms/gpt.js";
@@ -55,10 +55,6 @@ Can we merge the evaluator and environment somehow?
 
 ocaml attaching "processor" to quote .. like parser?
 
-
-
-
-
 */
 
 export const evaluate =
@@ -77,9 +73,10 @@ export const evaluate =
 
     // Special Forms
 
-    if (define.Is(ast)) return await define.Apply(env)(ast);
-    if (deleteF.Is(ast)) return await deleteF.Apply(env)(ast);
     if (envF.Is(ast)) return await envF.Apply(env)(ast);
+    if (set.Is(ast)) return await set.Apply(env)(ast);
+    if (del.Is(ast)) return await del.Apply(env)(ast);
+
     if (evalF.Is(ast)) return await evalF.Apply(env)(ast);
     if (exit.Is(ast)) return await exit.Apply(env)(ast);
     if (gpt.Is(ast)) return await gpt.Apply(env)(ast);

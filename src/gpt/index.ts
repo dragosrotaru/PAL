@@ -27,7 +27,7 @@ const matchRegex = (regex: RegExp, string: string) => {
   return null;
 };
 
-const extractFirstCodeBlock = (input: string, language: string[]) => {
+export const extractFirstCodeBlock = (input: string, language: string[]) => {
   for (const lang of language) {
     const code = matchRegex(codeBlockRegex(lang), input);
     if (code) {
@@ -37,9 +37,9 @@ const extractFirstCodeBlock = (input: string, language: string[]) => {
   return { code: input, language: null };
 };
 
-const requestGPT = (system: string) => async (prompt: string) => {
+export const requestGPT = (system: string) => async (prompt: string) => {
   const { data, statusText, status } = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo-16k-0613",
+    model: "gpt-4", // "gpt-3.5-turbo-16k-0613",
     messages: [
       {
         role: "system",
