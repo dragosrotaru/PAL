@@ -1,4 +1,4 @@
-import { Constructor, type Env } from "../core/environment.js";
+import { Env } from "../core/environment.js";
 import { evaluate } from "../core/evaluator.js";
 import {
   IsIdentifier,
@@ -27,7 +27,7 @@ export const Apply =
     const body = ast[2];
     return (prenv: Env) =>
       (...values: PAL[]) => {
-        const env = Constructor(prenv.map);
+        const env = new Env(prenv.map);
         argsIdentifiers.forEach((identifier, i) =>
           env.map.set(identifier, values[i])
         );

@@ -1,3 +1,1 @@
-name,date,amount,quantity
-ballon,2021-03-21,$34.33,3
-animal,2024-12-02,$2.3,100
+(("name" "date" "amount" "quantity") ("ballon" "2021-03-21" "$34.33" 3) ("animal" "2024-12-02" "$2.3" 100))
