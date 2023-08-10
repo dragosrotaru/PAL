@@ -8,6 +8,9 @@
     "type": "git",
     "url": "git+https://github.com/DragosRotaru/lisp.ts.git"
   },
+  "bin": {
+    "pal": "pal.sh"
+  },
   "keywords": [
     "Lisp",
     "Interpreter",
