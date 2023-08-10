@@ -1,9 +1,6 @@
-import { compile } from "../filesystem/index.js";
+import { IEnv, IObserver, IUnsubscribe } from "../interfaces/namespace.js";
 import { ASTEquals, type Identifier, type PAL } from "../languages/pal/ast.js";
 import { log } from "../logger/index.js";
-
-type Observer<V extends PAL> = (ast: V) => undefined;
-export type Unsubscribe = () => undefined;
 
 export const NewID = Symbol.for("env/new");
 export type NewObservableForm = [Identifier, PAL];
@@ -15,19 +12,19 @@ export const DeleteID = Symbol.for("env/del");
 export type DeleteForm = [typeof DeleteID, Identifier];
 
 export const SubscribeID = Symbol.for("env/sub");
-export type SubscribeForm = [typeof SubscribeID, Identifier, Observer<PAL>];
+export type SubscribeForm = [typeof SubscribeID, Identifier, IObserver<PAL>];
 
 export const UnsubscribeID = Symbol.for("env/unsub");
-export type UnubscribeForm = [typeof UnsubscribeID, Identifier, Observer<PAL>];
+export type UnubscribeForm = [typeof UnsubscribeID, Identifier, IObserver<PAL>];
 
 export const GetAllID = Symbol.for("env");
 export type GetAllForm = typeof GetAllID;
 
 // TODO monitor for memory leaks
 
-export class Env {
+export class Env implements IEnv<Identifier, PAL> {
   public map: Map<Identifier, PAL>;
-  private observers = new Map<Identifier, Observer<any>[]>();
+  private observers = new Map<Identifier, IObserver<any>[]>();
 
   constructor(prevMap?: Map<Identifier, PAL>) {
     const map = new Map<Identifier, PAL>(prevMap);
@@ -121,8 +118,8 @@ export class Env {
 
   public subscribe = <V extends PAL>(
     key: Identifier,
-    observer: Observer<V>
-  ): Unsubscribe => {
+    observer: IObserver<V>
+  ): IUnsubscribe => {
     log("env", "subscribing", key);
 
     // notify subscribers to env/sub
@@ -141,7 +138,7 @@ export class Env {
 
   public unsubscribe = <V extends PAL>(
     key: Identifier,
-    observer: Observer<V>
+    observer: IObserver<V>
   ): undefined => {
     log("env", "unsubscribing", key);
 
@@ -171,5 +168,3 @@ export class Env {
     return undefined;
   };
 }
-
-export const env = compile();
