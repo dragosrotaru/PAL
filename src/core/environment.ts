@@ -1,8 +1,9 @@
+import { compile } from "../filesystem/index.js";
 import { ASTEquals, type Identifier, type PAL } from "../languages/pal/ast.js";
 import { log } from "../logger.js";
 
 type Observer<V extends PAL> = (ast: V) => undefined;
-type Unsubscribe = () => undefined;
+export type Unsubscribe = () => undefined;
 
 export const NewID = Symbol.for("env/new");
 export type NewObservableForm = [Identifier, PAL];
@@ -170,3 +171,5 @@ export class Env {
     return undefined;
   };
 }
+
+export const env = compile();

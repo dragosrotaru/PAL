@@ -1,9 +1,7 @@
 import repl from "repl";
+import { env } from "./core/environment.js";
 import { evaluate } from "./core/evaluator.js";
-import { compile } from "./filesystem/index.js";
 import { parser } from "./languages/parser.js";
-
-const env = compile();
 
 repl.start({
   prompt: "repl > ",

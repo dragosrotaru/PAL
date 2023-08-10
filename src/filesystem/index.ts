@@ -6,7 +6,7 @@ import { Env, NewID, NewObservableForm } from "../core/environment.js";
 import { Clue, FileExtension, parser, writer } from "../languages/parser.js";
 import { log } from "../logger.js";
 
-export const rootPath = path.join("test");
+export const rootPath = path.join(".");
 
 // TODO subscribe to file deletion/namespace changes and delete subsciber
 const subscriptions = new Map<string, () => void>();

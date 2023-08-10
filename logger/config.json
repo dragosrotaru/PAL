@@ -1,0 +1,8 @@
+{
+  "compiler": true,
+  "parser": false,
+  "evaluator": false,
+  "env": false,
+  "gui": false,
+  "gpt": true
+}
