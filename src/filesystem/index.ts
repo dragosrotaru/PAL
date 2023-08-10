@@ -1,78 +1,164 @@
+import {
+  type IEnv,
+  type ILanguage,
+  type ILogger,
+  type IUnsubscribe,
+} from "../interfaces/namespace.js";
+
 import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
-import { Env, NewID, NewObservableForm } from "../core/environment.js";
-import { TypeOfIdentifier } from "../languages/pal/ast.js";
-import { Clue, FileExtension, parser, writer } from "../languages/parser.js";
-import { log } from "../logger/index.js";
 
-export const rootPath = path.join(".");
+import { NewID, NewObservableForm } from "../core/environment.js";
 
-// TODO subscribe to file deletion/namespace changes and delete subsciber
-const subscriptions = new Map<string, () => void>();
+import {
+  TypeOfIdentifier,
+  type Identifier,
+  type PAL,
+} from "../languages/pal/ast.js";
 
-export const compile = () => {
-  const env = new Env();
+import { type Clue, type FileExtension } from "../languages/index.js";
 
-  const subToNew = () =>
-    env.subscribe(NewID, (ast: NewObservableForm) => {
-      const sym = ast[0];
-      const filepath = sym.description;
-      const content = ast[1];
-      if (!filepath)
-        throw new Error("subscribed to env/new and filepath is empty");
-      // todo refactor the way extensions are handled
-      fs.writeFileSync(
-        path.join(filepath),
-        writer(content, (TypeOfIdentifier(sym).description as Clue) || "txt")
-      );
-    });
+export const NAME = Symbol.for("filesystem");
 
-  let unsubFromNew = subToNew();
+const ADD = "add";
+const CHANGE = "change";
+const WRITE = "write";
+const NEW = "new";
+const DEFAULT_ENCODING = "utf-8";
 
-  const syncFileToEnv = (filepath: string, stats?: fs.Stats) => {
-    if (stats?.isFile() || fs.statSync(filepath).isFile()) {
-      const file = fs.readFileSync(filepath, "utf-8");
-      const ext = path.extname(filepath) as FileExtension;
-      const sym = Symbol.for(filepath);
+/* 
 
-      const ast = parser(file, ext);
+TODO
 
-      // Before writing to Env, unsubscribe from it to prevent loops
-      const unsub = subscriptions.get(filepath);
+- Extract Symbol.for and similar conversions
+
+- support other filesystem semantics (for instance rename or move)
+- support other encodings than utf8, streaming
+- support FUSE based filesystem
+
+*/
+
+export class FileSystem {
+  static ROOT = path.join(".");
+  private filePathSubscriptions = new Map<string, () => void>();
+  private unsubscribeToEnvNew: IUnsubscribe;
+
+  constructor(
+    private env: IEnv<Identifier, PAL>,
+    private lang: ILanguage<PAL>,
+    private logger: ILogger
+  ) {
+    this.watchFileSystem();
+    this.unsubscribeToEnvNew = this.subscribeToEnv();
+  }
+
+  /**
+   * Returns true if the filePath points to a file
+   * @param filePath
+   * @returns
+   */
+  isFile(filePath: string): boolean {
+    return fs.statSync(filePath).isFile();
+  }
+
+  /**
+   * Synchronously reads the contents of a file
+   * @param filePath
+   * @returns
+   */
+  readFile(filePath: string): string {
+    return fs.readFileSync(filePath, DEFAULT_ENCODING);
+  }
+
+  /**
+   * Returns extension including the period (".pdf", not "pdf")
+   * @param filePath
+   * @returns
+   */
+  getFileExt(filePath: string): FileExtension {
+    return path.extname(filePath) as FileExtension;
+  }
+
+  /**
+   * this function called by filesystem watcher, it is responsible for keeping
+   * the environment and the filesystem in sync
+   * @param filePath
+   * @param stats
+   */
+  synchronize(filePath: string, stats?: fs.Stats) {
+    if (stats?.isFile() || this.isFile(filePath)) {
+      const file = this.readFile(filePath);
+      const ext = this.getFileExt(filePath);
+      const sym = Symbol.for(filePath);
+
+      const ast = this.lang.parse(file, ext);
+
+      // Before writing to the environment, unsubscribe to prevent loops
+      const unsub = this.filePathSubscriptions.get(filePath);
       if (unsub) unsub();
 
-      if (!env.map.has(sym)) unsubFromNew();
+      if (!this.env.map.has(sym)) this.unsubscribeToEnvNew();
 
       // write to env
-      env.map.set(sym, ast);
+      this.env.map.set(sym, ast);
 
       // resubscribe to env
-      const unsubscriber = env.subscribe(sym, (ast) => {
-        log("compiler", "file-write", filepath, ast);
-        fs.writeFileSync(filepath, writer(ast, ext));
+      const unsubscriber = this.env.subscribe(sym, (ast) => {
+        this.logger(NAME, WRITE, filePath, ast);
+        fs.writeFileSync(filePath, this.lang.write(ast, ext));
       });
-      subscriptions.set(filepath, unsubscriber);
+      this.filePathSubscriptions.set(filePath, unsubscriber);
 
-      unsubFromNew = subToNew();
+      this.subscribeToEnv();
     }
-  };
+  }
 
-  // Set up the chokidar watcher
-  const watcher = chokidar.watch(rootPath, {
-    ignoreInitial: false,
-    persistent: true,
-    followSymlinks: true,
-  });
+  /**
+   * Watch the filesystem for changes
+   */
+  watchFileSystem() {
+    // Set up the chokidar watcher
+    const watcher = chokidar.watch(FileSystem.ROOT, {
+      ignoreInitial: false,
+      persistent: true,
+      followSymlinks: true,
+    });
 
-  watcher.on("change", (filepath, stats) => {
-    log("compiler", "file-change", filepath, stats);
-    syncFileToEnv(filepath, stats);
-  });
-  watcher.on("add", (filepath, stats) => {
-    log("compiler", "file-add", filepath, stats);
-    syncFileToEnv(filepath, stats);
-  });
+    watcher.on(CHANGE, (filepath, stats) => {
+      this.logger(NAME, CHANGE, filepath, stats);
+      this.synchronize(filepath, stats);
+    });
 
-  return env;
-};
+    watcher.on(ADD, (filepath, stats) => {
+      this.logger(NAME, ADD, filepath, stats);
+      this.synchronize(filepath, stats);
+    });
+  }
+
+  /**
+   * Watch the environment for changes
+   * Returns an unsubscriber and sets this.unsubscribeToEnvNew
+   */
+  subscribeToEnv() {
+    this.unsubscribeToEnvNew = this.env.subscribe(
+      NewID,
+      (ast: NewObservableForm) => {
+        const sym = ast[0];
+        const filepath = sym.description;
+        const content = ast[1];
+        if (!filepath)
+          throw new Error("subscribed to env/new and filepath is empty");
+        // todo refactor the way extensions are handled
+        fs.writeFileSync(
+          path.join(filepath),
+          this.lang.write(
+            content,
+            (TypeOfIdentifier(sym).description as Clue) || "txt"
+          )
+        );
+      }
+    );
+    return this.unsubscribeToEnvNew;
+  }
+}
