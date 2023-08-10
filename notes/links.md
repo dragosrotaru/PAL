@@ -2,6 +2,12 @@
 
 https://apply.ycombinator.com/app/new#
 
+## Universal parser
+
+https://github.com/bblfsh
+https://code.visualstudio.com/api/language-extensions/overview
+https://lib.rs/parser-implementations
+
 ## Brain-Computer Interface
 
 https://www.youtube.com/watch?v=-HYbFm67Gs8
