@@ -7,7 +7,7 @@ repl.start({
   prompt: "repl > ",
   eval: async (cmd, context, filename, callback) => {
     if (cmd.startsWith("ai")) {
-      cmd = `(gpt "${cmd.slice(2, 0).replace('"', '\\"')}")`;
+      cmd = `(gpt "${cmd.slice(2).replace(/"/g, '\\"')}")`;
     }
     callback(null, await evaluate(env)(parser(cmd, "pal")));
   },

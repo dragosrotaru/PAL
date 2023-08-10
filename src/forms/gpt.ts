@@ -4,7 +4,7 @@ import { evaluate } from "../core/evaluator.js";
 import { extractFirstCodeBlock, openai } from "../gpt/index.js";
 import { IsList, type PAL } from "../languages/pal/ast.js";
 import { parser, writer } from "../languages/parser.js";
-import { log } from "../logger.js";
+import { log } from "../logger/index.js";
 
 const HistoryID = Symbol.for("gpt/history.json");
 const SystemPromptID = Symbol.for("gpt/system-prompt.md");
@@ -27,7 +27,7 @@ class MessageHistory {
 
   private subscribe = () => {
     this.unsub = env.subscribe(HistoryID, (ast: string) => {
-      console.log(ast);
+      console.log("WOW", ast);
       this._history = JSON.parse(ast);
     });
     return this.unsub;
@@ -37,7 +37,10 @@ class MessageHistory {
     return [this.systemPrompt].concat(this._history);
   }
   public append(message: ChatCompletionRequestMessage) {
-    env.map.set(HistoryID, JSON.stringify(this._history, null, 2));
+    env.map.set(
+      HistoryID,
+      JSON.stringify(this._history.concat([message]), null, 2)
+    );
   }
 }
 

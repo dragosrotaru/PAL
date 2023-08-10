@@ -15,7 +15,7 @@ import * as quote from "../forms/quote.js";
 
 import * as self from "../forms/self.js";
 
-import { log } from "../logger.js";
+import { log } from "../logger/index.js";
 
 import {
   IsBoolean,

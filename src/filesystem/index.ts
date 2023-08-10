@@ -1,10 +1,10 @@
-import { TypeOfIdentifier } from "#src/languages/pal/ast.js";
 import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
 import { Env, NewID, NewObservableForm } from "../core/environment.js";
+import { TypeOfIdentifier } from "../languages/pal/ast.js";
 import { Clue, FileExtension, parser, writer } from "../languages/parser.js";
-import { log } from "../logger.js";
+import { log } from "../logger/index.js";
 
 export const rootPath = path.join(".");
 

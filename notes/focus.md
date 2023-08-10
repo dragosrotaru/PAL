@@ -1,5 +1,7 @@
 # Focus
 
+- check if macro works as expected
+
 ## Areas of Focus
 
 The north star is force multiplication.
@@ -59,7 +61,6 @@ The north star is force multiplication.
 
 - support non-list parsing, multiple statement parsing
 - support \n as whitespace
-- add `macro`
 - support streaming, non ASCII encodings
 
 ## Environment

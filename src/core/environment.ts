@@ -1,6 +1,6 @@
 import { compile } from "../filesystem/index.js";
 import { ASTEquals, type Identifier, type PAL } from "../languages/pal/ast.js";
-import { log } from "../logger.js";
+import { log } from "../logger/index.js";
 
 type Observer<V extends PAL> = (ast: V) => undefined;
 export type Unsubscribe = () => undefined;
