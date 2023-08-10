@@ -3,7 +3,7 @@ import {
   type ILanguage,
   type ILogger,
   type IUnsubscribe,
-} from "../interfaces/namespace.js";
+} from "../interfaces.js";
 
 import chokidar from "chokidar";
 import fs from "fs";
@@ -17,7 +17,7 @@ import {
   type PAL,
 } from "../languages/pal/ast.js";
 
-import { type Clue, type FileExtension } from "../languages/index.js";
+import { type Clue, type FileExtension } from "../languages/parser.js";
 
 export const NAME = Symbol.for("filesystem");
 
