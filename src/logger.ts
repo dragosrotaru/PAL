@@ -2,7 +2,7 @@ const config = {
   compiler: false,
   parser: false,
   evaluator: false,
-  env: false,
+  env: true,
   gui: false,
   gpt: true,
 } as const;

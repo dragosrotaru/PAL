@@ -64,7 +64,7 @@ export const Apply =
     const body = ast[2];
     return (prenv: Env) =>
       (...values: AST[]) => {
-        const env = Constructor(prenv.map);
+        const env = new Env(prenv.map);
         argsIdentifiers.forEach((identifier, i) =>
           env.map.set(identifier, values[i])
         );
