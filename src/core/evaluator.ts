@@ -7,6 +7,7 @@ import * as exit from "../forms/exit.js";
 import * as gpt from "../forms/gpt.js";
 import * as gui from "../forms/gui.js";
 import * as lambda from "../forms/lambda.js";
+import * as macro from "../forms/macro.js";
 import * as parse from "../forms/parse.js";
 import * as procedure from "../forms/procedure.js";
 import * as quit from "../forms/quit.js";
@@ -61,6 +62,11 @@ export const evaluate =
   (env: Env) =>
   async (ast: PAL): Promise<PAL> => {
     log("evaluator", ast);
+
+    // Macros
+    ast = macro.Expand(ast);
+
+    if (macro.Is(ast)) return macro.Define(env)(ast);
 
     // Primitives
 
