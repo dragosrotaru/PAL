@@ -1,4 +1,4 @@
-import { IEnv, IObserver, IUnsubscribe } from "../interfaces/namespace.js";
+import { IEnv, IObserver, IUnsubscribe } from "../interfaces.js";
 import { ASTEquals, type Identifier, type PAL } from "../languages/pal/ast.js";
 import { log } from "../logger/index.js";
 
