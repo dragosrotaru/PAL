@@ -2,5 +2,21 @@
   {
     "role": "user",
     "content": "hey"
+  },
+  {
+    "role": "user",
+    "content": "give me an example of a simple macro"
+  },
+  {
+    "role": "assistant",
+    "content": "Sure! Here's an example of a simple macro in PAL:\n\n```pal\n(define (my-macro x)\n  `(console.log(\"Hello, \" + ,x + \"!\")))\n\n(my-macro \"World\") ; expands to: console.log(\"Hello, \" + \"World\" + \"!\");\n```\n\nIn this example, the `my-macro` macro takes an argument `x` and expands into a console log statement that concatenates the string \"Hello, \" with the value of `x` and the string \"!\". When you invoke `(my-macro \"World\")`, it expands to `console.log(\"Hello, \" + \"World\" + \"!\")`, which outputs \"Hello, World!\" to the console."
+  },
+  {
+    "role": "user",
+    "content": "\" can you give me one defined with lambda?\n\""
+  },
+  {
+    "role": "assistant",
+    "content": "Certainly! Here's an example of a macro defined with a lambda expression:\n\n```pal\n(define my-macro\n  (lambda (x)\n    `(console.log(\"Hello, \" + ,x + \"!\"))))\n\n(my-macro \"World\") ; expands to: console.log(\"Hello, \" + \"World\" + \"!\");\n```\n\nIn this example, `my-macro` is defined using a lambda expression that takes an argument `x` and expands into a console log statement, similar to the previous example. The invocation `(my-macro \"World\")` will expand to `console.log(\"Hello, \" + \"World\" + \"!\")`, resulting in the output \"Hello, World!\" in the console."
   }
 ]

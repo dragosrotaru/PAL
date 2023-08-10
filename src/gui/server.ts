@@ -5,7 +5,7 @@ import { type Env } from "../core/environment.js";
 import { evaluate } from "../core/evaluator.js";
 import { type Identifier } from "../languages/pal/ast.js";
 import { parser, writer } from "../languages/parser.js";
-import { log } from "../logger.js";
+import { log } from "../logger/index.js";
 import { IdentifierToURI, port, url, wsPort } from "./common.js";
 import { Type, type AST as ASTMSG, type Message } from "./messages.js";
 

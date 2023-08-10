@@ -2,7 +2,7 @@
   "compiler": true,
   "parser": false,
   "evaluator": false,
-  "env": false,
-  "gui": false,
+  "env": true,
+  "gui": true,
   "gpt": true
 }
