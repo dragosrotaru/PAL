@@ -1,4 +1,11 @@
-import config from "./config.json" assert { type: "json" };
+const config = {
+  filesystem: false,
+  parser: false,
+  evaluator: false,
+  env: false,
+  gui: false,
+  gpt: false,
+};
 
 type Module = keyof typeof config;
 
