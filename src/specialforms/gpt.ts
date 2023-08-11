@@ -1,11 +1,11 @@
 import { gptHistory } from "#src/index.js";
 import { evaluate } from "../core/evaluator.js";
-import { extractFirstCodeBlock, openai } from "../gpt/index.js";
 import { type IEnv } from "../interfaces.js";
 import { type AST } from "../languages/ast.js";
 import { IsList } from "../languages/pal/ast.js";
 import { parser, writer } from "../languages/parser.js";
-import { log } from "../logger/index.js";
+import { extractFirstCodeBlock, openai } from "../libraries/gpt/index.js";
+import { log } from "../libraries/logger/index.js";
 
 const callGPT = (env: IEnv) => async (text?: string) => {
   if (text) {

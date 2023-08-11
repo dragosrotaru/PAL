@@ -1,8 +1,8 @@
-import * as apply from "../forms/apply.js";
-import { openGUI } from "../gui/server.js";
 import { type IEnv } from "../interfaces.js";
 import { AST } from "../languages/ast.js";
 import { IsIdentifier, type Identifier as Id } from "../languages/pal/ast.js";
+import { openGUI } from "../userinterfaces/webgui/server.js";
+import * as apply from "./apply.js";
 
 export type Form = [typeof Identifier, AST] | typeof Identifier;
 

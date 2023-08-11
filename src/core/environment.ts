@@ -1,7 +1,7 @@
 import { IEnv, IObserver, IUnsubscribe } from "../interfaces.js";
 import { type AST } from "../languages/ast.js";
 import { ASTEquals, type Identifier } from "../languages/pal/ast.js";
-import { log } from "../logger/index.js";
+import { log } from "../libraries/logger/index.js";
 
 export const NewID = Symbol.for("env/new");
 export type NewObservableForm = [Identifier, AST];

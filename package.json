@@ -35,7 +35,7 @@
     "@types/ws": "^8.5.5"
   },
   "scripts": {
-    "start": "npm run build && node build/repl.js",
+    "start": "npm run build && node build/index.js",
     "build": "npx tsc"
   },
   "dependencies": {

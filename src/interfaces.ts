@@ -1,5 +1,5 @@
-import { AST } from "./languages/ast.js";
-import { Identifier } from "./languages/pal/ast.js";
+import { type AST } from "./languages/ast.js";
+import { type Identifier } from "./languages/pal/ast.js";
 
 export type IObserver<V> = (v: V) => undefined;
 export type IUnsubscribe = () => undefined;
