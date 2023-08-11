@@ -34,16 +34,18 @@ import { Lang } from "./ast.js";
 export const STATIC = {
   STRING: Symbol.for("string"),
   IsString: (v: Lang.AST): v is Lang.String => typeof v === "string",
-  ID: Symbol.for("id"),
-  IsID: (v: Lang.AST): v is Lang.ID => typeof v === "symbol",
   BOOLEAN: Symbol.for("boolean"),
   IsBoolean: (v: Lang.AST): v is Lang.Boolean => typeof v === "boolean",
+
   NUMBER: Symbol.for("number"),
   IsNumber: (v: Lang.AST): v is Lang.Number => typeof v === "number",
   UNDEFINED: Symbol.for("undefined"),
   IsUndefined: (v: Lang.AST): v is Lang.Undefined => v === undefined,
   NULL: Symbol.for("null"),
   IsNull: (v: Lang.AST): v is Lang.Null => v === null,
+
+  ID: Symbol.for("id"),
+  IsID: (v: Lang.AST): v is Lang.ID => typeof v === "symbol",
   LIST: Symbol.for("list"),
   IsList: (v: Lang.AST): v is Lang.List => Array.isArray(v),
   PROCEDURE: Symbol.for("procedure"),
@@ -51,6 +53,13 @@ export const STATIC = {
   IDLIST: Symbol.for("idlist"),
   IsIDList: (v: Lang.AST): v is Lang.IDList =>
     STATIC.IsList(v) && v.every(STATIC.IsID),
+
+  IsPrimitive: (v: Lang.AST): v is Lang.Primitive =>
+    STATIC.IsString(v) ||
+    STATIC.IsBoolean(v) ||
+    STATIC.IsNumber(v) ||
+    STATIC.IsUndefined(v) ||
+    STATIC.IsNull(v),
 };
 
 export class TypeSystem {
@@ -62,11 +71,13 @@ export class TypeSystem {
   alias = (original: Lang.ID, alias: Lang.ID): void => {};
   bootstrap = (): void => {
     this.register(STATIC.STRING, STATIC.IsString);
-    this.register(STATIC.ID, STATIC.IsID);
     this.register(STATIC.BOOLEAN, STATIC.IsBoolean);
+
     this.register(STATIC.NUMBER, STATIC.IsNumber);
     this.register(STATIC.UNDEFINED, STATIC.IsUndefined);
     this.register(STATIC.NULL, STATIC.IsNull);
+
+    this.register(STATIC.ID, STATIC.IsID);
     this.register(STATIC.LIST, STATIC.IsList);
     this.register(STATIC.PROCEDURE, STATIC.IsProcedure);
     this.register(STATIC.IDLIST, STATIC.IsIDList);
@@ -75,10 +86,12 @@ export class TypeSystem {
   // returns true if the values of a are identical to the values of b
   valueEquals = (a: Lang.AST, b: Lang.AST): Lang.Boolean => {
     if (STATIC.IsString(a) && STATIC.IsString(b)) return a === b;
-    if (STATIC.IsNumber(a) && STATIC.IsNumber(b)) return a === b;
     if (STATIC.IsBoolean(a) && STATIC.IsBoolean(b)) return a === b;
-    if (STATIC.IsNull(a) && STATIC.IsNull(b)) return true;
+
+    if (STATIC.IsNumber(a) && STATIC.IsNumber(b)) return a === b;
     if (STATIC.IsUndefined(a) && STATIC.IsUndefined(b)) return true;
+    if (STATIC.IsNull(a) && STATIC.IsNull(b)) return true;
+
     if (STATIC.IsProcedure(a) && STATIC.IsProcedure(b))
       return a.toString() === b.toString();
     if (STATIC.IsID(a) && STATIC.IsID(b)) return a === b;

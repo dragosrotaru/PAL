@@ -25,5 +25,5 @@ export const writer = (input: any, clue: Clue = PAL): string => {
   if (is(clue, "pal")) return palwriter(input);
   if (is(clue, "csv")) return csvwriter(input);
   if (is(clue, "txt") || is(clue, "text")) return Lang.String.write(input);
-  return Lang.String.write(input);
+  return palwriter(input);
 };

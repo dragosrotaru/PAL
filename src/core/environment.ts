@@ -1,6 +1,6 @@
 import type { IEnv, IObserver, IUnsubscribe } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
-import type { TypeSystem } from "../language/typesystem.js";
+import { type TypeSystem } from "../language/typesystem.js";
 import { log } from "../libraries/logger/index.js";
 
 export const NEW_ID = Symbol.for("env/new");
@@ -36,6 +36,7 @@ export class Env implements IEnv {
     this.map = new Proxy(map, {
       get: this.proxyGet,
     });
+    // this.bootstrap();
   }
 
   private proxyGet = (
@@ -96,21 +97,34 @@ export class Env implements IEnv {
       return value;
     }
   };
-  /* 
-  private bootstrap = () => {
-    const set = (env: Env) => (ast: SetForm) => {
-      env.map.set(ast[1], ast[2]);
+
+  /* private bootstrap = () => {
+    type SetForm = [typeof SET_ID, Lang.ID, Lang.AST];
+    const set = (ast: SetForm) => {
+      this.map.set(ast[1], ast[2]);
       return undefined;
     };
-    this.map.set(NewID, set);
-    this.map.set(SetID, set);
-    this.map.set(
-      DeleteID,
-      (env: Env) => (ast: DeleteForm) => env.map.delete(ast[1])
-    );
-    this.map.set(GetAllID, (env: Env) => (ast: AST) => this.getAll());
-  }; */
+    const IsSet = (ast: Lang.AST): ast is SetForm =>
+      STATIC.IsList(ast) &&
+      ast.length === 3 &&
+      STATIC.IsID(ast[0]) &&
+      ast[0] === SET_ID &&
+      STATIC.IsID(ast[1]);
 
+    type DeleteForm = [typeof DELETE_ID, Lang.ID];
+
+    const IsDelete = (ast: Lang.AST): ast is DeleteForm =>
+      STATIC.IsIDList(ast) && ast.length === 2 && ast[0] === DELETE_ID;
+
+    // add checking somewhere
+    this.map.set(NEW_ID, set);
+    this.map.set(SET_ID, set);
+    this.map.set(DELETE_ID, (ast: [typeof DELETE_ID, Lang.ID]) =>
+      this.map.delete(ast[1])
+    );
+    this.map.set(GETALL_ID, (ast: typeof GETALL_ID) => this.getAll());
+  };
+ */
   public new = (id: Lang.ID, value: Lang.AST) => {
     this.map.set(id, value);
   };

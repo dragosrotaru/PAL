@@ -97,6 +97,7 @@ const defineMacro = (env: IEnv) => (pattern: Lang.AST, template: Lang.AST) => {
 
 /*  EXPANSION Time */
 
+// TODO needs to be recursive
 export const Expand = (env: IEnv) => (ast: Lang.AST) => {
   const bindingMatch = (
     pattern: Lang.AST,

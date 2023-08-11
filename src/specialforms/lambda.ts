@@ -15,16 +15,15 @@ export const Is = (ast: Lang.AST): ast is Form =>
   STATIC.IsIDList(ast[1]);
 
 export const Apply =
-  (env: IEnv) =>
+  (prenv: IEnv) =>
   (ast: Form): Lang.AsyncProcedure => {
     const argsIdentifiers = ast[1];
     const body = ast[2];
-    return (prenv: IEnv) =>
-      (...values: Lang.AST[]) => {
-        const env = prenv.extend();
-        argsIdentifiers.forEach((identifier, i) =>
-          env.map.set(identifier, values[i])
-        );
-        return evaluate(env)(body);
-      };
+    return (...values: Lang.AST[]) => {
+      const env = prenv.extend();
+      argsIdentifiers.forEach((identifier, i) =>
+        env.map.set(identifier, values[i])
+      );
+      return evaluate(env)(body);
+    };
   };
