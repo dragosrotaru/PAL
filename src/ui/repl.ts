@@ -1,7 +1,7 @@
 import repl from "repl";
 import { evaluate } from "../core/evaluator.js";
 import { type IEnv } from "../interfaces.js";
-import { parser } from "../languages/parser.js";
+import { parser } from "../language/parser/index.js";
 
 export const StartRepl = (env: IEnv) => {
   repl.start({

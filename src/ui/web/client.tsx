@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { parser } from "../../languages/parser.js";
+import { parser } from "../../language/parser/index.js";
 import { log } from "../../libraries/logger/index.js";
 import { CurrentIDToString, wsUrl } from "./common.js";
 import { Type, type Exec, type Message, type Open } from "./messages.js";

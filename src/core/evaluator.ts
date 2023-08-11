@@ -1,3 +1,6 @@
+import type { IEnv } from "../interfaces.js";
+import type { Lang } from "../language/ast.js";
+
 import * as apply from "../specialforms/apply.js";
 import * as del from "../specialforms/env/del.js";
 import * as envF from "../specialforms/env/index.js";
@@ -5,31 +8,17 @@ import * as set from "../specialforms/env/set.js";
 import * as evalF from "../specialforms/eval.js";
 import * as exit from "../specialforms/exit.js";
 import * as gpt from "../specialforms/gpt.js";
-import * as gui from "../specialforms/gui.js";
 import * as lambda from "../specialforms/lambda.js";
 import * as macro from "../specialforms/macro.js";
 import * as parse from "../specialforms/parse.js";
 import * as procedure from "../specialforms/procedure.js";
 import * as quit from "../specialforms/quit.js";
 import * as quote from "../specialforms/quote.js";
-
 import * as self from "../specialforms/self.js";
+import * as ui from "../specialforms/ui.js";
 
+import { STATIC } from "../language/typesystem.js";
 import { log } from "../libraries/logger/index.js";
-
-import {
-  IsBoolean,
-  IsIdentifier,
-  IsList,
-  IsNull,
-  IsNumber,
-  IsProcedure,
-  IsString,
-  IsUndefined,
-} from "../languages/pal/ast.js";
-
-import { type IEnv } from "../interfaces.js";
-import { type AST } from "../languages/ast.js";
 
 /* 
 The core of evaluation is the eval apply recursion
@@ -60,22 +49,22 @@ ocaml attaching "processor" to quote .. like parser?
 
 export const evaluate =
   (env: IEnv) =>
-  async (ast: AST): Promise<AST> => {
+  async (ast: Lang.AST): Promise<Lang.AST> => {
     log("evaluator", ast);
 
     // Macros
-    ast = macro.Expand(ast);
+    ast = macro.Expand(env)(ast);
 
     if (macro.Is(ast)) return macro.Define(env)(ast);
 
     // Primitives
 
-    if (IsBoolean(ast)) return await ast;
-    if (IsString(ast)) return ast;
-    if (IsProcedure(ast)) return ast;
-    if (IsUndefined(ast)) return ast;
-    if (IsNull(ast)) return await ast;
-    if (IsNumber(ast)) return await ast;
+    if (STATIC.IsBoolean(ast)) return await ast;
+    if (STATIC.IsString(ast)) return ast;
+    if (STATIC.IsProcedure(ast)) return ast;
+    if (STATIC.IsUndefined(ast)) return ast;
+    if (STATIC.IsNull(ast)) return await ast;
+    if (STATIC.IsNumber(ast)) return await ast;
 
     // Special Forms
 
@@ -86,7 +75,7 @@ export const evaluate =
     if (evalF.Is(ast)) return await evalF.Apply(env)(ast);
     if (exit.Is(ast)) return await exit.Apply(env)(ast);
     if (gpt.Is(ast)) return await gpt.Apply(env)(ast);
-    if (gui.Is(ast)) return await gui.Apply(env)(ast);
+    if (ui.Is(ast)) return await ui.Apply(env)(ast);
     if (lambda.Is(ast)) return await lambda.Apply(env)(ast);
     if (parse.Is(ast)) return await parse.Apply(env)(ast);
     if (quote.Is(ast)) return await quote.Apply(env)(ast);
@@ -96,7 +85,7 @@ export const evaluate =
     // Generic Forms
 
     // length of 1
-    if (IsIdentifier(ast)) return await evaluate(env)(env.map.get(ast));
+    if (STATIC.IsID(ast)) return await evaluate(env)(env.map.get(ast));
 
     // length of 2
     // todo seems like integrating these two into one makes sense
@@ -104,7 +93,7 @@ export const evaluate =
     if (apply.Is(ast)) return await apply.Apply(env)(ast);
 
     // length of N
-    if (IsList(ast))
+    if (STATIC.IsList(ast))
       return await Promise.all(ast.map((ast) => evaluate(env)(ast)));
 
     return undefined;

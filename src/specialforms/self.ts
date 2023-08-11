@@ -1,22 +1,22 @@
-import { type IEnv } from "../interfaces.js";
-import { type AST } from "../languages/ast.js";
-import { IsList } from "../languages/pal/ast.js";
+import type { IEnv } from "../interfaces.js";
+import type { Lang } from "../language/ast.js";
+import { STATIC } from "../language/typesystem.js";
 
-export type Form = AST;
+export type Form = Lang.AST;
 
 export const Identifier = Symbol.for("self");
 
-export const Is = (ast: AST): boolean =>
-  ast === Identifier || (IsList(ast) && ast.some(Is));
+export const Is = (ast: Lang.AST): boolean =>
+  ast === Identifier || (STATIC.IsList(ast) && ast.some(Is));
 
 export const Apply = (env: IEnv) => (ast: Form) => Replace(ast, ast);
 
-const Replace = (node: AST, ast: Form): AST => {
+const Replace = (node: Lang.AST, ast: Form): Lang.AST => {
   // Base case: if node is 'self', replace with the whole AST.
   if (node === Identifier) return ast;
 
   // If node is an array, recursively replace 'self' in its elements.
-  if (IsList(node)) {
+  if (STATIC.IsList(node)) {
     return node.map((subNode) => Replace(subNode, ast));
   }
 

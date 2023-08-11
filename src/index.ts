@@ -1,10 +1,12 @@
 import { Env } from "./core/environment.js";
 import { FileSystem } from "./core/filesystem.js";
 import { GPTMessageHistory } from "./core/messageHistory.js";
-import { StartRepl } from "./userinterfaces/repl.js";
+import { TypeSystem } from "./language/typesystem.js";
+import { StartRepl } from "./ui/repl.js";
 
-export const env = new Env();
-new FileSystem(env);
+const typeSystem = new TypeSystem();
+export const env = new Env(typeSystem);
+new FileSystem(env, typeSystem);
 
 // todo this can be virtualized
 export const gptHistory = new GPTMessageHistory(env);

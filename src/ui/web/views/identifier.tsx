@@ -1,8 +1,8 @@
 import * as React from "react";
-import { type Identifier } from "../../../languages/pal/ast.js";
+import type { Lang } from "../../../language/ast.js";
 
 type Props = {
-  ast: Identifier;
+  ast: Lang.ID;
 };
 
 const Identifier = (props: Props) => {

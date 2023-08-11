@@ -1,41 +1,45 @@
-import { IEnv, IObserver, IUnsubscribe } from "../interfaces.js";
-import { type AST } from "../languages/ast.js";
-import { ASTEquals, type Identifier } from "../languages/pal/ast.js";
+import type { IEnv, IObserver, IUnsubscribe } from "../interfaces.js";
+import type { Lang } from "../language/ast.js";
+import type { TypeSystem } from "../language/typesystem.js";
 import { log } from "../libraries/logger/index.js";
 
-export const NewID = Symbol.for("env/new");
-export type NewObservableForm = [Identifier, AST];
+export const NEW_ID = Symbol.for("env/new");
+export type NewObservableForm = [Lang.ID, Lang.AST];
 
-export const SetID = Symbol.for("env/set");
-export type SetForm = [typeof SetID, Identifier, AST];
+export const SET_ID = Symbol.for("env/set");
+export type SetForm = [typeof SET_ID, Lang.ID, Lang.AST];
 
-export const DeleteID = Symbol.for("env/del");
-export type DeleteForm = [typeof DeleteID, Identifier];
+export const DELETE_ID = Symbol.for("env/del");
+export type DeleteForm = [typeof DELETE_ID, Lang.ID];
 
-export const SubscribeID = Symbol.for("env/sub");
-export type SubscribeForm = [typeof SubscribeID, Identifier, IObserver<AST>];
+export const SUBSCRIBE_ID = Symbol.for("env/sub");
+export type SubscribeForm = [typeof SUBSCRIBE_ID, Lang.ID, IObserver<Lang.AST>];
 
-export const UnsubscribeID = Symbol.for("env/unsub");
-export type UnubscribeForm = [typeof UnsubscribeID, Identifier, IObserver<AST>];
+export const UNSUBSCRIBE_ID = Symbol.for("env/unsub");
+export type UnubscribeForm = [
+  typeof UNSUBSCRIBE_ID,
+  Lang.ID,
+  IObserver<Lang.AST>
+];
 
-export const GetAllID = Symbol.for("env");
-export type GetAllForm = typeof GetAllID;
+export const GETALL_ID = Symbol.for("env");
+export type GetAllForm = typeof GETALL_ID;
 
 // TODO monitor for memory leaks
 
 export class Env implements IEnv {
-  public map: Map<Identifier, AST>;
-  private observers = new Map<Identifier, IObserver<any>[]>();
+  public map: Map<Lang.ID, Lang.AST>;
+  private observers = new Map<Lang.ID, IObserver<any>[]>();
 
-  constructor(prevMap?: Map<Identifier, AST>) {
-    const map = new Map<Identifier, AST>(prevMap);
+  constructor(public ts: TypeSystem, prevMap?: Map<Lang.ID, Lang.AST>) {
+    const map = new Map<Lang.ID, Lang.AST>(prevMap);
     this.map = new Proxy(map, {
       get: this.proxyGet,
     });
   }
 
   private proxyGet = (
-    target: Map<Identifier, AST>,
+    target: Map<Lang.ID, Lang.AST>,
     prop: string,
     receiver: any
   ) => {
@@ -48,13 +52,13 @@ export class Env implements IEnv {
           // notify subscribers to env/new
           if (!target.has(key)) {
             this.observers
-              .get(NewID)
+              .get(NEW_ID)
               ?.forEach((observer) => observer([key, val]));
           }
 
           // notify subscribers to env/set
           this.observers
-            .get(SetID)
+            .get(SET_ID)
             ?.forEach((observer) => observer([key, val]));
 
           const oldValue = target.get(key);
@@ -62,9 +66,9 @@ export class Env implements IEnv {
           log("env", "setting key", key);
           log("env", "old", oldValue);
           log("env", "new", val);
-          log("env", "compare", ASTEquals(oldValue, val));
+          log("env", "compare", this.ts.valueEquals(oldValue, val));
 
-          if (!ASTEquals(oldValue, val)) {
+          if (!this.ts.valueEquals(oldValue, val)) {
             Reflect.apply(value, target, args);
             if (this.observers.has(key)) {
               log("env", "dispatching to observers");
@@ -75,7 +79,7 @@ export class Env implements IEnv {
         }
         if (prop === "delete") {
           // notify subscribers to env/del
-          this.observers.get(DeleteID)?.forEach((observer) => observer(key));
+          this.observers.get(DELETE_ID)?.forEach((observer) => observer(key));
 
           const [key] = args;
           log("env", "deleting key", key);
@@ -107,25 +111,39 @@ export class Env implements IEnv {
     this.map.set(GetAllID, (env: Env) => (ast: AST) => this.getAll());
   }; */
 
-  public getAll = (): Array<[Identifier, AST]> => {
+  public new = (id: Lang.ID, value: Lang.AST) => {
+    this.map.set(id, value);
+  };
+  public get = (id: Lang.ID): Lang.AST => {
+    return this.map.get(id);
+  };
+  public set = (id: Lang.ID, value: Lang.AST): true => {
+    this.map.set(id, value);
+    return true;
+  };
+  public has = (id: Lang.ID): boolean => {
+    return this.map.has(id);
+  };
+
+  public getAll = (): Array<[Lang.ID, Lang.AST]> => {
     log("env", "getting all");
-    const list: Array<[Identifier, AST]> = [];
+    const list: Array<[Lang.ID, Lang.AST]> = [];
     this.map.forEach((value, key) => list.push([key, value]));
 
     // notify subscribers to env/getAll
-    this.observers.get(GetAllID)?.forEach((obs) => obs(list));
+    this.observers.get(GETALL_ID)?.forEach((obs) => obs(list));
     return list;
   };
 
-  public subscribe = <V extends AST>(
-    key: Identifier,
+  public subscribe = <V extends Lang.AST>(
+    key: Lang.ID,
     observer: IObserver<V>
   ): IUnsubscribe => {
     log("env", "subscribing", key);
 
     // notify subscribers to env/sub
     this.observers
-      .get(SubscribeID)
+      .get(SUBSCRIBE_ID)
       ?.forEach((obs) => obs([key, (env: Env) => observer]));
 
     if (!this.observers.has(key)) this.observers.set(key, []);
@@ -137,15 +155,15 @@ export class Env implements IEnv {
     return () => this.unsubscribe(key, observer);
   };
 
-  public unsubscribe = <V extends AST>(
-    key: Identifier,
+  public unsubscribe = <V extends Lang.AST>(
+    key: Lang.ID,
     observer: IObserver<V>
   ): undefined => {
     log("env", "unsubscribing", key);
 
     // notify subscribers to env/unsub
     this.observers
-      .get(UnsubscribeID)
+      .get(UNSUBSCRIBE_ID)
       ?.forEach((obs) => obs([key, (env: Env) => observer]));
 
     const observersForKey = this.observers.get(key);
@@ -170,6 +188,6 @@ export class Env implements IEnv {
   };
 
   extend = (): IEnv => {
-    return new Env(this.map);
+    return new Env(this.ts, this.map);
   };
 }

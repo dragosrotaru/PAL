@@ -1,10 +1,9 @@
-import { type IEnv } from "../../interfaces.js";
-import { AST } from "../../languages/ast.js";
+import { GETALL_ID } from "../../core/environment.js";
+import type { IEnv } from "../../interfaces.js";
+import type { Lang } from "../../language/ast.js";
 
-export const Identifier = Symbol.for("env");
+export type Form = typeof GETALL_ID;
 
-export type Form = typeof Identifier;
-
-export const Is = (ast: AST): ast is Form => ast === Identifier;
+export const Is = (ast: Lang.AST): ast is Form => ast === GETALL_ID;
 
 export const Apply = (env: IEnv) => (ast: Form) => env.getAll();

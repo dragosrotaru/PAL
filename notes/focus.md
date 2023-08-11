@@ -1,11 +1,13 @@
 # Focus
 
+- consider rewriting environment to context for special forms so its an object containing env, and other resources
+- the gui server needs to have the location of the client file dynamically templated into the index.html
+
 - replace forms Is methods with the new pattern matching
 - factor out type system (is checking)
 - check if macro works as expected
 - fix csv parsing incorrectly
 - add generic function application
--
 
 ## Areas of Focus
 

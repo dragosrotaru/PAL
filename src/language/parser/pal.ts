@@ -1,15 +1,6 @@
 import { log } from "../../libraries/logger/index.js";
-import {
-  IsBoolean,
-  IsIdentifier,
-  IsList,
-  IsNull,
-  IsNumber,
-  IsString,
-  IsUndefined,
-  List,
-  PAL,
-} from "./ast.js";
+import type { Lang } from "../ast.js";
+import { STATIC } from "../typesystem.js";
 
 /* 
 
@@ -52,27 +43,27 @@ The issue with this is that the whitespace all of a sudden matters
 
 */
 
-export const write = (ast: PAL): string => {
-  if (IsString(ast)) return `"${ast.replace(/([()\\"])/g, "\\$1")}"`;
-  if (IsNumber(ast)) return ast.toString();
-  if (IsBoolean(ast)) return ast.toString();
-  if (IsNull(ast)) return "null";
-  if (IsUndefined(ast)) return "undefined";
-  if (IsList(ast))
+export const write = (ast: Lang.PAL): string => {
+  if (STATIC.IsString(ast)) return `"${ast.replace(/([()\\"])/g, "\\$1")}"`;
+  if (STATIC.IsNumber(ast)) return ast.toString();
+  if (STATIC.IsBoolean(ast)) return ast.toString();
+  if (STATIC.IsNull(ast)) return "null";
+  if (STATIC.IsUndefined(ast)) return "undefined";
+  if (STATIC.IsList(ast))
     return ast.map(write).reduce((acc, curr, i, arr) => {
       if (arr.length === 1) return `(${curr})`;
       if (i === 0) return `(${curr}`;
       if (i === arr.length - 1) return `${acc} ${curr})`;
       return `${acc} ${curr}`;
     }, "");
-  if (IsIdentifier(ast)) {
+  if (STATIC.IsID(ast)) {
     log("parser", ast.description);
     return ast.description || "";
   }
   throw new Error(`Cannot serialize ${ast}`);
 };
 
-const parseToken = (list: List, chars: string[]) => {
+const parseToken = (list: Lang.List, chars: string[]) => {
   const token = chars.join("").trim();
 
   if (token.length === 0) return list;
@@ -106,11 +97,11 @@ const parseToken = (list: List, chars: string[]) => {
 /** accepts an array of tokens and returns an abstract syntax tree (AST). */
 const parser = (
   tokens: string[],
-  list: List,
+  list: Lang.List,
   chars: string[] = [],
   stringed = false,
   escaped = false
-): PAL => {
+): Lang.PAL => {
   log("parser", tokens, list, chars, stringed, escaped);
   const token = tokens.shift();
   if (token === undefined) {
@@ -162,7 +153,7 @@ export const parse = (source: string) => {
   const parsed = parser(tokens, []);
   // TODO get rid of this awful hack
   if (
-    IsList(parsed) &&
+    STATIC.IsList(parsed) &&
     parsed.length === 0 &&
     source.replace(/S+/g, "") !== "()"
   ) {

@@ -2,9 +2,9 @@ import express from "express";
 import open from "open";
 import { WebSocketServer } from "ws";
 import { evaluate } from "../../core/evaluator.js";
-import { type IEnv } from "../../interfaces.js";
-import { type Identifier } from "../../languages/pal/ast.js";
-import { parser, writer } from "../../languages/parser.js";
+import type { IEnv } from "../../interfaces.js";
+import type { Lang } from "../../language/ast.js";
+import { parser, writer } from "../../language/parser/index.js";
 import { log } from "../../libraries/logger/index.js";
 import { IdentifierToURI, port, url, wsPort } from "./common.js";
 import { Type, type AST as ASTMSG, type Message } from "./messages.js";
@@ -30,7 +30,7 @@ export const startServer = async (env: IEnv) => {
             <meta charset="UTF-8" />
             <title>Hyper</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <link rel="stylesheet" href="/static/src/gui/style.css" />
+            <link rel="stylesheet" href="/static/src/ui/web/style.css" />
             <script type="importmap">
               {
                 "imports": {
@@ -40,7 +40,7 @@ export const startServer = async (env: IEnv) => {
               }
             </script>
         
-            <script type="module" src="/static/build/gui/client.js"></script>
+            <script type="module" src="/static/build/ui/web/client.js"></script>
             <div id="root"></div>
           </head>
         </html>      
@@ -54,7 +54,7 @@ export const startServer = async (env: IEnv) => {
 
       wss.on("connection", (ws) => {
         log("gui", `clients: ${wss.clients.size} `);
-        const openSubs = new Map<Identifier, () => void>();
+        const openSubs = new Map<Lang.ID, () => void>();
         const closeAllSubs = () => openSubs.forEach((unsub) => unsub());
 
         /* Server Side Messaging Protocol with the client */
@@ -155,7 +155,7 @@ export const startServer = async (env: IEnv) => {
   });
 };
 
-export const openGUI = async (id: Identifier, env: IEnv) => {
+export const openGUI = async (id: Lang.ID, env: IEnv) => {
   if (!SERVER_STARTED) await startServer(env);
   await open(IdentifierToURI(id));
 };

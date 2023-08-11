@@ -1,27 +1,22 @@
-import { type AST } from "./languages/ast.js";
-import { type Identifier } from "./languages/pal/ast.js";
+import type { Lang } from "./language/ast.js";
+import { TypeSystem } from "./language/typesystem.js";
 
 export type IObserver<V> = (v: V) => undefined;
 export type IUnsubscribe = () => undefined;
 
 export interface IEnv {
-  map: Map<Identifier, AST>;
-  getAll: () => [Identifier, AST][];
-  subscribe: <V extends AST>(
-    id: Identifier,
+  ts: TypeSystem;
+  map: Map<Lang.ID, Lang.AST>;
+
+  set: (id: Lang.ID, value: Lang.AST) => true;
+  get: (id: Lang.ID) => Lang.AST;
+  has: (id: Lang.ID) => boolean;
+
+  getAll: () => [Lang.ID, Lang.AST][];
+  subscribe: <V extends Lang.AST>(
+    id: Lang.ID,
     observer: IObserver<V>
   ) => IUnsubscribe;
-  unsubscribe: (id: Identifier, observer: IObserver<AST>) => undefined;
+  unsubscribe: (id: Lang.ID, observer: IObserver<Lang.AST>) => undefined;
   extend: () => IEnv;
 }
-
-export interface INameSpace {}
-
-export interface IPermanenceProvider {}
-
-export interface ILanguage<AST> {
-  parse: (input: string) => AST;
-  write: (ast: AST) => string;
-}
-
-export type ILogger = (...args: any) => void;

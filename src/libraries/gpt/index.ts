@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { Configuration, OpenAIApi } from "openai";
-import { JSONType } from "./jsonTypes.js";
+import { type JSONType } from "./jsonTypes.js";
 
 dotenv.config();
 if (!process.env["OPENAI"]) {

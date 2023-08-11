@@ -1,4 +1,4 @@
-import type { Atom, CSV, Row } from "./ast.js";
+import type { Lang } from "../ast.js";
 
 const NEWLINE = "\n";
 const DELIMITER = ",";
@@ -13,7 +13,7 @@ const EMPTY = "";
 
 */
 
-const parseAtom = (value: string): Atom => {
+const parseAtom = (value: string): Lang.CSV.Atom => {
   value = value.trim();
   if (value.includes(QUOTE))
     value = value.replace(new RegExp(QUOTE + QUOTE, "g"), QUOTE);
@@ -24,8 +24,8 @@ const parseAtom = (value: string): Atom => {
   return value;
 };
 
-const parseRow = (value: string): Row => {
-  const row: Row = [];
+const parseRow = (value: string): Lang.CSV.Row => {
+  const row: Lang.CSV.Row = [];
   let current = EMPTY;
   let withinQuotes = false;
 
@@ -50,12 +50,12 @@ const parseRow = (value: string): Row => {
   return row;
 };
 
-export const parse = (input: string): CSV => {
+export const parse = (input: string): Lang.CSV => {
   const lines = input.split(NEWLINE);
 
   if (lines.length === 0) return [];
 
-  const csv: CSV = [];
+  const csv: Lang.CSV = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -66,7 +66,7 @@ export const parse = (input: string): CSV => {
   return csv;
 };
 
-const writeAtom = (value: Atom): string => {
+const writeAtom = (value: Lang.CSV.Atom): string => {
   if (typeof value === "number") return value.toString();
   if (typeof value === "boolean") return value.toString();
 
@@ -83,5 +83,5 @@ const writeAtom = (value: Atom): string => {
   return value;
 };
 
-export const write = (input: CSV): string =>
+export const write = (input: Lang.CSV): string =>
   input.map((row) => row.map(writeAtom).join(DELIMITER)).join(NEWLINE);

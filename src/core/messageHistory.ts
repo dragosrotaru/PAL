@@ -1,8 +1,8 @@
-import { IEnv, IUnsubscribe } from "#src/interfaces.js";
 import { ChatCompletionRequestMessage } from "openai";
+import { IEnv, IUnsubscribe } from "../interfaces.js";
 
-const HistoryID = Symbol.for("gpt/history.json");
-const SystemPromptID = Symbol.for("gpt/system-prompt.md");
+const HISTORY_ID = Symbol.for("gpt/history.json");
+const SYSTEM_PROMPT = Symbol.for("gpt/system-prompt.md");
 
 export class GPTMessageHistory {
   systemPrompt: ChatCompletionRequestMessage = {
@@ -15,13 +15,13 @@ export class GPTMessageHistory {
 
   constructor(private env: IEnv) {
     this.unsub = this.subscribe();
-    this.env.subscribe(SystemPromptID, (ast: string) => {
+    this.env.subscribe(SYSTEM_PROMPT, (ast: string) => {
       this.systemPrompt.content = ast;
     });
   }
 
   private subscribe = () => {
-    this.unsub = this.env.subscribe(HistoryID, (ast: string) => {
+    this.unsub = this.env.subscribe(HISTORY_ID, (ast: string) => {
       this._history = JSON.parse(ast);
     });
     return this.unsub;
@@ -32,7 +32,7 @@ export class GPTMessageHistory {
   }
   public append(message: ChatCompletionRequestMessage) {
     this.env.map.set(
-      HistoryID,
+      HISTORY_ID,
       JSON.stringify(this._history.concat([message]), null, 2)
     );
   }
