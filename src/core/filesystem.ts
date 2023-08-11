@@ -4,7 +4,7 @@ import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
 
-import { NewID, NewObservableForm } from "../core/environment.js";
+import { NewID, NewObservableForm } from "./environment.js";
 
 import { TypeOfIdentifier } from "../languages/pal/ast.js";
 
@@ -14,7 +14,7 @@ import {
   type Clue,
   type FileExtension,
 } from "../languages/parser.js";
-import { log } from "../logger/index.js";
+import { log } from "../libraries/logger/index.js";
 
 export const NAME = "filesystem";
 

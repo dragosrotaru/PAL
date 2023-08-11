@@ -1,21 +1,21 @@
-import * as apply from "../forms/apply.js";
-import * as del from "../forms/env/del.js";
-import * as envF from "../forms/env/index.js";
-import * as set from "../forms/env/set.js";
-import * as evalF from "../forms/eval.js";
-import * as exit from "../forms/exit.js";
-import * as gpt from "../forms/gpt.js";
-import * as gui from "../forms/gui.js";
-import * as lambda from "../forms/lambda.js";
-import * as macro from "../forms/macro.js";
-import * as parse from "../forms/parse.js";
-import * as procedure from "../forms/procedure.js";
-import * as quit from "../forms/quit.js";
-import * as quote from "../forms/quote.js";
+import * as apply from "../specialforms/apply.js";
+import * as del from "../specialforms/env/del.js";
+import * as envF from "../specialforms/env/index.js";
+import * as set from "../specialforms/env/set.js";
+import * as evalF from "../specialforms/eval.js";
+import * as exit from "../specialforms/exit.js";
+import * as gpt from "../specialforms/gpt.js";
+import * as gui from "../specialforms/gui.js";
+import * as lambda from "../specialforms/lambda.js";
+import * as macro from "../specialforms/macro.js";
+import * as parse from "../specialforms/parse.js";
+import * as procedure from "../specialforms/procedure.js";
+import * as quit from "../specialforms/quit.js";
+import * as quote from "../specialforms/quote.js";
 
-import * as self from "../forms/self.js";
+import * as self from "../specialforms/self.js";
 
-import { log } from "../logger/index.js";
+import { log } from "../libraries/logger/index.js";
 
 import {
   IsBoolean,

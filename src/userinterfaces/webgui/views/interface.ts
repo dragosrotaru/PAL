@@ -1,4 +1,4 @@
-import { AST } from "../../languages/ast.js";
+import { AST } from "../../../languages/ast.js";
 
 export type DefaultProps = {
   ast: AST;

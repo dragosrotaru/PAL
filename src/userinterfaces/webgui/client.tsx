@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { parser } from "../languages/parser.js";
-import { log } from "../logger/index.js";
+import { parser } from "../../languages/parser.js";
+import { log } from "../../libraries/logger/index.js";
 import { CurrentIDToString, wsUrl } from "./common.js";
 import { Type, type Exec, type Message, type Open } from "./messages.js";
 import { Template } from "./views/index.js";

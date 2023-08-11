@@ -1,4 +1,4 @@
-import { log } from "../../logger/index.js";
+import { log } from "../../libraries/logger/index.js";
 import {
   IsBoolean,
   IsIdentifier,
