@@ -1,10 +1,10 @@
-import { AST } from "../../../languages/ast.js";
+import type { Lang } from "../../../language/ast.js";
 
 export type DefaultProps = {
-  ast: AST;
+  ast: Lang.AST;
 };
 
 export type ExecProps = {
-  ast: AST;
+  ast: Lang.AST;
   exec: (code: string) => void;
 };

@@ -1,7 +1,6 @@
-import { AST } from "./ast.js";
-import { parse as csvparser, write as csvwriter } from "./csv/parser.js";
-import { parse as palparser, write as palwriter } from "./pal/parser.js";
-import { parse as txtparser, write as txtwriter } from "./txt/parser.js";
+import { Lang } from "../ast.js";
+import { parse as csvparser, write as csvwriter } from "./csv.js";
+import { parse as palparser, write as palwriter } from "./pal.js";
 
 const PAL = "pal";
 const CSV = "csv";
@@ -15,16 +14,16 @@ export type Clue = Name | FileExtension;
 const is = <T extends Name>(input: Clue, type: T): input is T | `.${T}` =>
   input === type || input === "." + type;
 
-export const parser = (input: string, clue: Clue = PAL): AST => {
+export const parser = (input: string, clue: Clue = PAL): Lang.AST => {
   if (is(clue, "pal")) return palparser(input);
   if (is(clue, "csv")) return csvparser(input);
-  if (is(clue, "txt") || is(clue, "text")) return txtparser(input);
-  return txtparser(input);
+  if (is(clue, "txt") || is(clue, "text")) return Lang.String.parse(input);
+  return Lang.String.parse(input);
 };
 
 export const writer = (input: any, clue: Clue = PAL): string => {
   if (is(clue, "pal")) return palwriter(input);
   if (is(clue, "csv")) return csvwriter(input);
-  if (is(clue, "txt") || is(clue, "text")) return txtwriter(input);
-  return txtparser(input);
+  if (is(clue, "txt") || is(clue, "text")) return Lang.String.write(input);
+  return Lang.String.write(input);
 };

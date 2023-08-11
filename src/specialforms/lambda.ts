@@ -1,32 +1,26 @@
 import { evaluate } from "../core/evaluator.js";
 import { type IEnv } from "../interfaces.js";
-import { type AST } from "../languages/ast.js";
-import {
-  IsIdentifier,
-  IsIdentifierList,
-  IsList,
-  type AsyncProcedure,
-  type IdentifierList,
-} from "../languages/pal/ast.js";
+import type { Lang } from "../language/ast.js";
+import { STATIC } from "../language/typesystem.js";
 
 export const Identifier = Symbol.for("lambda");
 
-export type Form = [typeof Identifier, IdentifierList, AST];
+export type Form = [typeof Identifier, Lang.IDList, Lang.AST];
 
-export const Is = (ast: AST): ast is Form =>
-  IsList(ast) &&
+export const Is = (ast: Lang.AST): ast is Form =>
+  STATIC.IsList(ast) &&
   ast.length === 3 &&
-  IsIdentifier(ast[0]) &&
+  STATIC.IsID(ast[0]) &&
   ast[0] === Identifier &&
-  IsIdentifierList(ast[1]);
+  STATIC.IsIDList(ast[1]);
 
 export const Apply =
   (env: IEnv) =>
-  (ast: Form): AsyncProcedure => {
+  (ast: Form): Lang.AsyncProcedure => {
     const argsIdentifiers = ast[1];
     const body = ast[2];
     return (prenv: IEnv) =>
-      (...values: AST[]) => {
+      (...values: Lang.AST[]) => {
         const env = prenv.extend();
         argsIdentifiers.forEach((identifier, i) =>
           env.map.set(identifier, values[i])

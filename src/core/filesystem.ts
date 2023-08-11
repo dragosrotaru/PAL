@@ -1,23 +1,21 @@
-import { type IEnv, type IUnsubscribe } from "../interfaces.js";
+import type { IEnv, IUnsubscribe } from "../interfaces.js";
+import type { TypeSystem } from "../language/typesystem.js";
 
 import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
 
-import { NewID, NewObservableForm } from "./environment.js";
-
-import { TypeOfIdentifier } from "../languages/pal/ast.js";
+import { NEW_ID, NewObservableForm } from "./environment.js";
 
 import {
   parser,
   writer,
   type Clue,
   type FileExtension,
-} from "../languages/parser.js";
+} from "../language/parser/index.js";
 import { log } from "../libraries/logger/index.js";
 
-export const NAME = "filesystem";
-
+const NAME = "filesystem";
 const ADD = "add";
 const CHANGE = "change";
 const WRITE = "write";
@@ -41,7 +39,7 @@ export class FileSystem {
   private filePathSubscriptions = new Map<string, () => void>();
   private unsubscribeToEnvNew: IUnsubscribe;
 
-  constructor(private env: IEnv) {
+  constructor(private env: IEnv, private ts: TypeSystem) {
     this.watchFileSystem();
     this.unsubscribeToEnvNew = this.subscribeToEnv();
   }
@@ -135,7 +133,7 @@ export class FileSystem {
    */
   subscribeToEnv() {
     this.unsubscribeToEnvNew = this.env.subscribe(
-      NewID,
+      NEW_ID,
       (ast: NewObservableForm) => {
         const sym = ast[0];
         const filepath = sym.description;
@@ -145,7 +143,7 @@ export class FileSystem {
         // todo refactor the way extensions are handled
         fs.writeFileSync(
           path.join(filepath),
-          writer(content, (TypeOfIdentifier(sym).description as Clue) || "txt")
+          writer(content, (this.ts.nominalTypeNameOf(sym) as Clue) || "txt")
         );
       }
     );

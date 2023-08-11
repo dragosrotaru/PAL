@@ -1,14 +1,14 @@
-import { type IEnv } from "../interfaces.js";
-import { type AST } from "../languages/ast.js";
-import { IsList } from "../languages/pal/ast.js";
+import type { IEnv } from "../interfaces.js";
+import type { Lang } from "../language/ast.js";
+import { STATIC } from "../language/typesystem.js";
 
-export type Form = [typeof Identifier, AST];
+export type Form = [typeof Identifier, Lang.AST];
 
 export const Identifier = Symbol.for("quote");
 export const ShortHand = Symbol.for("'");
 
-export const Is = (ast: AST): ast is Form =>
-  IsList(ast) &&
+export const Is = (ast: Lang.AST): ast is Form =>
+  STATIC.IsList(ast) &&
   ast.length === 2 &&
   (ast[0] === Identifier || ast[0] === ShortHand);
 

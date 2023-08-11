@@ -1,16 +1,12 @@
-import { type IEnv } from "../../interfaces.js";
-import { type AST } from "../../languages/ast.js";
-import {
-  IsIdentifierList,
-  type Identifier as IDType,
-} from "../../languages/pal/ast.js";
+import { DELETE_ID } from "../../core/environment.js";
+import type { IEnv } from "../../interfaces.js";
+import type { Lang } from "../../language/ast.js";
+import { STATIC } from "../../language/typesystem.js";
 
-export const Identifier = Symbol.for("env/del");
+export type Form = [typeof DELETE_ID, Lang.ID];
 
-export type Form = [typeof Identifier, IDType];
-
-export const Is = (ast: AST): ast is Form =>
-  IsIdentifierList(ast) && ast.length === 2 && ast[0] === Identifier;
+export const Is = (ast: Lang.AST): ast is Form =>
+  STATIC.IsIDList(ast) && ast.length === 2 && ast[0] === DELETE_ID;
 
 export const Apply = (env: IEnv) => (ast: Form) => {
   return env.map.delete(ast[1]);

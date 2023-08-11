@@ -1,9 +1,9 @@
-import { gptHistory } from "#src/index.js";
 import { evaluate } from "../core/evaluator.js";
+import { gptHistory } from "../index.js";
 import { type IEnv } from "../interfaces.js";
-import { type AST } from "../languages/ast.js";
-import { IsList } from "../languages/pal/ast.js";
-import { parser, writer } from "../languages/parser.js";
+import type { Lang } from "../language/ast.js";
+import { parser, writer } from "../language/parser/index.js";
+import { STATIC } from "../language/typesystem.js";
 import { extractFirstCodeBlock, openai } from "../libraries/gpt/index.js";
 import { log } from "../libraries/logger/index.js";
 
@@ -70,16 +70,16 @@ const callGPT = (env: IEnv) => async (text?: string) => {
   });
 };
 
-export type Form = [typeof Identifier, AST];
+export type Form = [typeof Identifier, Lang.AST];
 
 export const Identifier = Symbol.for("gpt");
 
-export const Is = (ast: AST): ast is Form =>
-  IsList(ast) && ast[0] === Identifier && ast.length === 2;
+export const Is = (ast: Lang.AST): ast is Form =>
+  STATIC.IsList(ast) && ast[0] === Identifier && ast.length === 2;
 
 export const Apply =
   (env: IEnv) =>
-  async (ast: Form): Promise<AST> => {
+  async (ast: Form): Promise<Lang.AST> => {
     try {
       // GPT Call 1
       const { data } = await callGPT(env)(writer(ast[1]));
@@ -91,7 +91,7 @@ export const Apply =
       const function_call = data.choices[0]?.message?.function_call;
       if (function_call) {
         const name = function_call.name;
-        let result: AST;
+        let result: Lang.AST;
 
         if (name === "eval") {
           const expr = JSON.parse(function_call.arguments || "").expr;
