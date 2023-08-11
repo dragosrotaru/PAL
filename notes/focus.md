@@ -1,6 +1,13 @@
 # Focus
 
+- replace forms Is methods with the new pattern matching
+- factor out type system (is checking)
+
+- fix logger-env circular dependency
 - check if macro works as expected
+- fix csv parsing incorrectly
+
+- add generic function application
 
 ## Areas of Focus
 

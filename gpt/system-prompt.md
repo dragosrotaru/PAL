@@ -18,8 +18,8 @@ Here is the AST:
 ```typescript
 export type Identifier = symbol;
 export type Procedure = SyncProcedure | AsyncProcedure;
-export type SyncProcedure = (env: Env) => (...ast: AST[]) => AST;
-export type AsyncProcedure = (env: Env) => (...ast: AST[]) => Promise<AST>;
+export type SyncProcedure = (env: IEnv) => (...ast: AST[]) => AST;
+export type AsyncProcedure = (env: IEnv) => (...ast: AST[]) => Promise<AST>;
 export type List = AST[];
 export type AST =
   | Identifier
@@ -58,13 +58,13 @@ export const Is = (ast: AST): ast is Form =>
   ast[0] === Identifier &&
   IsIdentifierList(ast[1]);
 export const Apply =
-  (env: Env) =>
+  (env: IEnv) =>
   (ast: Form): AsyncProcedure => {
     const argsIdentifiers = ast[1];
     const body = ast[2];
-    return (prenv: Env) =>
+    return (prenv: IEnv) =>
       (...values: AST[]) => {
-        const env = new Env(prenv.map);
+        const env = prenv.extend();
         argsIdentifiers.forEach((identifier, i) =>
           env.map.set(identifier, values[i])
         );

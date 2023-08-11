@@ -1,20 +1,17 @@
-import { type Env } from "../core/environment.js";
 import * as apply from "../forms/apply.js";
 import { openGUI } from "../gui/server.js";
-import {
-  IsIdentifier,
-  type Identifier as Id,
-  type PAL,
-} from "../languages/pal/ast.js";
+import { type IEnv } from "../interfaces.js";
+import { AST } from "../languages/ast.js";
+import { IsIdentifier, type Identifier as Id } from "../languages/pal/ast.js";
 
-export type Form = [typeof Identifier, PAL] | typeof Identifier;
+export type Form = [typeof Identifier, AST] | typeof Identifier;
 
 export const Identifier = Symbol.for("gui");
 
-export const Is = (ast: PAL): ast is Form =>
+export const Is = (ast: AST): ast is Form =>
   (apply.Is(ast) && ast[0] === Identifier) || ast === Identifier;
 
-export const Apply = (env: Env) => (ast: Form) => {
+export const Apply = (env: IEnv) => (ast: Form) => {
   if (ast === Identifier) {
     openGUI(Symbol(), env);
     return undefined;

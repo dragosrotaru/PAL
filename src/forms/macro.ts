@@ -1,10 +1,10 @@
-import { Env } from "../core/environment.js";
+import { type IEnv } from "../interfaces.js";
+import { type AST } from "../languages/ast.js";
 import {
   ASTEquals,
   ASTEqualsIdentifierType,
   IsIdentifier,
   IsList,
-  type PAL,
 } from "../languages/pal/ast.js";
 
 /*
@@ -17,30 +17,30 @@ process:
 */
 
 type Macro = {
-  pattern: PAL;
-  template: PAL;
+  pattern: AST;
+  template: AST;
 };
 
-type Bindings = Record<symbol, PAL>;
+type Bindings = Record<symbol, AST>;
 
 const macros: Macro[] = [];
 
 // (macro pattern template)
-export type Form = [typeof Identifier, PAL, PAL];
+export type Form = [typeof Identifier, AST, AST];
 
 export const Identifier = Symbol.for("macro");
 
-const IsPattern = (ast: PAL): boolean => {
+const IsPattern = (ast: AST): boolean => {
   // todo? pattern validation
   return true;
 };
 
-const IsTemplate = (ast: PAL): boolean => {
+const IsTemplate = (ast: AST): boolean => {
   // todo? template validation
   return true;
 };
 
-const PatternTemplateInvariantsMet = (pattern: PAL, template: PAL): boolean => {
+const PatternTemplateInvariantsMet = (pattern: AST, template: AST): boolean => {
   // todo validate that the combination of pattern and template dont break some rules
   // This function checks that the pattern-template combination is valid.
   // For instance, we might check if every identifier in the template also appears in the pattern.
@@ -49,21 +49,21 @@ const PatternTemplateInvariantsMet = (pattern: PAL, template: PAL): boolean => {
   return true;
 };
 
-const PatternEnvInvariantsMet = (env: Env, pattern: PAL): boolean => {
+const PatternEnvInvariantsMet = (env: IEnv, pattern: AST): boolean => {
   // todo validate that the combination of pattern and environment dont break some rules
   // Here, we can validate any environment-specific rules that the pattern must respect.
   // For now, we'll just return true.
   return true;
 };
 
-const TemplateEnvInvariantsMet = (env: Env, template: PAL): boolean => {
+const TemplateEnvInvariantsMet = (env: IEnv, template: AST): boolean => {
   // todo validate that the combination of template and environment dont break some rules
   // Here, we can validate any environment-specific rules that the template must respect.
   // For now, we'll just return true.
   return true;
 };
 
-export const Is = (ast: PAL): ast is Form => {
+export const Is = (ast: AST): ast is Form => {
   if (!IsList(ast)) return false;
   if (ast.length !== 3) return false;
   const id = ast[0];
@@ -75,14 +75,14 @@ export const Is = (ast: PAL): ast is Form => {
   return true;
 };
 
-export const Define = (env: Env) => (ast: Form) => {
+export const Define = (env: IEnv) => (ast: Form) => {
   const pattern = ast[1];
   const template = ast[2];
   return defineMacro(env)(pattern, template);
 };
 
 // macro definition - DSL for the features wanted in macro definition, at define-time
-const defineMacro = (env: Env) => (pattern: PAL, template: PAL) => {
+const defineMacro = (env: IEnv) => (pattern: AST, template: AST) => {
   if (!PatternTemplateInvariantsMet(pattern, template)) {
     return undefined;
   }
@@ -99,7 +99,7 @@ const defineMacro = (env: Env) => (pattern: PAL, template: PAL) => {
 
 /*  EXPANSION Time */
 
-export const Expand = (ast: PAL) => {
+export const Expand = (ast: AST) => {
   const matches: { macro: Macro; binding: Bindings }[] = [];
   for (let i = 0; i < macros.length; i++) {
     const macro = macros[i];
@@ -127,7 +127,7 @@ TODO add support for these type of things:
 
 */
 // returns true if the pattern matches the ast
-const match = (pattern: PAL) => (ast: PAL) => {
+const match = (pattern: AST) => (ast: AST) => {
   if (!IsList(pattern) && !IsIdentifier(pattern)) {
     // if the pattern is not a Id or List, then we are matching against a fixed value, in which case we only return true if there is strict equality
     return ASTEquals(pattern, ast);
@@ -144,7 +144,7 @@ const match = (pattern: PAL) => (ast: PAL) => {
   return pattern.length === ast.length && pattern.every(match);
 };
 
-const bindingMatch = (pattern: PAL, ast: PAL): Record<symbol, PAL> | null => {
+const bindingMatch = (pattern: AST, ast: AST): Record<symbol, AST> | null => {
   if (!IsList(pattern) && !IsIdentifier(pattern)) {
     return ASTEquals(pattern, ast) ? {} : null;
   }
@@ -158,7 +158,7 @@ const bindingMatch = (pattern: PAL, ast: PAL): Record<symbol, PAL> | null => {
   }
 
   if (IsList(pattern) && IsList(ast) && pattern.length === ast.length) {
-    const bindings: Record<symbol, PAL> = {};
+    const bindings: Record<symbol, AST> = {};
 
     for (let i = 0; i < pattern.length; i++) {
       const innerBindings = bindingMatch(pattern[i], ast[i]);
@@ -181,7 +181,7 @@ const bindingMatch = (pattern: PAL, ast: PAL): Record<symbol, PAL> | null => {
 
 // substitution - takes the ast and binds its constituents to the template
 // todo implement hygenic magic
-const substitute = (template: PAL, bindings: Bindings): PAL => {
+const substitute = (template: AST, bindings: Bindings): AST => {
   if (IsIdentifier(template)) {
     return bindings[template] || template; // Return the binding if it exists; otherwise, return the identifier unchanged.
   }

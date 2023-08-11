@@ -1,8 +1,9 @@
-import { logger as nodeLogger } from "./node.js";
-import { logger as webLogger } from "./web.js";
+import config from "./config.json" assert { type: "json" };
 
-// Simple way to detect the environment (Node.js or browser).
-const isNode =
-  typeof process !== "undefined" && process.versions && process.versions.node;
+type Module = keyof typeof config;
 
-export const log = isNode ? nodeLogger : webLogger;
+export const log = async (module: Module, ...args: any) => {
+  if (config[module]) {
+    console.log(module, ...args);
+  }
+};

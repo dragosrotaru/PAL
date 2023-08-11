@@ -1,6 +1,6 @@
 // Native Types
 
-import { type Env } from "../../core/environment.js";
+import { type IEnv } from "../../interfaces.js";
 
 export type PAL =
   | Identifier
@@ -14,8 +14,8 @@ export type PAL =
 export type List = PAL[];
 export type Identifier = symbol;
 
-export type SyncProcedure = (env: Env) => (...ast: PAL[]) => PAL;
-export type AsyncProcedure = (env: Env) => (...ast: PAL[]) => Promise<PAL>;
+export type SyncProcedure = (env: IEnv) => (...ast: PAL[]) => PAL;
+export type AsyncProcedure = (env: IEnv) => (...ast: PAL[]) => Promise<PAL>;
 export type Procedure = SyncProcedure | AsyncProcedure;
 
 export const IsString = (ast: PAL): ast is string => typeof ast === "string";

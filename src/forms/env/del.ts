@@ -1,17 +1,17 @@
-import { type Env } from "../../core/environment.js";
+import { type IEnv } from "../../interfaces.js";
+import { type AST } from "../../languages/ast.js";
 import {
   IsIdentifierList,
   type Identifier as IDType,
-  type PAL,
 } from "../../languages/pal/ast.js";
 
 export const Identifier = Symbol.for("env/del");
 
 export type Form = [typeof Identifier, IDType];
 
-export const Is = (ast: PAL): ast is Form =>
+export const Is = (ast: AST): ast is Form =>
   IsIdentifierList(ast) && ast.length === 2 && ast[0] === Identifier;
 
-export const Apply = (env: Env) => (ast: Form) => {
+export const Apply = (env: IEnv) => (ast: Form) => {
   return env.map.delete(ast[1]);
 };

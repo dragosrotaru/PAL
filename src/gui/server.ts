@@ -1,8 +1,8 @@
 import express from "express";
 import open from "open";
 import { WebSocketServer } from "ws";
-import { type Env } from "../core/environment.js";
 import { evaluate } from "../core/evaluator.js";
+import { type IEnv } from "../interfaces.js";
 import { type Identifier } from "../languages/pal/ast.js";
 import { parser, writer } from "../languages/parser.js";
 import { log } from "../logger/index.js";
@@ -13,7 +13,7 @@ export const rootPath = ".";
 let SERVER_STARTED = false;
 const app = express();
 
-export const startServer = async (env: Env) => {
+export const startServer = async (env: IEnv) => {
   return new Promise((resolve) => {
     // TODO authentication
     app.use("/public/.env", (_, res) => {
@@ -155,7 +155,7 @@ export const startServer = async (env: Env) => {
   });
 };
 
-export const openGUI = async (id: Identifier, env: Env) => {
+export const openGUI = async (id: Identifier, env: IEnv) => {
   if (!SERVER_STARTED) await startServer(env);
   await open(IdentifierToURI(id));
 };
