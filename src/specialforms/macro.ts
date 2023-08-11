@@ -1,4 +1,4 @@
-import type { IEnv } from "../interfaces.js";
+import type { IContext, Macro } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
 
@@ -11,14 +11,7 @@ process:
     -   evaluation - continue evaluating the ast
 */
 
-type Macro = {
-  pattern: Lang.AST;
-  template: Lang.AST;
-};
-
 type Bindings = Record<symbol, Lang.AST>;
-
-const macros: Macro[] = [];
 
 // (macro pattern template)
 export type Form = [typeof Identifier, Lang.AST, Lang.AST];
@@ -47,14 +40,17 @@ const PatternTemplateInvariantsMet = (
   return true;
 };
 
-const PatternEnvInvariantsMet = (env: IEnv, pattern: Lang.AST): boolean => {
+const PatternEnvInvariantsMet = (ctx: IContext, pattern: Lang.AST): boolean => {
   // todo validate that the combination of pattern and environment dont break some rules
   // Here, we can validate any environment-specific rules that the pattern must respect.
   // For now, we'll just return true.
   return true;
 };
 
-const TemplateEnvInvariantsMet = (env: IEnv, template: Lang.AST): boolean => {
+const TemplateEnvInvariantsMet = (
+  ctx: IContext,
+  template: Lang.AST
+): boolean => {
   // todo validate that the combination of template and environment dont break some rules
   // Here, we can validate any environment-specific rules that the template must respect.
   // For now, we'll just return true.
@@ -73,42 +69,43 @@ export const Is = (ast: Lang.AST): ast is Form => {
   return true;
 };
 
-export const Define = (env: IEnv) => (ast: Form) => {
+export const Define = (ctx: IContext) => (ast: Form) => {
   const pattern = ast[1];
   const template = ast[2];
-  return defineMacro(env)(pattern, template);
+  return defineMacro(ctx)(pattern, template);
 };
 
 // macro definition - DSL for the features wanted in macro definition, at define-time
-const defineMacro = (env: IEnv) => (pattern: Lang.AST, template: Lang.AST) => {
-  if (!PatternTemplateInvariantsMet(pattern, template)) {
-    return undefined;
-  }
-  if (!PatternEnvInvariantsMet(env, pattern)) {
-    return undefined;
-  }
-  if (!TemplateEnvInvariantsMet(env, pattern)) {
-    return undefined;
-  }
+const defineMacro =
+  (ctx: IContext) => (pattern: Lang.AST, template: Lang.AST) => {
+    if (!PatternTemplateInvariantsMet(pattern, template)) {
+      return undefined;
+    }
+    if (!PatternEnvInvariantsMet(ctx, pattern)) {
+      return undefined;
+    }
+    if (!TemplateEnvInvariantsMet(ctx, pattern)) {
+      return undefined;
+    }
 
-  macros.push({ pattern, template });
-  return true;
-};
+    ctx.macros.push({ pattern, template });
+    return true;
+  };
 
 /*  EXPANSION Time */
 
 // TODO needs to be recursive
-export const Expand = (env: IEnv) => (ast: Lang.AST) => {
+export const Expand = (ctx: IContext) => (ast: Lang.AST) => {
   const bindingMatch = (
     pattern: Lang.AST,
     ast: Lang.AST
   ): Record<symbol, Lang.AST> | null => {
     if (!STATIC.IsList(pattern) && !STATIC.IsID(pattern)) {
-      return env.ts.valueEquals(pattern, ast) ? {} : null;
+      return ctx.ts.valueEquals(pattern, ast) ? {} : null;
     }
 
     if (STATIC.IsID(pattern)) {
-      if (env.ts.typeEquals(ast, pattern)) {
+      if (ctx.ts.typeEquals(ast, pattern)) {
         return { [pattern]: ast };
       } else {
         return null;
@@ -142,8 +139,8 @@ export const Expand = (env: IEnv) => (ast: Lang.AST) => {
   };
 
   const matches: { macro: Macro; binding: Bindings }[] = [];
-  for (let i = 0; i < macros.length; i++) {
-    const macro = macros[i];
+  for (let i = 0; i < ctx.macros.length; i++) {
+    const macro = ctx.macros[i];
     const binding = bindingMatch(macro.pattern, ast);
     if (binding !== null) {
       matches.push({ macro, binding });

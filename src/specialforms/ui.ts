@@ -1,5 +1,5 @@
 import path from "path";
-import type { IEnv } from "../interfaces.js";
+import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
 import { openGUI } from "../ui/web/server.js";
@@ -14,18 +14,18 @@ export const Is = (ast: Lang.AST): ast is Form =>
   (STATIC.IsList(ast) && ast.length === 2 && ast[0] === Identifier) ||
   ast === Identifier;
 
-export const Apply = (env: IEnv) => (ast: Form) => {
+export const Apply = (ctx: IContext) => (ast: Form) => {
   if (ast === Identifier) {
-    openGUI(Symbol(), env);
+    openGUI(Symbol(), ctx);
     return undefined;
   }
   let id: Lang.ID;
   if (!STATIC.IsID(ast[1])) {
     id = Symbol.for(path.join("ui", crypto.randomUUID()));
-    env.map.set(id, ast[1]);
+    ctx.env.map.set(id, ast[1]);
   } else {
     id = ast[1];
   }
-  openGUI(id, env);
+  openGUI(id, ctx);
   return undefined;
 };

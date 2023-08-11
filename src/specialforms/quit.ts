@@ -1,4 +1,3 @@
-import type { IEnv } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 
 // todo enable a rebuild / restart
@@ -11,4 +10,4 @@ export type Form = typeof Identifier;
 
 export const Is = (ast: Lang.AST): ast is Form => ast === Identifier;
 
-export const Apply = (env: IEnv) => (ast: Form) => process.exit(0);
+export const Apply = () => process.exit(0);

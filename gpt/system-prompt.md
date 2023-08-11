@@ -16,20 +16,7 @@ You DO NOT need to put a single symbol in quotes, for example \`env\` will retur
 Here is the AST:
 
 ```typescript
-export type Identifier = symbol;
-export type Procedure = SyncProcedure | AsyncProcedure;
-export type SyncProcedure = (env: IEnv) => (...ast: AST[]) => AST;
-export type AsyncProcedure = (env: IEnv) => (...ast: AST[]) => Promise<AST>;
-export type List = AST[];
-export type AST =
-  | Identifier
-  | Procedure
-  | List
-  | string
-  | number
-  | boolean
-  | null
-  | undefined;
+...
 ```
 
 Most of the methods you would expect to be implemented in a lisp language are not yet implemented.
@@ -49,28 +36,7 @@ env - returns all
 Here is how a special form is defined in the system (the one below is lambda):
 
 ```typescript
-export const Identifier = Symbol.for("lambda");
-export type Form = [typeof Identifier, IdentifierList, AST];
-export const Is = (ast: AST): ast is Form =>
-  IsList(ast) &&
-  ast.length === 3 &&
-  IsIdentifier(ast[0]) &&
-  ast[0] === Identifier &&
-  IsIdentifierList(ast[1]);
-export const Apply =
-  (env: IEnv) =>
-  (ast: Form): AsyncProcedure => {
-    const argsIdentifiers = ast[1];
-    const body = ast[2];
-    return (prenv: IEnv) =>
-      (...values: AST[]) => {
-        const env = prenv.extend();
-        argsIdentifiers.forEach((identifier, i) =>
-          env.map.set(identifier, values[i])
-        );
-        return evaluate(env)(body);
-      };
-  };
+...
 ```
 
 Your role as an AI is to be helpful and assist the user in developing this system, to make it as powerful and expressive as possible.

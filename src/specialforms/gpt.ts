@@ -1,15 +1,13 @@
-import { evaluate } from "../core/evaluator.js";
-import { gptHistory } from "../index.js";
-import { type IEnv } from "../interfaces.js";
+import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { parser, writer } from "../language/parser/index.js";
 import { STATIC } from "../language/typesystem.js";
 import { extractFirstCodeBlock, openai } from "../libraries/gpt/index.js";
 import { log } from "../libraries/logger/index.js";
 
-const callGPT = (env: IEnv) => async (text?: string) => {
+const callGPT = (ctx: IContext) => async (text?: string) => {
   if (text) {
-    gptHistory.append({
+    ctx.gpt.append({
       role: "user",
       content: text,
     });
@@ -18,7 +16,7 @@ const callGPT = (env: IEnv) => async (text?: string) => {
   // call api
   return openai.createChatCompletion({
     model: "gpt-3.5-turbo-16k-0613", // "gpt-4-0613", //
-    messages: gptHistory.messages,
+    messages: ctx.gpt.messages,
     functions: [
       {
         name: "eval",
@@ -78,14 +76,14 @@ export const Is = (ast: Lang.AST): ast is Form =>
   STATIC.IsList(ast) && ast[0] === Identifier && ast.length === 2;
 
 export const Apply =
-  (env: IEnv) =>
+  (ctx: IContext) =>
   async (ast: Form): Promise<Lang.AST> => {
     try {
       // GPT Call 1
-      const { data } = await callGPT(env)(writer(ast[1]));
+      const { data } = await callGPT(ctx)(writer(ast[1]));
       let content = data.choices[0]?.message?.content?.toString();
       log("gpt", "content returned", content);
-      if (content) gptHistory.append({ role: "assistant", content });
+      if (content) ctx.gpt.append({ role: "assistant", content });
 
       // call the function IF PROVIDED
       const function_call = data.choices[0]?.message?.function_call;
@@ -96,23 +94,23 @@ export const Apply =
         if (name === "eval") {
           const expr = JSON.parse(function_call.arguments || "").expr;
           log("gpt", "function called", name, expr);
-          result = await evaluate(env)(parser(expr));
+          result = await ctx.eval(ctx)(parser(expr));
         }
 
         if (name === "envget") {
           const key = JSON.parse(function_call.arguments || "").key;
           log("gpt", "function called", name, key);
-          result = key ? env.map.get(Symbol.for(key)) : env.getAll();
+          result = key ? ctx.env.map.get(Symbol.for(key)) : ctx.env.getAll();
         }
 
         log("gpt", "function result", result);
-        gptHistory.append({
+        ctx.gpt.append({
           role: "function",
           name: name,
           content: writer(result),
         });
 
-        return await Apply(env)(ast);
+        return await Apply(ctx)(ast);
       }
 
       // Extract The First Code Block

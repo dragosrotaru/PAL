@@ -1,13 +1,17 @@
 # Focus
 
-- consider rewriting environment to context for special forms so its an object containing env, and other resources
-- the gui server needs to have the location of the client file dynamically templated into the index.html
-
-- replace forms Is methods with the new pattern matching
-- factor out type system (is checking)
-- check if macro works as expected
 - fix csv parsing incorrectly
-- add generic function application
+- implement more basic functions so you can write some sanity tests
+- write sanity checks to make sure that the lisp implementation is working as expected
+
+- move quasi-special forms into stored procedures and macros when necessary
+- test out the macros and fix them if necessary
+
+- flesh out the implementation of the macro/type system
+
+- add a system to manage which functions to load into the environment
+- add a system to manage the namespace and protect it
+- add a rules system for managing the impedence mismatch between the filesystem model and the env model
 
 ## Areas of Focus
 
@@ -43,6 +47,7 @@ The north star is force multiplication.
 
 ## GUI
 
+- the gui server needs to have the location of the client file dynamically templated into the index.html
 - add basic style
 - show if object is ephemeral or persisted
 - add save capability
@@ -81,10 +86,7 @@ The north star is force multiplication.
 ## Evaluation
 
 - rewrite the evaluator as a generic pattern-matcher
-- load forms as procedures in the env during compilation
-- fix relationship between apply+procedure
-- make it lazy evaluate
-
+- support lazy evaluation
 - add support for importing js/ts Procedures
 - add support for embedded js/ts
 - provide general approach to exposing/accessing js/ts libraries

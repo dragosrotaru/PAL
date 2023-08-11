@@ -1,6 +1,6 @@
 import { SET_ID } from "../../core/environment.js";
 import type { IEnv } from "../../interfaces.js";
-import { Lang } from "../../language/ast.js";
+import type { Lang } from "../../language/ast.js";
 import { STATIC } from "../../language/typesystem.js";
 
 //** ( set i x ) */

@@ -1,4 +1,4 @@
-import type { IEnv } from "../interfaces.js";
+import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 
 import * as apply from "../specialforms/apply.js";
@@ -47,43 +47,50 @@ ocaml attaching "processor" to quote .. like parser?
 */
 
 export const evaluate =
-  (env: IEnv) =>
+  (ctx: IContext) =>
   async (ast: Lang.AST): Promise<Lang.AST> => {
+    const { env } = ctx;
     // Return Primitives
     if (STATIC.IsPrimitive(ast)) return ast;
 
     log("evaluator", ast);
 
     // Expand Macros
-    ast = macro.Expand(env)(ast);
+    ast = macro.Expand(ctx)(ast);
 
     // Apply Special Forms
-    if (macro.Is(ast)) return macro.Define(env)(ast);
+    if (self.Is(ast)) return self.Apply(ast);
+    if (quote.Is(ast)) return await quote.Apply(ast);
+    if (macro.Is(ast)) return macro.Define(ctx)(ast);
+    if (lambda.Is(ast)) return await lambda.Apply(ctx)(ast);
 
-    if (quote.Is(ast)) return await quote.Apply(env)(ast);
-    if (lambda.Is(ast)) return await lambda.Apply(env)(ast);
-    if (self.Is(ast)) return self.Apply(env)(ast);
+    // Might not need to be special forms
+    if (evalF.Is(ast)) return await evalF.Apply(ctx)(ast);
+    if (gpt.Is(ast)) return await gpt.Apply(ctx)(ast);
+    if (ui.Is(ast)) return await ui.Apply(ctx)(ast);
 
-    // Could probs just be stored procedures and/or macros
-    if (evalF.Is(ast)) return await evalF.Apply(env)(ast);
-    if (envGetAll.Is(ast)) return await envGetAll.Apply(env)(ast);
+    // Definitely dont need to be special forms
+    if (envGetAll.Is(ast)) return await envGetAll.Apply(env);
     if (set.Is(ast)) return await set.Apply(env)(ast);
     if (del.Is(ast)) return await del.Apply(env)(ast);
-    if (exit.Is(ast)) return await exit.Apply(env)(ast);
-    if (gpt.Is(ast)) return await gpt.Apply(env)(ast);
-    if (ui.Is(ast)) return await ui.Apply(env)(ast);
-    if (parse.Is(ast)) return await parse.Apply(env)(ast);
-    if (quit.Is(ast)) return await quit.Apply(env)(ast);
+    if (parse.Is(ast)) return await parse.Apply(ast);
+    if (exit.Is(ast)) return await exit.Apply();
+    if (quit.Is(ast)) return await quit.Apply();
 
     // Procedure Application
-    if (apply.Is(ast)) return await apply.Apply(env)(ast);
+    if (apply.Is(ast)) return await apply.Apply(ctx)(ast);
 
     // Resolve Identifier
-    if (STATIC.IsID(ast)) return await evaluate(env)(env.map.get(ast));
+    if (STATIC.IsID(ast)) return await ctx.eval(ctx)(env.map.get(ast));
 
     // Evaluate List (No order)
-    if (STATIC.IsList(ast))
-      return evaluate(env)(await Promise.all(ast.map((a) => evaluate(env)(a))));
+    if (STATIC.IsList(ast)) {
+      const next = await Promise.all(ast.map((a) => ctx.eval(ctx)(a)));
+      if (ctx.ts.valueEquals(ast, next)) {
+        return next;
+      }
+      return ctx.eval(ctx)(next);
+    }
 
     log("evaluator", ast);
     throw new Error("should never throw");
