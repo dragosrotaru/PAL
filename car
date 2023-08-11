@@ -1,0 +1,3 @@
+function car(list) {
+    return list[0];
+}

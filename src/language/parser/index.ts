@@ -17,13 +17,13 @@ const is = <T extends Name>(input: Clue, type: T): input is T | `.${T}` =>
 export const parser = (input: string, clue: Clue = PAL): Lang.AST => {
   if (is(clue, "pal")) return palparser(input);
   if (is(clue, "csv")) return csvparser(input);
-  if (is(clue, "txt") || is(clue, "text")) return Lang.String.parse(input);
-  return Lang.String.parse(input);
+  if (is(clue, "txt") || is(clue, "text")) return input;
+  return palparser(input);
 };
 
 export const writer = (input: any, clue: Clue = PAL): string => {
   if (is(clue, "pal")) return palwriter(input);
   if (is(clue, "csv")) return csvwriter(input);
-  if (is(clue, "txt") || is(clue, "text")) return Lang.String.write(input);
+  if (is(clue, "txt") || is(clue, "text")) return input;
   return palwriter(input);
 };

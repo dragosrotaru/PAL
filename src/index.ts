@@ -9,11 +9,10 @@ import { StartRepl } from "./ui/repl.js";
 const ts = new TypeSystem();
 const env = new Env(ts);
 const fs = new FileSystem(env, ts);
-
 // todo this can be virtualized once we can express json
-export const gpt = new GPTMessageHistory(env);
+const gpt = new GPTMessageHistory(env);
 
-const ctx: IContext = {
+export const ctx: IContext = {
   ts,
   env,
   fs,

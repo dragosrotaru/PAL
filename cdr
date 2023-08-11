@@ -1,0 +1,4 @@
+function cdr(list) {
+    console.log(list);
+    return list.slice(1);
+}

@@ -92,6 +92,5 @@ export const evaluate =
       return ctx.eval(ctx)(next);
     }
 
-    log("evaluator", ast);
-    throw new Error("should never throw");
+    return ast;
   };
