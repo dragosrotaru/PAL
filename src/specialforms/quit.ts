@@ -3,6 +3,8 @@ import type { Lang } from "../language/ast.js";
 
 // todo enable a rebuild / restart
 
+/* this should be a stored procedure, can call with no params or any params, doesnt matter */
+
 export const Identifier = Symbol.for("quit");
 
 export type Form = typeof Identifier;

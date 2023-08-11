@@ -1,6 +1,8 @@
 import type { IEnv } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 
+/*  like quit this can be a special form / procedure */
+
 export const Identifier = Symbol.for("exit");
 
 export type Form = typeof Identifier;

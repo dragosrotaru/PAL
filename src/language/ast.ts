@@ -1,5 +1,3 @@
-import { IEnv } from "../interfaces.js";
-
 export namespace Lang {
   const identity = <V>(i: V): V => i;
   export namespace String {
@@ -14,11 +12,11 @@ export namespace Lang {
   export type Null = null;
   export type Undefined = undefined;
 
-  export type Primitive = ID | Boolean | Number | String | Null | Undefined;
-
-  export type SyncProcedure = (env: IEnv) => (...ast: PAL[]) => PAL;
-  export type AsyncProcedure = (env: IEnv) => (...ast: PAL[]) => Promise<PAL>;
+  export type SyncProcedure = (...ast: PAL[]) => PAL;
+  export type AsyncProcedure = (...ast: PAL[]) => Promise<PAL>;
   export type Procedure = SyncProcedure | AsyncProcedure;
+
+  export type Primitive = ID | Boolean | Number | String | Null | Undefined;
 
   export type List = PAL[];
   export type PAL = Primitive | List | Procedure;

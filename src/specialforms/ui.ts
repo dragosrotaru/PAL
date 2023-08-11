@@ -3,14 +3,16 @@ import type { IEnv } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
 import { openGUI } from "../ui/web/server.js";
-import * as apply from "./apply.js";
+
+/* stored procedure, then just add a macro to call functions without parameters? */
 
 export type Form = [typeof Identifier, Lang.AST] | typeof Identifier;
 
 export const Identifier = Symbol.for("ui");
 
 export const Is = (ast: Lang.AST): ast is Form =>
-  (apply.Is(ast) && ast[0] === Identifier) || ast === Identifier;
+  (STATIC.IsList(ast) && ast.length === 2 && ast[0] === Identifier) ||
+  ast === Identifier;
 
 export const Apply = (env: IEnv) => (ast: Form) => {
   if (ast === Identifier) {

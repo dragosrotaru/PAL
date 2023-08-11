@@ -35,7 +35,7 @@ TODO
 */
 
 export class FileSystem {
-  static ROOT = path.join(".");
+  static ROOT = path.join("test");
   private filePathSubscriptions = new Map<string, () => void>();
   private unsubscribeToEnvNew: IUnsubscribe;
 

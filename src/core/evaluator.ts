@@ -3,7 +3,7 @@ import type { Lang } from "../language/ast.js";
 
 import * as apply from "../specialforms/apply.js";
 import * as del from "../specialforms/env/del.js";
-import * as envF from "../specialforms/env/index.js";
+import * as envGetAll from "../specialforms/env/index.js";
 import * as set from "../specialforms/env/set.js";
 import * as evalF from "../specialforms/eval.js";
 import * as exit from "../specialforms/exit.js";
@@ -11,7 +11,6 @@ import * as gpt from "../specialforms/gpt.js";
 import * as lambda from "../specialforms/lambda.js";
 import * as macro from "../specialforms/macro.js";
 import * as parse from "../specialforms/parse.js";
-import * as procedure from "../specialforms/procedure.js";
 import * as quit from "../specialforms/quit.js";
 import * as quote from "../specialforms/quote.js";
 import * as self from "../specialforms/self.js";
@@ -50,51 +49,42 @@ ocaml attaching "processor" to quote .. like parser?
 export const evaluate =
   (env: IEnv) =>
   async (ast: Lang.AST): Promise<Lang.AST> => {
+    // Return Primitives
+    if (STATIC.IsPrimitive(ast)) return ast;
+
     log("evaluator", ast);
 
-    // Macros
+    // Expand Macros
     ast = macro.Expand(env)(ast);
 
+    // Apply Special Forms
     if (macro.Is(ast)) return macro.Define(env)(ast);
 
-    // Primitives
+    if (quote.Is(ast)) return await quote.Apply(env)(ast);
+    if (lambda.Is(ast)) return await lambda.Apply(env)(ast);
+    if (self.Is(ast)) return self.Apply(env)(ast);
 
-    if (STATIC.IsBoolean(ast)) return await ast;
-    if (STATIC.IsString(ast)) return ast;
-    if (STATIC.IsProcedure(ast)) return ast;
-    if (STATIC.IsUndefined(ast)) return ast;
-    if (STATIC.IsNull(ast)) return await ast;
-    if (STATIC.IsNumber(ast)) return await ast;
-
-    // Special Forms
-
-    if (envF.Is(ast)) return await envF.Apply(env)(ast);
+    // Could probs just be stored procedures and/or macros
+    if (evalF.Is(ast)) return await evalF.Apply(env)(ast);
+    if (envGetAll.Is(ast)) return await envGetAll.Apply(env)(ast);
     if (set.Is(ast)) return await set.Apply(env)(ast);
     if (del.Is(ast)) return await del.Apply(env)(ast);
-
-    if (evalF.Is(ast)) return await evalF.Apply(env)(ast);
     if (exit.Is(ast)) return await exit.Apply(env)(ast);
     if (gpt.Is(ast)) return await gpt.Apply(env)(ast);
     if (ui.Is(ast)) return await ui.Apply(env)(ast);
-    if (lambda.Is(ast)) return await lambda.Apply(env)(ast);
     if (parse.Is(ast)) return await parse.Apply(env)(ast);
-    if (quote.Is(ast)) return await quote.Apply(env)(ast);
     if (quit.Is(ast)) return await quit.Apply(env)(ast);
-    if (self.Is(ast)) return self.Apply(env)(ast);
 
-    // Generic Forms
-
-    // length of 1
-    if (STATIC.IsID(ast)) return await evaluate(env)(env.map.get(ast));
-
-    // length of 2
-    // todo seems like integrating these two into one makes sense
-    if (procedure.Is(ast)) return await procedure.Apply(env)(ast);
+    // Procedure Application
     if (apply.Is(ast)) return await apply.Apply(env)(ast);
 
-    // length of N
-    if (STATIC.IsList(ast))
-      return await Promise.all(ast.map((ast) => evaluate(env)(ast)));
+    // Resolve Identifier
+    if (STATIC.IsID(ast)) return await evaluate(env)(env.map.get(ast));
 
-    return undefined;
+    // Evaluate List (No order)
+    if (STATIC.IsList(ast))
+      return evaluate(env)(await Promise.all(ast.map((a) => evaluate(env)(a))));
+
+    log("evaluator", ast);
+    throw new Error("should never throw");
   };

@@ -2,6 +2,8 @@ import type { IEnv } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
 
+/* seems like this has to be a special form */
+
 export type Form = Lang.AST;
 
 export const Identifier = Symbol.for("self");

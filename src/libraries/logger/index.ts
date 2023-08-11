@@ -1,9 +1,9 @@
 const CONFIG = {
   filesystem: false,
   parser: false,
-  evaluator: false,
+  evaluator: true,
   env: false,
-  gui: true,
+  gui: false,
   gpt: false,
 };
 
