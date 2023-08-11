@@ -1,4 +1,3 @@
-import type { IEnv } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
 
@@ -17,4 +16,4 @@ export const Is = (ast: Lang.AST): ast is Form =>
   ast.length === 2 &&
   (ast[0] === Identifier || ast[0] === BackTick);
 
-export const Apply = (env: IEnv) => (ast: Form) => ast[1];
+export const Apply = (ast: Form) => ast[1];

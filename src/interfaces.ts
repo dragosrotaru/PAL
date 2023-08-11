@@ -1,5 +1,7 @@
+import type { FileSystem } from "./core/filesystem.js";
+import type { GPTMessageHistory } from "./core/messageHistory.js";
 import type { Lang } from "./language/ast.js";
-import { TypeSystem } from "./language/typesystem.js";
+import type { TypeSystem } from "./language/typesystem.js";
 
 export type IObserver<V> = (v: V) => undefined;
 export type IUnsubscribe = () => undefined;
@@ -20,3 +22,18 @@ export interface IEnv {
   unsubscribe: (id: Lang.ID, observer: IObserver<Lang.AST>) => undefined;
   extend: () => IEnv;
 }
+
+export type IEvaluate = (ctx: IContext) => (ast: Lang.AST) => Promise<Lang.AST>;
+export interface IContext {
+  env: IEnv;
+  eval: IEvaluate;
+  ts: TypeSystem;
+  fs: FileSystem;
+  gpt: GPTMessageHistory;
+  macros: Macro[];
+}
+
+export type Macro = {
+  pattern: Lang.AST;
+  template: Lang.AST;
+};

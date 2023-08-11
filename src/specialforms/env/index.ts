@@ -6,4 +6,4 @@ export type Form = typeof GETALL_ID;
 
 export const Is = (ast: Lang.AST): ast is Form => ast === GETALL_ID;
 
-export const Apply = (env: IEnv) => (ast: Form) => env.getAll();
+export const Apply = (env: IEnv) => env.getAll();

@@ -1,8 +1,7 @@
 import express from "express";
 import open from "open";
 import { WebSocketServer } from "ws";
-import { evaluate } from "../../core/evaluator.js";
-import type { IEnv } from "../../interfaces.js";
+import type { IContext } from "../../interfaces.js";
 import type { Lang } from "../../language/ast.js";
 import { parser, writer } from "../../language/parser/index.js";
 import { log } from "../../libraries/logger/index.js";
@@ -13,7 +12,7 @@ export const rootPath = ".";
 let SERVER_STARTED = false;
 const app = express();
 
-export const startServer = async (env: IEnv) => {
+export const startServer = async (ctx: IContext) => {
   return new Promise((resolve) => {
     // TODO authentication
     app.use("/public/.env", (_, res) => {
@@ -72,7 +71,7 @@ export const startServer = async (env: IEnv) => {
             // Subscribe iff no subscription for this object for this websocket client exists
             if (!openSubs.has(sym)) {
               log("gui", "subscribing to", sym);
-              const unsubscribe = env.subscribe(sym, (ast) => {
+              const unsubscribe = ctx.env.subscribe(sym, (ast) => {
                 ws.send(
                   JSON.stringify({ type: Type.AST, ast: writer(ast) } as ASTMSG)
                 );
@@ -81,7 +80,7 @@ export const startServer = async (env: IEnv) => {
             }
 
             // First time send
-            const ast = env.map.get(sym);
+            const ast = ctx.env.map.get(sym);
             ws.send(
               JSON.stringify({ type: Type.AST, ast: writer(ast) } as ASTMSG)
             );
@@ -99,7 +98,7 @@ export const startServer = async (env: IEnv) => {
 
           if (message.type === Type.Exec) {
             const ast = parser(message.code);
-            evaluate(env)(ast);
+            ctx.eval(ctx)(ast);
             return;
           }
 
@@ -155,7 +154,7 @@ export const startServer = async (env: IEnv) => {
   });
 };
 
-export const openGUI = async (id: Lang.ID, env: IEnv) => {
-  if (!SERVER_STARTED) await startServer(env);
+export const openGUI = async (id: Lang.ID, ctx: IContext) => {
+  if (!SERVER_STARTED) await startServer(ctx);
   await open(IdentifierToURI(id));
 };

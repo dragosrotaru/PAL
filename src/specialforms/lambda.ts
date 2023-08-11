@@ -1,5 +1,4 @@
-import { evaluate } from "../core/evaluator.js";
-import { type IEnv } from "../interfaces.js";
+import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
 
@@ -15,15 +14,16 @@ export const Is = (ast: Lang.AST): ast is Form =>
   STATIC.IsIDList(ast[1]);
 
 export const Apply =
-  (prenv: IEnv) =>
+  (ctx: IContext) =>
   (ast: Form): Lang.AsyncProcedure => {
     const argsIdentifiers = ast[1];
     const body = ast[2];
     return (...values: Lang.AST[]) => {
-      const env = prenv.extend();
+      const env = ctx.env.extend();
       argsIdentifiers.forEach((identifier, i) =>
         env.map.set(identifier, values[i])
       );
-      return evaluate(env)(body);
+      // todo definite trouble from this, should implement a class and have a method for extending context instead of extending just env
+      return ctx.eval({ ...ctx, env })(body);
     };
   };
