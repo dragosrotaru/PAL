@@ -1,40 +1,41 @@
 import { IEnv, IObserver, IUnsubscribe } from "../interfaces.js";
-import { ASTEquals, type Identifier, type PAL } from "../languages/pal/ast.js";
+import { type AST } from "../languages/ast.js";
+import { ASTEquals, type Identifier } from "../languages/pal/ast.js";
 import { log } from "../logger/index.js";
 
 export const NewID = Symbol.for("env/new");
-export type NewObservableForm = [Identifier, PAL];
+export type NewObservableForm = [Identifier, AST];
 
 export const SetID = Symbol.for("env/set");
-export type SetForm = [typeof SetID, Identifier, PAL];
+export type SetForm = [typeof SetID, Identifier, AST];
 
 export const DeleteID = Symbol.for("env/del");
 export type DeleteForm = [typeof DeleteID, Identifier];
 
 export const SubscribeID = Symbol.for("env/sub");
-export type SubscribeForm = [typeof SubscribeID, Identifier, IObserver<PAL>];
+export type SubscribeForm = [typeof SubscribeID, Identifier, IObserver<AST>];
 
 export const UnsubscribeID = Symbol.for("env/unsub");
-export type UnubscribeForm = [typeof UnsubscribeID, Identifier, IObserver<PAL>];
+export type UnubscribeForm = [typeof UnsubscribeID, Identifier, IObserver<AST>];
 
 export const GetAllID = Symbol.for("env");
 export type GetAllForm = typeof GetAllID;
 
 // TODO monitor for memory leaks
 
-export class Env implements IEnv<Identifier, PAL> {
-  public map: Map<Identifier, PAL>;
+export class Env implements IEnv {
+  public map: Map<Identifier, AST>;
   private observers = new Map<Identifier, IObserver<any>[]>();
 
-  constructor(prevMap?: Map<Identifier, PAL>) {
-    const map = new Map<Identifier, PAL>(prevMap);
+  constructor(prevMap?: Map<Identifier, AST>) {
+    const map = new Map<Identifier, AST>(prevMap);
     this.map = new Proxy(map, {
       get: this.proxyGet,
     });
   }
 
   private proxyGet = (
-    target: Map<Identifier, PAL>,
+    target: Map<Identifier, AST>,
     prop: string,
     receiver: any
   ) => {
@@ -103,12 +104,12 @@ export class Env implements IEnv<Identifier, PAL> {
       DeleteID,
       (env: Env) => (ast: DeleteForm) => env.map.delete(ast[1])
     );
-    this.map.set(GetAllID, (env: Env) => (ast: PAL) => this.getAll());
+    this.map.set(GetAllID, (env: Env) => (ast: AST) => this.getAll());
   }; */
 
-  public getAll = (): Array<[Identifier, PAL]> => {
+  public getAll = (): Array<[Identifier, AST]> => {
     log("env", "getting all");
-    const list: Array<[Identifier, PAL]> = [];
+    const list: Array<[Identifier, AST]> = [];
     this.map.forEach((value, key) => list.push([key, value]));
 
     // notify subscribers to env/getAll
@@ -116,7 +117,7 @@ export class Env implements IEnv<Identifier, PAL> {
     return list;
   };
 
-  public subscribe = <V extends PAL>(
+  public subscribe = <V extends AST>(
     key: Identifier,
     observer: IObserver<V>
   ): IUnsubscribe => {
@@ -136,7 +137,7 @@ export class Env implements IEnv<Identifier, PAL> {
     return () => this.unsubscribe(key, observer);
   };
 
-  public unsubscribe = <V extends PAL>(
+  public unsubscribe = <V extends AST>(
     key: Identifier,
     observer: IObserver<V>
   ): undefined => {
@@ -166,5 +167,9 @@ export class Env implements IEnv<Identifier, PAL> {
     log("env", "number of observed keys", this.observers.size);
 
     return undefined;
+  };
+
+  extend = (): IEnv => {
+    return new Env(this.map);
   };
 }

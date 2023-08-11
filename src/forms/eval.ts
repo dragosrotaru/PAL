@@ -1,13 +1,14 @@
-import { type Env } from "../core/environment.js";
 import { evaluate } from "../core/evaluator.js";
-import { IsList, type PAL } from "../languages/pal/ast.js";
+import { type IEnv } from "../interfaces.js";
+import { type AST } from "../languages/ast.js";
+import { IsList } from "../languages/pal/ast.js";
 
-export type Form = [typeof Identifier, PAL];
+export type Form = [typeof Identifier, AST];
 
 export const Identifier = Symbol.for("eval");
 
-export const Is = (ast: PAL): ast is Form =>
+export const Is = (ast: AST): ast is Form =>
   IsList(ast) && ast.length === 2 && ast[0] === Identifier;
 
-export const Apply = (env: Env) => async (ast: Form) =>
+export const Apply = (env: IEnv) => async (ast: Form) =>
   evaluate(env)(await evaluate(env)(ast[1]));

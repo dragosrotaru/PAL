@@ -1,10 +1,10 @@
-import { type Env } from "../../core/environment.js";
-import { type PAL } from "../../languages/pal/ast.js";
+import { type IEnv } from "../../interfaces.js";
+import { AST } from "../../languages/ast.js";
 
 export const Identifier = Symbol.for("env");
 
 export type Form = typeof Identifier;
 
-export const Is = (ast: PAL): ast is Form => ast === Identifier;
+export const Is = (ast: AST): ast is Form => ast === Identifier;
 
-export const Apply = (env: Env) => (ast: Form) => env.getAll();
+export const Apply = (env: IEnv) => (ast: Form) => env.getAll();

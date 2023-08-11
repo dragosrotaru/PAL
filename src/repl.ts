@@ -1,6 +1,6 @@
 import repl from "repl";
-import { env } from "./core/environment.js";
 import { evaluate } from "./core/evaluator.js";
+import { env } from "./index.js";
 import { parser } from "./languages/parser.js";
 
 repl.start({

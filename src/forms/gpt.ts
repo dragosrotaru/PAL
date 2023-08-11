@@ -1,8 +1,10 @@
 import { ChatCompletionRequestMessage } from "openai";
-import { Unsubscribe, env, type Env } from "../core/environment.js";
 import { evaluate } from "../core/evaluator.js";
 import { extractFirstCodeBlock, openai } from "../gpt/index.js";
-import { IsList, type PAL } from "../languages/pal/ast.js";
+import { env } from "../index.js";
+import { IUnsubscribe, type IEnv } from "../interfaces.js";
+import { type AST } from "../languages/ast.js";
+import { IsList } from "../languages/pal/ast.js";
 import { parser, writer } from "../languages/parser.js";
 import { log } from "../logger/index.js";
 
@@ -16,7 +18,7 @@ class MessageHistory {
   };
   private _history: ChatCompletionRequestMessage[] = [];
 
-  private unsub: Unsubscribe;
+  private unsub: IUnsubscribe;
 
   constructor() {
     this.unsub = this.subscribe();
@@ -27,7 +29,6 @@ class MessageHistory {
 
   private subscribe = () => {
     this.unsub = env.subscribe(HistoryID, (ast: string) => {
-      console.log("WOW", ast);
       this._history = JSON.parse(ast);
     });
     return this.unsub;
@@ -46,7 +47,7 @@ class MessageHistory {
 
 const history = new MessageHistory();
 
-const callGPT = (env: Env) => async (text?: string) => {
+const callGPT = (env: IEnv) => async (text?: string) => {
   if (text) {
     history.append({
       role: "user",
@@ -55,7 +56,6 @@ const callGPT = (env: Env) => async (text?: string) => {
   }
 
   // call api
-  console.log(history.messages);
   return openai.createChatCompletion({
     model: "gpt-3.5-turbo-16k-0613", // "gpt-4-0613", //
     messages: history.messages,
@@ -110,16 +110,16 @@ const callGPT = (env: Env) => async (text?: string) => {
   });
 };
 
-export type Form = [typeof Identifier, PAL];
+export type Form = [typeof Identifier, AST];
 
 export const Identifier = Symbol.for("gpt");
 
-export const Is = (ast: PAL): ast is Form =>
+export const Is = (ast: AST): ast is Form =>
   IsList(ast) && ast[0] === Identifier && ast.length === 2;
 
 export const Apply =
-  (env: Env) =>
-  async (ast: Form): Promise<PAL> => {
+  (env: IEnv) =>
+  async (ast: Form): Promise<AST> => {
     try {
       // GPT Call 1
       const { data } = await callGPT(env)(writer(ast[1]));
@@ -131,7 +131,7 @@ export const Apply =
       const function_call = data.choices[0]?.message?.function_call;
       if (function_call) {
         const name = function_call.name;
-        let result: PAL;
+        let result: AST;
 
         if (name === "eval") {
           const expr = JSON.parse(function_call.arguments || "").expr;

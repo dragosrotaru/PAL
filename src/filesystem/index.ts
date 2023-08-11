@@ -1,9 +1,4 @@
-import {
-  type IEnv,
-  type ILanguage,
-  type ILogger,
-  type IUnsubscribe,
-} from "../interfaces.js";
+import { type IEnv, type IUnsubscribe } from "../interfaces.js";
 
 import chokidar from "chokidar";
 import fs from "fs";
@@ -11,15 +6,17 @@ import path from "path";
 
 import { NewID, NewObservableForm } from "../core/environment.js";
 
+import { TypeOfIdentifier } from "../languages/pal/ast.js";
+
 import {
-  TypeOfIdentifier,
-  type Identifier,
-  type PAL,
-} from "../languages/pal/ast.js";
+  parser,
+  writer,
+  type Clue,
+  type FileExtension,
+} from "../languages/parser.js";
+import { log } from "../logger/index.js";
 
-import { type Clue, type FileExtension } from "../languages/parser.js";
-
-export const NAME = Symbol.for("filesystem");
+export const NAME = "filesystem";
 
 const ADD = "add";
 const CHANGE = "change";
@@ -44,11 +41,7 @@ export class FileSystem {
   private filePathSubscriptions = new Map<string, () => void>();
   private unsubscribeToEnvNew: IUnsubscribe;
 
-  constructor(
-    private env: IEnv<Identifier, PAL>,
-    private lang: ILanguage<PAL>,
-    private logger: ILogger
-  ) {
+  constructor(private env: IEnv) {
     this.watchFileSystem();
     this.unsubscribeToEnvNew = this.subscribeToEnv();
   }
@@ -92,7 +85,7 @@ export class FileSystem {
       const ext = this.getFileExt(filePath);
       const sym = Symbol.for(filePath);
 
-      const ast = this.lang.parse(file, ext);
+      const ast = parser(file, ext);
 
       // Before writing to the environment, unsubscribe to prevent loops
       const unsub = this.filePathSubscriptions.get(filePath);
@@ -105,8 +98,8 @@ export class FileSystem {
 
       // resubscribe to env
       const unsubscriber = this.env.subscribe(sym, (ast) => {
-        this.logger(NAME, WRITE, filePath, ast);
-        fs.writeFileSync(filePath, this.lang.write(ast, ext));
+        log(NAME, WRITE, filePath, ast);
+        fs.writeFileSync(filePath, writer(ast, ext));
       });
       this.filePathSubscriptions.set(filePath, unsubscriber);
 
@@ -126,12 +119,12 @@ export class FileSystem {
     });
 
     watcher.on(CHANGE, (filepath, stats) => {
-      this.logger(NAME, CHANGE, filepath, stats);
+      log(NAME, CHANGE, filepath, stats);
       this.synchronize(filepath, stats);
     });
 
     watcher.on(ADD, (filepath, stats) => {
-      this.logger(NAME, ADD, filepath, stats);
+      log(NAME, ADD, filepath, stats);
       this.synchronize(filepath, stats);
     });
   }
@@ -152,10 +145,7 @@ export class FileSystem {
         // todo refactor the way extensions are handled
         fs.writeFileSync(
           path.join(filepath),
-          this.lang.write(
-            content,
-            (TypeOfIdentifier(sym).description as Clue) || "txt"
-          )
+          writer(content, (TypeOfIdentifier(sym).description as Clue) || "txt")
         );
       }
     );

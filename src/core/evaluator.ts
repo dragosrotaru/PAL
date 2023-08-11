@@ -26,10 +26,10 @@ import {
   IsProcedure,
   IsString,
   IsUndefined,
-  type PAL,
 } from "../languages/pal/ast.js";
 
-import { Env } from "./environment.js";
+import { type IEnv } from "../interfaces.js";
+import { type AST } from "../languages/ast.js";
 
 /* 
 The core of evaluation is the eval apply recursion
@@ -59,8 +59,8 @@ ocaml attaching "processor" to quote .. like parser?
 */
 
 export const evaluate =
-  (env: Env) =>
-  async (ast: PAL): Promise<PAL> => {
+  (env: IEnv) =>
+  async (ast: AST): Promise<AST> => {
     log("evaluator", ast);
 
     // Macros

@@ -1,14 +1,18 @@
+import { AST } from "./languages/ast.js";
+import { Identifier } from "./languages/pal/ast.js";
+
 export type IObserver<V> = (v: V) => undefined;
 export type IUnsubscribe = () => undefined;
 
-export interface IEnv<Identifier, Value> {
-  map: Map<Identifier, Value>;
-  getAll: () => [Identifier, Value][];
-  subscribe: <V extends Value>(
+export interface IEnv {
+  map: Map<Identifier, AST>;
+  getAll: () => [Identifier, AST][];
+  subscribe: <V extends AST>(
     id: Identifier,
     observer: IObserver<V>
   ) => IUnsubscribe;
-  unsubscribe: (id: Identifier, observer: IObserver<Value>) => undefined;
+  unsubscribe: (id: Identifier, observer: IObserver<AST>) => undefined;
+  extend: () => IEnv;
 }
 
 export interface INameSpace {}
