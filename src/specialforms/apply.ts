@@ -11,7 +11,9 @@ export const Is = (ast: Lang.AST): ast is Form =>
 export const Apply = (ctx: IContext) => async (ast: Form) => {
   const rator = ast[0];
   const rand = ast[1];
+  console.log("apply", rator, rand);
   if (STATIC.IsList(rand)) {
+    console.log("is list");
     return ctx.eval(ctx)(await rator(...rand));
   }
   return ctx.eval(ctx)(await rator(rand));

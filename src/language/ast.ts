@@ -1,10 +1,4 @@
 export namespace Lang {
-  const identity = <V>(i: V): V => i;
-  export namespace String {
-    export const parse = identity;
-    export const write = identity;
-  }
-
   export type ID = symbol;
   export type Boolean = boolean;
   export type Number = number;

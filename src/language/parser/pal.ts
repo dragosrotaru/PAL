@@ -60,6 +60,7 @@ export const write = (ast: Lang.PAL): string => {
     log("parser", ast.description);
     return ast.description || "";
   }
+  if (STATIC.IsProcedure(ast)) return ast.toString();
   throw new Error(`Cannot serialize ${ast}`);
 };
 

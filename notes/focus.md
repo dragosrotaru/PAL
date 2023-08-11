@@ -1,6 +1,5 @@
 # Focus
 
-- fix csv parsing incorrectly
 - implement more basic functions so you can write some sanity tests
 - write sanity checks to make sure that the lisp implementation is working as expected
 
