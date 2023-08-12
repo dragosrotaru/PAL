@@ -7,7 +7,7 @@ export const StartRepl = (ctx: IContext) => {
     prompt: "repl > ",
     eval: async (cmd, context, filename, callback) => {
       if (cmd.startsWith("ai")) {
-        cmd = `(gpt "${cmd.slice(2).replace(/"/g, '\\"')}")`;
+        cmd = `(gpt "${cmd.slice(2).replace(/"/g, '\\"').trim()}")`;
       }
       callback(null, await ctx.eval(ctx)(parser(cmd, "pal")));
     },

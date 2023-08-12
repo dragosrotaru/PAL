@@ -1,17 +1,5 @@
 # Focus
 
-- implement more basic functions so you can write some sanity tests
-- write sanity checks to make sure that the lisp implementation is working as expected
-
-- move quasi-special forms into stored procedures and macros when necessary
-- test out the macros and fix them if necessary
-
-- flesh out the implementation of the macro/type system
-
-- add a system to manage which functions to load into the environment
-- add a system to manage the namespace and protect it
-- add a rules system for managing the impedence mismatch between the filesystem model and the env model
-
 ## Areas of Focus
 
 The north star is force multiplication.

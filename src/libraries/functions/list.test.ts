@@ -1,5 +1,5 @@
 import { IContext } from "../../interfaces.js";
-import { Lang } from "../ast.js";
+import { Lang } from "../../language/ast.js";
 import { append, car, cdr, cons, length } from "./list.js";
 
 export const test = async (ctx: IContext) => {

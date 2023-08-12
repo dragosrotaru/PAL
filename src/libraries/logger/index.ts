@@ -4,7 +4,7 @@ const CONFIG = {
   evaluator: true,
   env: false,
   gui: false,
-  gpt: false,
+  gpt: true,
 };
 
 type Module = keyof typeof CONFIG;

@@ -156,9 +156,7 @@ export class Env implements IEnv {
     log("env", "subscribing", key);
 
     // notify subscribers to env/sub
-    this.observers
-      .get(SUBSCRIBE_ID)
-      ?.forEach((obs) => obs([key, (env: Env) => observer]));
+    this.observers.get(SUBSCRIBE_ID)?.forEach((obs) => obs([key, observer]));
 
     if (!this.observers.has(key)) this.observers.set(key, []);
     log("env", "number observed keys", this.observers.size);
@@ -176,9 +174,7 @@ export class Env implements IEnv {
     log("env", "unsubscribing", key);
 
     // notify subscribers to env/unsub
-    this.observers
-      .get(UNSUBSCRIBE_ID)
-      ?.forEach((obs) => obs([key, (env: Env) => observer]));
+    this.observers.get(UNSUBSCRIBE_ID)?.forEach((obs) => obs([key, observer]));
 
     const observersForKey = this.observers.get(key);
 

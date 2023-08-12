@@ -28,6 +28,7 @@ MetaTypes:
 */
 
 import { Lang } from "./ast.js";
+import { JSON } from "./guards/json.js";
 
 // BUILT IN TYPES
 
@@ -53,6 +54,10 @@ export const STATIC = {
   IDLIST: Symbol.for("idlist"),
   IsIDList: (v: Lang.AST): v is Lang.IDList =>
     STATIC.IsList(v) && v.every(STATIC.IsID),
+
+  JSON: Symbol.for("json"),
+  IsJSONObject: (v: Lang.AST): v is Lang.JSON.Object => JSON.IsObject(v),
+  IsJSON: (v: Lang.AST): v is Lang.JSON.JSON => JSON.IsJSON(v),
 
   IsPrimitive: (v: Lang.AST): v is Lang.Primitive =>
     STATIC.IsString(v) ||
@@ -81,6 +86,8 @@ export class TypeSystem {
     this.register(STATIC.LIST, STATIC.IsList);
     this.register(STATIC.PROCEDURE, STATIC.IsProcedure);
     this.register(STATIC.IDLIST, STATIC.IsIDList);
+
+    this.register(STATIC.JSON, STATIC.IsJSONObject);
   };
 
   // returns true if the values of a are identical to the values of b

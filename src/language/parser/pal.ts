@@ -64,7 +64,7 @@ export const write = (ast: Lang.PAL): string => {
   throw new Error(`Cannot serialize ${ast}`);
 };
 
-const parseToken = (list: Lang.List, chars: string[]) => {
+const parseToken = (list: Lang.PAL.List, chars: string[]) => {
   const token = chars.join("").trim();
 
   if (token.length === 0) return list;
@@ -98,7 +98,7 @@ const parseToken = (list: Lang.List, chars: string[]) => {
 /** accepts an array of tokens and returns an abstract syntax tree (AST). */
 const parser = (
   tokens: string[],
-  list: Lang.List,
+  list: Lang.PAL.List,
   chars: string[] = [],
   stringed = false,
   escaped = false

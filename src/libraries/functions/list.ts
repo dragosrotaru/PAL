@@ -1,4 +1,4 @@
-import { Lang } from "../ast.js";
+import { Lang } from "../../language/ast.js";
 
 /**
  * Constructs a new list by prepending an element to an existing list.

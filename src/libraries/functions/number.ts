@@ -1,4 +1,4 @@
-import { Lang } from "../ast.js";
+import { Lang } from "../../language/ast.js";
 
 /**
  * Returns the sum of two numbers.
