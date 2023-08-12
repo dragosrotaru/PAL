@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { Configuration, OpenAIApi } from "openai";
-import { type JSONType } from "./jsonTypes.js";
+import type { Lang } from "../../language/ast.js";
 
 dotenv.config();
 if (!process.env["OPENAI"]) {
@@ -91,6 +91,6 @@ export const requestJSON = async (prompt: string) => {
   const result = await requestCode(["json"], systemPrompt)(prompt);
   return {
     ...result,
-    code: result.code ? (JSON.parse(result.code) as JSONType) : null,
+    code: result.code ? (JSON.parse(result.code) as Lang.JSON) : null,
   };
 };

@@ -53,6 +53,8 @@ export const evaluate =
     // Return Primitives
     if (STATIC.IsPrimitive(ast)) return ast;
 
+    if (STATIC.IsJSONObject(ast)) return ast;
+
     log("evaluator", ast);
 
     // Expand Macros
@@ -82,6 +84,7 @@ export const evaluate =
 
     // Resolve Identifier
     if (STATIC.IsID(ast)) return await ctx.eval(ctx)(env.map.get(ast));
+    ast;
 
     // Evaluate List (No order)
     if (STATIC.IsList(ast)) {

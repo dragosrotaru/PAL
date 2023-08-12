@@ -1,0 +1,7 @@
+( define playlist.type
+((needs track.type)
+(needs core.string)
+(has name.string)
+(parentOf tracks track 0...n)
+
+))

@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { parser } from "../../language/parser/index.js";
+import { write } from "../../language/parser/json.js";
 import { log } from "../../libraries/logger/index.js";
 import { CurrentIDToString, wsUrl } from "./common.js";
 import { Type, type Exec, type Message, type Open } from "./messages.js";
@@ -11,19 +12,19 @@ const webSocket = new WebSocket(wsUrl);
 webSocket.onopen = () => {
   log("gui", "ws open");
   webSocket.send(
-    JSON.stringify({
+    write({
       type: Type.Open,
       id: CurrentIDToString(),
-    } as Open)
+    } satisfies Open)
   );
 };
 
 const exec = async (code: string) => {
   webSocket.send(
-    JSON.stringify({
+    write({
       type: Type.Exec,
       code,
-    } as Exec)
+    } satisfies Exec)
   );
 };
 
@@ -42,9 +43,5 @@ webSocket.onmessage = (event) => {
     return;
   }
 
-  log(
-    "gui",
-    "server sent unsupported message",
-    JSON.stringify(message, null, 2)
-  );
+  log("gui", "server sent unsupported message", write(message as any));
 };
