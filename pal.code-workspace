@@ -1,0 +1,10 @@
+{
+	"folders": [],
+	"settings": {
+		"rust-analyzer.showUnlinkedFileNotification": false,
+		"rust-analyzer.cargo.buildScripts.enable": true,
+		"rust-analyzer.cargo.buildScripts.rebuildOnSave": true,
+		// "rust-analyzer.procMacro.enable": true,
+	},
+	
+}
