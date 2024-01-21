@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "pal-rs",
+    "pal-fs",
     "wingman",
 ]
 resolver = "2"

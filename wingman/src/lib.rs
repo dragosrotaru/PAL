@@ -2,11 +2,6 @@ mod control;
 mod display;
 mod domain;
 
-
-mod b_ui;
-mod a_ui;
-// include!(concat!(env!("OUT_DIR"), "/generated_ui.rs"));
-
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
 
@@ -21,9 +16,6 @@ use winit::{
 
 use crate::control::keyboard::KeyboardService;
 use crate::display::render::RenderService;
-
-
-
 
 #[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
 pub async fn run() {
