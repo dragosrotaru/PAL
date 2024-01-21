@@ -1,0 +1,16 @@
+.nested-accordion-list-item-container {
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+}
+
+.nested-accordion-list-item-container > .bullet {
+  cursor: pointer;
+  padding-top: 6px;
+  padding-right: 8px;
+  font-size: 8px;
+}
+
+.nested-accordion-list-item-container.has-children > .bullet {
+  font-size: 12px;
+}

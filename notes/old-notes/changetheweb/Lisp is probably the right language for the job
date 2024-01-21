@@ -1,0 +1,15 @@
+I have always been interested in Lisp due to is Homoiconicity. After
+searching for "Lisp HyperGraph" and "Lisp new Web" I've found some
+interesting work!
+
+https://github.com/graphbrain GraphBrain
+https://dejanmarketing.com/introducing-hyperpagerank/ HyperRank 
+https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_lisp/configuration/xe-3s/irl-xe-3s-book/irl-overview.html Locator ID Separation Protocol
+https://www.networkworld.com/article/2345605/is-lisp-going-to-save-the-internet-.html LISP Protocol 
+https://www.networkworld.com/article/2343927/so-what-s-this-about-the-internet-melting-down-.html Internet Melting Down
+https://en.wikipedia.org/wiki/Locator/Identifier_Separation_Protocol LISP Protocol Wiki
+https://www.semanticscholar.org/paper/Hierarchical-Hypergraphs-for-Knowledge-centric-a-Scioni-Huebel/1347f3e9d21176fea46a4a5780a01cbb0c4bb733 Hierarchial Hypergraphs for Knowledge Centric Robot Systems
+https://github.com/delaray/hypergraph CLOS Implementation of In Memory HyperGraph
+https://www.youtube.com/watch?v=7v9WO1YKiz8 Extending the LISP model
+https://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/areas/kr/systems/colab/0.html COLAB: Knowledge Representation and Compilation Laboratory
+https://robmosys.eu/wiki-sn-01/modeling:hypergraph-er RobMoSys

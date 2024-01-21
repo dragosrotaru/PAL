@@ -1,0 +1,106 @@
+(Type:Symbol)
+
+Type[
+    String [Atom]
+]
+
+Type[
+    Property[
+        Symbol[Name]
+        Symbol[Value]
+    ]
+]
+
+Type[
+    Object[
+        Symbol[Property]
+    ]
+]
+
+Object[
+    Task[
+        Property[
+            name
+            String[finish writing the compiler]
+        ]
+        Property[
+            status 
+            String[in progress]
+        ]
+    ]
+]
+
+
+# Language Level
+
+This is the compiled level. The semantics of this level
+Are implicitly defined by the Symbol Scoping. Here, the syntax is similar to the protocol layer,
+with the added context of the compiler. This allows for Type checking. 
+
+Symbol:Symbol {
+    Symbol { Symbol }
+    Symbol { Symbol Symbol }
+    ...
+}
+
+
+Task:MyTask {
+    name { finish writing the compiler }
+    status { in progress }
+}
+
+
+# Protocol Level, Denoted by () brackets
+
+Functions: machineToHuman, humanToMachine, render
+
+The protocol Level has 2 built in Symbols, Edge and Atom
+An Edge contains a list of Symbols, Edges or Atoms
+These can be nested infinately, but if they need to be referenced somewhere else,
+They can be unnested and assigned a Symbol using (:)
+There are 3 interfaces to Protocol:
+- machine protocol, with hashIDs
+- human readable file, with explicit Symbols
+- structured editor, with implicit Symbols
+
+This layer has a mechanism for namespacing and import/export
+
+Atom:Type (
+    Symbol
+)
+Atom:Property (
+    Symbol
+)
+
+Object (
+    Type
+    Property
+)
+
+Task (
+    Object
+    Property (
+        title
+        String
+    )
+    Property (
+        status
+        String
+    )
+)
+
+Edge:MyTask (
+    Task
+    finish writing the compiler
+    in progress
+)
+
+Five:Atom (
+    5
+)
+
+MyAge:Edge (
+    HumanAge
+    Five
+)
+

@@ -1,0 +1,7 @@
+the expansion of `is` with a depth parameter, support for other types (WildCards? Infinite Sequences / Streams? Circular References?)
+the addition of a performant `is` which checks hashes only
+deletion of information
+we need a way to express Errors from traverse (Either(Error,Information))
+the encoding of `is` into the graph
+the memoization of computation
+`is` itself is an Object of some kind

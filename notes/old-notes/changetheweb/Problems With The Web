@@ -1,0 +1,16 @@
+Browser Fingerprinting and Web Activity Tracking -
+We have to explore the boundary of control between User and System.
+Who should own the User Interface?
+How do we ensure that the code which produces our interfaces can be trusted?
+
+Unstructured Information - I've read somewhere that 94% of the information in the world is unstructured.
+I've also read that the amount of unstructured information is increasing much faster than structured.
+I have no doubt we are in the digital dark ages.
+
+Why is "scraping the web" different than "using the web"?
+There should be no distinction,
+the web should seamlessly bridge the gap between man and machine.
+
+Centralized Trust Model (Certificate Authority)
+
+Accessibility and Special Needs as an afterthought

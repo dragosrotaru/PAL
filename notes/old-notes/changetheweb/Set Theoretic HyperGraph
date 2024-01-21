@@ -1,0 +1,38 @@
+The encoding of an Edge as defined above has a natural mapping to the definition of a sequence aka ordered pair aka n-ary tuple:
+
+`s` can be empty - `( )`
+`s` has a Total Order defined by the index of the IDs in memory. `( a b c ) =/= ( b a c )`
+`s` can have duplicates: ( a a b c a )
+
+While from the practical considerations of the encoding it may seem like a
+good idea to define an Edge as a Sequence, It does not bode well with the
+standard set theoretic view of a Hyperedge. We can define Edges as Sets
+by:
+
+adding another restriction - `s` must not contain duplicate IDs.
+the index order of the IDs contained by `s` is not considered.
+A lexographical order is used to produce a consistent ID.
+
+
+Kuratowski's definition of an ordered pair: `( a b ) = { { a } { a b } }`.
+\i /file/tuple-diagram.png \i
+      
+In the diagram above, we see that the Edge #5 contains the full
+information required to convey the tuple `( A B )`. When the graph
+resolves completely (i.e. `{ A B { A } { A B } { { A } { A B } } }`), then
+we can say `5 is tuple(a b)`, otherwise, 5 is merely a reference to
+`tuple(a b)`. We can say `5 is tuple(a b)`, and `5 is a(n instance of)
+tuple`, where the concept `tuple` is encoded in the abstract structure of
+5. We want to figure out a way to define tupleness into its own Object,
+and be able to verify that `5 is a(n instance of) tuple` holds true.
+
+I've come to the conclusion that defining Edges specifically as Sets is
+counter-productive. Reasons:
+
+The Incompleteness Theorem. If we use a Set Theoretic approach, then we are limited to the truths that are provable only in Set Theory.
+Meaning-making is more fundamental than the Set, because without our
+facilities for expressing meaning, Set Theory could not be defined. The
+Ability to say "something is something", e.g. a semantic triple, is more
+fundamental. I was going to try and define semantic triples from Set
+Theory. Today I will focus on the simple case, the identity relation "A
+is A".

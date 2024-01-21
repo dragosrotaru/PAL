@@ -1,0 +1,13 @@
+The function `is`
+The function call `A is B`
+The function call `B is A`
+The result `(A is B)`
+
+We want a system such that
+
+`(is is is)` - the function is the same
+`(A is B is B is A) is true` - the function calls are the same (ideally with the same ID)
+`((A is B) is (B is A)) is True` - the results are the same
+
+
+We need to define a Function-like Object, a Result Object, a `True` primitive and a `False` primitive.

@@ -1,0 +1,6 @@
+If we decide on a particular REPL/runtime, then there is lock-in like with
+JavaScript. If you take the WASM / EVM route, then you loose the semantic
+connection between code. We can have the best of both worlds. You can use
+a formal lamba calculus based language for computations on the graph, and
+an impure language built for interactive computation and producing
+interfaces.

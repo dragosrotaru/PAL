@@ -1,0 +1,24 @@
+This is a \l https://en.wikipedia.org/wiki/Live_coding live coding \l
+experiment, you will be able to see this site change in real time as we type out new code.
+Sections will change, but the entire history of the project is saved in meta.json.
+You can find the past versions by taking any digest from meta.json and appending it to the url 
+"https://changetheweb.xyz/info/". If you would like to see the repository, it is available
+\l https://github.com/dragosrotaru/changetheweb on github \l. If you have any suggestions at all please let us know on Github.
+The latest code will not be in github because as explained, the version control is custom built using content-addressing.
+
+The files for the current version of this project are:
+
+-
+
+\l index.html \l
+\l meta.json \l
+\l style.css \l
+\l client.js client.js - code running on this webpage \l
+\l server.js server.js - code running on the server \l
+\l watcher.js watcher.js - code running on my PC \l
+
+-
+
+If you have any suggestions for the content of the site itself, please let
+us know in person if you know us personally, and on Github if you don't.
+Soon you will be able to join the conversation in the new web of meaning.

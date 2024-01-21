@@ -1,0 +1,7 @@
+We need to find a canonical form to store meaning in. Im reading about
+Lambda Cube, Calculus of Constructions, Intuitionistic Type Theory. My
+thinking is that while we cannot find a single formal system that is
+complete and consistent (nor should we want to), we should be able to find
+a single normal form encoding which is sufficient to encode the vast
+majority meaning and provide interoperability, allowing humans and
+automata to understand each other better at least for some finite time.

@@ -1,0 +1,301 @@
+[
+  {
+    "id": 1,
+    "title": "Grow Lights Guide",
+    "url": "https://growdoctorguides.com/dwc/printed-led-grow-lights"
+  },
+  {
+    "id": 2,
+    "title": "Plain Text Accounting Subreddit",
+    "url": "https://www.reddit.com/r/plaintextaccounting"
+  },
+  {
+    "id": 3,
+    "title": "BlockChain Accounting Subreddit",
+    "url": "https://www.reddit.com/r/Blockchain_Accounting"
+  },
+  {
+    "id": 4,
+    "title": "ICML Invited Talks",
+    "url": "https://icml.cc/virtual/2020/events/Invited%20Talk"
+  },
+  {
+    "id": 5,
+    "title": "Geoff Permaculture Videos",
+    "url": "https://www.discoverpermaculture.com"
+  },
+  {
+    "id": 6,
+    "title": "ICPR Conference",
+    "url": "https://whova.com/portal/webapp/icpr1_202009"
+  },
+  {
+    "id": 7,
+    "title": "Montreal Plant and Compost Distribution",
+    "url": "https://montreal.ca/en/topics/plant-and-compost-distribution"
+  },
+  {
+    "id": 8,
+    "title": "Canada based Mimosa Distributor",
+    "url": "https://millevertus.ca"
+  },
+  {
+    "id": 9,
+    "title": "Cool ICML Visualization",
+    "url": "https://icml.cc/virtual/2020/paper_vis.html"
+  },
+  {
+    "id": 10,
+    "title": "HelpX like WOOFing but for everything",
+    "url": "https://www.helpx.net"
+  },
+  {
+    "id": 11,
+    "title": "Patrick's Doc",
+    "url": "https://docs.google.com/document/d/1N4OpL6YZPbCaN-WLU0lk9ja59dDEqad-MfaYJXEnyp0/edit"
+  },
+  {
+    "id": 12,
+    "title": "Monotub Tek",
+    "url": "https://www.youtube.com/watch?v=qjfpEW5IHp4"
+  },
+  {
+    "id": 13,
+    "title": "Journey to the Microcosmos",
+    "url": "https://www.youtube.com/watch?v=6_ZuIG_fbTA"
+  },
+  {
+    "id": 14,
+    "title": "Homestead Location Suggestions",
+    "url": "https://docs.google.com/document/d/1qZIw8EwYePJwsCNb-ehFHFZl0nbxgXOlkzUrFa84_Mo/edit?fbclid=IwAR0-KHdIPfrLAUft57DO8f2t0Twn_twvfSSlISbpVEGT2SYPFKcGTkIw7eQ#heading=h.uhj9eo4z3o7t"
+  },
+  {
+    "id": 15,
+    "title": "Atlas of the Future",
+    "url": "https://atlasofthefuture.org"
+  },
+  {
+    "id": 16,
+    "title": "Project Kamp",
+    "url": "https://projectkamp.com"
+  },
+  {
+    "id": 17,
+    "title": "Dave Hakkens",
+    "url": "https://davehakkens.nl"
+  },
+  {
+    "id": 18,
+    "title": "Precious Plastic",
+    "url": "https://preciousplastic.com"
+  },
+  {
+    "id": 19,
+    "title": "Amadou - Mushroom Leather",
+    "url": "https://en.wikipedia.org/wiki/Amadou"
+  },
+  {
+    "id": 20,
+    "title": "Patrick's Mushroom List",
+    "url": "https://www.notion.so/91c1fb31c0224d28a3aeb1ea439ce3de?v=e49cbcd4083f45aaa48f779358fa4df4"
+  },
+  {
+    "id": 21,
+    "title": "MycoWorks",
+    "url": "https://www.mycoworks.com"
+  },
+  {
+    "id": 22,
+    "title": "Psy Index - Psychedelic Stocks",
+    "url": "https://www.psyindex.com"
+  },
+  {
+    "id": 23,
+    "title": "Categorical Machines: An Introduction",
+    "url": "https://www.youtube.com/watch?v=UxcpBnNATB0"
+  },
+  {
+    "id": 24,
+    "title": "Steve Webber on Multics",
+    "url": "https://www.youtube.com/watch?v=0gzjrF9r6QA"
+  },
+  {
+    "id": 25,
+    "title": "The First Real Operating Systems",
+    "url": "https://www.youtube.com/watch?v=yk0c3yqR4k0"
+  },
+  {
+    "id": 26,
+    "title": "Patricks Second Brain",
+    "url": "https://github.com/patchworquill/quilt-private"
+  },
+  {
+    "id": 27,
+    "title": "The Hundred-Year-Old Man Who Climbed Out the Window and Disappeared",
+    "type": "Film"
+  },
+  {
+    "id": 28,
+    "title": "Pardon My Icelandic",
+    "type": "Stand Up"
+  },
+  {
+    "id": 29,
+    "title": "Frankenstein's Army",
+    "type": "Film"
+  },
+  {
+    "id": 30,
+    "title": "The Expanse",
+    "type": "TV Show"
+  },
+  {
+    "id": 31,
+    "title": "The Mole: Undercover in North Korea",
+    "type": "Documentary"
+  },
+  {
+    "id": 33,
+    "title": "Collective - on netflix",
+    "type": "Documentary"
+  },
+  {
+    "id": 34,
+    "title": "The Shivering Truth (by xavier renegade angel people)",
+    "type": "TV Show"
+  },
+  {
+    "id": 35,
+    "title": "Q Into the Storm",
+    "type": "Documentary"
+  },
+  {
+    "id": 36,
+    "title": "Genghis Khan and the making of the modern world",
+    "type": "Book"
+  },
+  {
+    "id": 37,
+    "title": "The Art of the Meta-Object Protocol",
+    "type": "Book"
+  },
+  {
+    "id": 38,
+    "title": "Compilers: Principles, Techniques, and Tools",
+    "type": "Book"
+  },
+  {
+    "id": 39,
+    "title": "Type Theory and Functional Programming",
+    "type": "Book"
+  },
+  {
+    "id": 40,
+    "title": "Advanced Programming Language Design 1st Edition",
+    "type": "Book"
+  },
+  {
+    "id": 41,
+    "title": "Modern Operating Systems Subsequent Edition",
+    "type": "Book"
+  },
+  {
+    "id": 42,
+    "title": "72 dangerous places to live",
+    "type": "Documentary"
+  },
+  {
+    "id": 43,
+    "title": "unnatural selection - netflix",
+    "type": "Documentary"
+  },
+  {
+    "id": 44,
+    "title": "Every Tool is a Hammer"
+  },
+  {
+    "id": 45,
+    "title": "Strike!",
+    "type": "Magazine"
+  },
+  {
+    "id": 46,
+    "title": "bullshit jobs",
+    "type": "Book"
+  },
+  {
+    "id": 47,
+    "title": "Awesome Self Hosted List",
+    "url": "https://github.com/awesome-selfhosted/awesome-selfhosted"
+  },
+  {
+    "id": 48,
+    "title": "The Pragmatic Programmer",
+    "type": "Book"
+  },
+  {
+    "id": 49,
+    "title": "The Little Schemer",
+    "type": "Book"
+  },
+  {
+    "id": 50,
+    "title": "Mythical Man-Month",
+    "type": "Book"
+  },
+  {
+    "id": 51,
+    "title": "The Pragmatic Programmer",
+    "type": "Book"
+  },
+  {
+    "id": 52,
+    "title": "Types and Programming Languages",
+    "type": "Book"
+  },
+  {
+    "id": 53,
+    "title": "Structure and Interpretation of Computer Programs",
+    "type": "Book"
+  },
+  {
+    "id": 54,
+    "title": "Practical Foundations for Programming Languages",
+    "type": "Book"
+  },
+  {
+    "id": 55,
+    "title": "Formal Semantics of Programming Languages",
+    "type": "Book"
+  },
+  {
+    "id": 56,
+    "title": "The Lambda Papers",
+    "type": "Paper"
+  },
+  {
+    "id": 57,
+    "title": "Attention Is All You Need",
+    "type": "Paper"
+  },
+  {
+    "id": 58,
+    "title": "Hexastore: Sextuple Indexing for Semantic Web Data Management",
+    "type": "Paper"
+  },
+  {
+    "id": 59,
+    "title": "Simhashing hopefully made simple",
+    "url": "https://ferd.ca/simhashing-hopefully-made-simple.html"
+  },
+  {
+    "id": 60,
+    "title": "Fishtank",
+    "type": "Movie"
+  },
+  {
+    "id": 61,
+    "title": "Wintersleep",
+    "url": "Movie"
+  }
+]

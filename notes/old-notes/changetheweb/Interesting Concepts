@@ -1,0 +1,10 @@
+The absence of something is hard to define. If an Edge is a Set, then the
+empty edge is the Empty Set. What about the empty Node? If a Node is
+absent of any information, is it `Nothing` ? `None`? `null`? `void`? Some
+interesting concepts to think about:
+
+Infinity
+Truth (True and False Primitives)
+Self
+Time
+Random

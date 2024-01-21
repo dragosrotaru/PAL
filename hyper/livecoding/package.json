@@ -1,0 +1,22 @@
+{
+  "name": "livecoding",
+  "version": "0.0.1",
+  "description": "A live coding site",
+  "author": "Dragos Rotaru",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "watcher": "node -r dotenv/config source/watcher.js > log/watcher.log 2>&1 & npm run watcher:log",
+    "watcher:log": "tail -f log/watcher.log",
+    "server": "node -r dotenv/config source/server.js"
+  },
+  "dependencies": {
+    "@zharktas/vdom-serialize": "^1.0.0",
+    "acorn": "^7.2.0",
+    "express": "^4.17.1",
+    "html2hscript": "^2.0.1",
+    "parcel-bundler": "^1.12.4",
+    "virtual-dom": "^2.1.1",
+    "ws": "^7.3.0"
+  }
+}

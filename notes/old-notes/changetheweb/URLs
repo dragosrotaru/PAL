@@ -1,0 +1,13 @@
+Say I wanted to borrow a book from my friend Jesse. The book I want is
+George Orwell's "1984". I would ask for it by saying "Hey Jesse, can I
+borrow your book, 1984?" If Jesse gave me "Brave New World" instead, I
+would be able to look at the cover and realize that its not the book I
+asked for. On the web, we use Uniform Resource Locators, or URLs for
+short. We use URLs to identify pieces of information, like websites,
+webpages or files. URLs dont work like book names. Instead, they work by
+location. If we use the same analogy, its as if I were to ask "hey Jesse,
+can you give me the book on your bedroom bookshelf, third shelf from the
+ground, second book from the left." This is the first major flaw of the
+web. Instead, we can make use of cryptographic Hashing (Content Adressable
+Files, see IPFS) to reference pieces of information. Name are a bit more
+tricky.

@@ -1,0 +1,24 @@
+{
+  "name": "hyper-fs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build && node -r dotenv/config build/index.js",
+    "build": "npx tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "fuse-native": "^2.2.6",
+    "multihashes": "^4.0.2",
+    "tslib": "^2.2.0",
+    "varint": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.1",
+    "@types/varint": "^6.0.0",
+    "typescript": "^4.2.4"
+  }
+}
