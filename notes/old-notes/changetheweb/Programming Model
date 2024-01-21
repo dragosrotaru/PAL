@@ -1,0 +1,47 @@
+Like LISP, you have atoms and lists. In our lingo, Atoms are Nodes and
+lists are Edges. An Node contains any arbitrary binary information. There
+are 2 special types of Nodes - An Identifier and A Name. A Name is like a
+Symbol is Lisp. A Name resolves to an Identifier, which resolves to
+Information. The Name is resolved in the context of the NameSpace, which
+is defined in the program runtime. In the development environment, each
+expression is numbered, like lines of code are normally numbered, but
+instead the numbering indexes the expressions. This is the default
+namespace of the runtime context. It is also the default Idenifier. In the
+dev environment, a name is optionally given to an expression by the
+programmer, but the number based naming system is maintained. special
+characters are used to type nodes in an expression, in order to specify if
+the programmer is referring to information, an identifier or a name. this
+is resolved with a resolution function defined in the runtime. The
+Development Environment is an interface which resolves information to
+graphical (at first, textual) representations (ie human readable strings)
+based on the encoding of the information. The divide between development
+environment and browser will be removed. I think it makes sense to specify
+the encoding within the node itself, although I can also see the
+possibility of normalizing encoding specifications to nodes and edges
+themselves. (a semantic triple like a is encoding of b). Next have to dive
+into Lambda Calculus to figure out how we will represent functions and
+their result, as a computation itself is an object in our language which
+can be cached across different runtimes (network memoization). We have to
+think about evaluation models.
+
+I think HTML is representable in S-expressions. There may be a clean way
+to migrate the www to this new paradigm. I need to learn more about
+Context-Free Grammars and figure out if Normalizing HyperEdges to
+S-Expressions (nested ordered pairs) is a good call.
+
+There is no reason to stick to polish notation if we can define interfaces
+for data encodings. One should be able to switch between representations
+of information freely. These concerns should be decoupled. From Talk by
+Shriram Krishnamurthi - Given Semantics of two languages L and L + F Where
+F is an extension on the base language L, If some program P in L is the
+result of "expanding" from P in L + F Then P in L is equal in meaning to P
+in L + F. How do we deal with this? We store P in L and the collapsing of
+P to L + F becomes syntactic sugar in the User Interface.
+
+Read:
+
+\l http://people.csail.mit.edu/rivest/Sexp.txt IETF RFC Candidate for Canonical S-Expressions - Ron Rivest \l
+\l https://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html Common Lisp, The Language \l
+\l https://github.com/ethereum/wiki/wiki/RLP Ethereum Recursive Length Prefix \l
+\l https://en.wikipedia.org/wiki/Hash_consing Hash Consing \l
+Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I - John McCarthy

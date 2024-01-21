@@ -1,0 +1,35 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run compile && YPERSISTENCE=./data/crdt node build/index.js",
+    "compile": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^4.4.1",
+    "json-server": "^0.16.3",
+    "morgan": "^1.10.0",
+    "tslib": "^2.1.0",
+    "typescript": "^4.2.3",
+    "ws": "^7.4.4",
+    "y-websocket": "^1.3.11",
+    "yjs": "^13.5.4"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.0",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
+    "@types/json-server": "^0.14.3",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^14.14.37",
+    "@types/ws": "^7.4.1"
+  }
+}

@@ -1,0 +1,31 @@
+Some Wiki Links to read
+
+https://en.wikipedia.org/wiki/Identity_(philosophy) Identity (Philosophy)
+https://en.wikipedia.org/wiki/Identity_of_indiscernibles Identity of Indiscernibles
+https://en.wikipedia.org/wiki/Identity_(mathematics) Identity (Mathematics)
+https://en.wikipedia.org/wiki/Identity_element Identity Element
+https://en.wikipedia.org/wiki/Identity_function Identity Function
+https://en.wikipedia.org/wiki/Logical_equality Logical Equality
+
+Ideally equality of Nodes / Edges can be reduced to equality of IDs, but two problems present themselves:
+
+The Hashing Function may be replaced with time, which means we will need a fundamental way to compare the two when the time comes.
+Collisions are possible, however improbable they may be (god does not play dice?)
+
+This means that in order to verify `x is y`, x and y have to be traversed
+and the information compared with the binary equality operator.
+
+`is: (x: Edge, y: Node) => False`
+`is: (x: Node, y: Edge) => False`
+`is: (x: Edge, y: Edge) => x.s.length != y.s.length ? False : x.s.every(index => x.s[index] is y.s[index])`
+`is: (x: Node, y: Node) => x.d = y.d`
+`is: (x: ID, y:ID) => traverse(x) is traverse(y)`
+
+Where `traverse` is a graph traversal method and `=, !=` are binary operators.
+
+`x is y` is symmetric. If index order did not matter for edges (as with
+the Set Theoretic definition), this algorithm for determining identity
+would not work. Because traversal is required, `is` may never finish
+executing due to circular references, or it may take a long time because x
+and y have a large amount of descendants. A maximum depth parameter could
+be used, if desired.

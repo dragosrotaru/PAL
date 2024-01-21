@@ -1,0 +1,18 @@
+If I said "Do you know Donald?", what would you think I am referring to?
+Is it someone you know personally? Someone well known, like Donald Trump
+or Donald Duck? If we share a common connection and you are aware of this
+fact then it would probably be that person. If we share a common context,
+then it would be rational to think I am referring to the most referred to
+entity in that context. In a human network name resolution can be imagined
+to be some function of the social graph. In a generalized information
+network, should it be any different? On the WWW we have a really broken
+system for identifying and resolving things - URLs. When you use the web,
+do you type in the url to the exact thing you are looking for or do you
+search for it in the search bar? Why has the search bar been merged into
+the address bar in most browsers? Why is such an important functionality
+as search privatized and owned by Google/Microsoft/DuckDuckGo/etc? Why
+does every single website implement its own search functionality?
+According to the \l https://en.wikipedia.org/wiki/Zooko%27s_triangle Zooko's Conjecture \l,
+We have to pick 2 out of 3 when building network protocols for name resolution: Human-meaningful, Secure and Decentalized.
+There is a naming system called \l https://en.wikipedia.org/wiki/Petname Petnames \l which is
+believed to disprove this conjecture.

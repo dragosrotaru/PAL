@@ -1,0 +1,27 @@
+{
+  "name": "hyper-ts",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Dragos Rotaru",
+  "license": "GNU GPL V3",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build && node -r dotenv/config lib/index.js",
+    "build": "npx tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.5",
+    "@types/redis": "^2.8.22",
+    "@types/varint": "^5.0.0",
+    "dotenv": "^8.2.0",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "fp-ts": "^2.6.2",
+    "io-ts": "^2.2.4",
+    "jsencrypt": "^3.0.0-rc.1",
+    "multihashes": "^0.4.19",
+    "redis": "^3.0.2"
+  }
+}

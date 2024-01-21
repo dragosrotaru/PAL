@@ -1,0 +1,73 @@
+
+
+Data Layer
+Repository
+Utility
+Models
+Services
+Components
+
+## Data Layer
+
+Node {
+    Hash
+    Content
+}
+
+Edge {
+    Hash
+    HashList
+}
+
+Symbol {
+    id
+}
+
+## Semantic Layer
+
+Object {
+    ID: String
+    Name: String
+    Type: Type::ID
+    DefaultInterface: Interface::ID
+    Data
+}
+
+Type {
+    ID: String
+    Schema: Schema::ID
+    DefaultInterface: Interface::ID
+    PreferredInterfaces Interface::ID[]
+    Name: String
+}
+
+Interface {
+    ID: String
+    Name: String
+    Schema: Schema::ID
+    DefaultType: Type::ID
+    PreferredTypes: Type::ID[]
+}
+
+Schema {
+    Key: Value
+}
+
+## Examples
+
+// actions? break down properties into 
+Function: (Object) => Object
+
+
+
+Page
+    Block
+
+Codebase
+    FileStructure
+    Modules
+        Imports/Exports
+Sets
+Dataviews
+Projections
+Relations

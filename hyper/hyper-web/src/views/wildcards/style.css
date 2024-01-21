@@ -1,0 +1,26 @@
+.wildcards-container h1,
+.wildcards-container h2,
+.wildcards-container h3,
+.wildcards-container h4,
+.wildcards-container h5 {
+  margin: 0;
+}
+
+.wildcards-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.wildcards-left-panel {
+  width: 250px;
+  padding: 20px;
+  border-right: 2px rgb(53, 53, 53) solid;
+}
+
+.wildcards-right-panel {
+  width: 100%;
+}

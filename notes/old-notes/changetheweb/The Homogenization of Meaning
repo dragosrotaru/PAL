@@ -1,0 +1,34 @@
+A communicable meaning is a meaning that has at least one encoding. There
+must be at minimum one encoding of a meaning and at minimum one agent
+which knows the decoding function to say that the meaning can be
+understood. If a meaning is not understood, then it is not communicated. I
+believe it would be extremely beneficial if all communicable meanings, the
+"signified" in a semiotic sense, are signifiable and resolvable through
+one common mechanism. In the web, the closest mechanism we have is the
+URL. I think a petname and content-addressable mechanism is the ideal
+solution.
+
+Communicable Meaning -> Multiple Encodings -> Multiple Signifiers
+
+Communicable Meanings -> Single Encoding (Collision) -> Single Signifier
+
+The real Web of Meaning is in peoples head.
+
+The resolution function is a function for the decentralized dereferencing
+of things. This is a traversal of a Hypergraph. The resolution function
+itself is a thing, referrable by its identifier. every identifier is
+produced by a homogenous identification function mapping things onto
+smaller things, called identifiers. the size of things is defined by the
+number of bits of information for the thing. A hashing function is a good
+conteder for the homogenous identification function. The normalization of
+things to encodings should not be enforced, but rather utilized as needed
+by agents on the network. The most popular encoding of a thing would win
+out over time. Determining why encodings are prefered by agents is
+important. Building a network where constructive meaning-making is
+incentivised is important. Just like Identifiers can collide, Meaning can
+collide by overloading the same representation. This is why Context is
+required to resolve meaning. The Collision of Signifiers is rigorously
+understood under the mathematics of hashing functions. The Collision of
+Encodings (The Overloading of Meaning) is not as well understood.
+
+We need to move from a web of information to a web of meaning.

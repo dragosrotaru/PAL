@@ -1,0 +1,15 @@
+A Node where
+
+`d` is a finite sequence of arbitrary binary information
+`l` is the byte length of `d` encoded in LEB128 or similar variable-length unsigned int binary encoding
+`t` is a byte code representing the type `Node`
+`h` is a multihash of `d`
+`id` is the concatenatation of `t h l` into one sequence of binary information
+
+An Edge where
+
+`s` is a finite sequence of binary encoded multihashes
+`l` is the byte length of `s` encoded in LEB128 or similar variable-length unsigned int binary encoding
+`t` is a byte code representing the type `Edge`
+`h` is a multihash of `s`
+`id` is the concatenatation of `t h l` into one sequence of binary information

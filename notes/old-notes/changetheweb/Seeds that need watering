@@ -1,0 +1,95 @@
+
+How can you couple human assertions of truth with their own verification
+code?
+
+What would procedurally generated UI look like in the HyperGraph
+
+When a client requests an Object, it can check against the information
+size included in the identifier to cancel the request.
+
+checking if ids refer to real thing? Think about how Redis handles Keys
+
+LEB128 or alternative?
+
+Infinite sequences or sequences of indeterminate length (streams)
+
+Breaking Up long sequences into multiple Nodes/Edges?
+
+timestamps? agents? signing nodes / edges?
+
+Node information self describing encodings. multiformats?
+
+Look into lisp/clojure/racket
+
+Indexing Content
+
+Computations as objects, Verification of Computation.
+
+From the existing world of DLTs: ETH, Holochain, Scuttlebutt.
+
+The interface of meaning between man and machine as the signature of a
+function. Or maybe more generally as the naming of information?
+
+An ego check button in social media.
+
+Somebody give DMT to Jeff Bezos? lol
+
+How do we build in love into the internet?
+
+Lets get in touch with Tim Burners-Lee: contract@webfoundation.org
+
+I'm thinking about making my personal wiki / todos and calendar public,
+minus info about my friends and family. It would be interesting to
+explore that boundary between privacy and transparency. I guess Its easy
+for me to say this now, but if this project takes off then that boundary
+is important.
+
+
+Would a browser extension be useful? Certainly in the transition of the
+web to the new web, that may play a part. Like MetaMask for Ethereum. It
+would be cool to be able to select a specific piece of info on the web
+(like highlight particular text) and reference it as a source. Or taking
+a snapshot of a webpage as you see it now (like the internet archive,
+that seems like a fundamental function of the web). Or a feature to
+provide context to the old web.
+
+
+When thinking about Human Computer Interfaces, Its interesting to think
+about the configurations: Human - Human, Human - Machine - Human,
+Machine - Machine, Human - Machine, Human - Human - Human, etc
+
+There is a spectrum between natural language and formal language.
+
+There is a spectrum between entertainment and the spiritual pursuit of
+Truth. What would a bridge between natural language and formal language
+look like?
+
+You can throw a frisbee with your eyes closed, but you must catch with
+your eyes open. What does this say about giving a platform to people? Is
+it ok to allow individuals to broadcast to millions of people with their
+eyes closed? How can we make people see the reprecussions of their
+actions on the web?
+
+Ownership over meaning (owned names) as descendants of a privileged
+merkle tree root. We have to challenge this idea that names have to be
+global. Is Search and Traverse not sufficient? SEO becomes Memetics.
+
+Do an analysis of https://ahrefs.com/blog/most-visited-websites/
+
+The watcher.js file reminds me of life in the way it replicates itself.
+The Code is DNA. Each new child process runs on the mutated DNA. mutated
+by me, the programmer. What does it mean for parent processes to spawn
+child processes? What does it mean for processes to kill their children?
+What are the ethics of programs terminating? Should a process have write
+access to its own code?
+
+We can work on Decentralized Autonomous Organizations (I've taken a
+pretty good look at AragonDAO as part of a HackMoney Hackathon Project
+called <a href="https://github.com/carboclan/hip">$HIP</a>), or we can
+do away with organizations all-together. Do we need organizations for
+human beings to work together harmoniously? Could we build an economic
+system predicated on total individual sovereignty?
+
+To defeat the filter bubbles and echo chambers, we need to get all the
+outside the box thinkers, put them inside a box and shake the box
+violently.

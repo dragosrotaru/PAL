@@ -1,0 +1,27 @@
+.ram-container {
+  text-align: center;
+  margin: 20px;
+  height: 100vh;
+}
+
+.ram-container > div {
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ram-container > div > div:first-child {
+  width: 67%;
+}
+.ram-container > div > div:last-child {
+  width: 30%;
+}
+
+.ram-container .crdt-editor-container {
+  height: 50vh;
+}
+
+.ram-container ul {
+  list-style: none;
+}
