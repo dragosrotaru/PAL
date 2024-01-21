@@ -1,0 +1,9 @@
+[package]
+name = "pal-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+proc-macro = "1.0"
+quote = "1.0"
+syn = { version = "1.0", features = ["full"] }
