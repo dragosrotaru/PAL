@@ -1,0 +1,38 @@
+[package]
+name = "prophet"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[build-dependencies]
+pretty_build = { path = "../pretty_build" }
+
+[dependencies]
+pretty = { path = "../pretty" }
+automerge = "0.5.6"
+cfg-if = "1"
+env_logger = "0.10"
+log = "0.4"
+pollster = "0.3"
+winit = "0.28"
+wgpu = "0.18"
+glyphon = { git = "https://github.com/grovesNL/glyphon" }
+bytemuck = "1.14.0"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1.6"
+console_log = "1.0"
+wgpu = { version = "0.18", features = ["webgl"]}
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = [
+    "Document",
+    "Window",
+    "Element",
+]}
+
+[[bin]]
+name = "desktop"
+path = "src/main.rs"

@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "pal-rs",
+    "wingman",
+]
+resolver = "2"

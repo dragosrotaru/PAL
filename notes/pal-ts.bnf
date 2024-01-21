@@ -1,0 +1,8 @@
+<program> ::= <exp> | <program> <exp>
+<exp> ::= <symbol> | <boolean> | <number> | <special> | <list> | <string>
+<symbol> ::= { a-z | A-Z } <symbol> | ""
+<boolean> ::= "true" | "false"
+<number> ::= "#" { digit } <number> | ""
+<special> ::= "null" | "undefined"
+<list> ::= "(" <program> ")"
+<string> ::= '"' { any character except '"' or '\' or '(', ')' unless a '\' preceeds it } '"'

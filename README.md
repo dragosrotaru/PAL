@@ -1,1 +1,9 @@
-This is an active research project, its hard to document right now as its changing very rapidly. Feel free to peruse the contents, it probably wont make much sense.
+# Pal
+
+## What is Pal
+
+## Project Structure
+
+- `pal-ts` - older experimental implementation of Pal in TypeScript
+- `pal-rs` - current implementation of Pal language in Rust
+- `wingman` - integrated development environment / runtime in Rust

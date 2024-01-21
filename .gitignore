@@ -1,4 +1,9 @@
 .env
+
+# typescript
 node_modules
 build
-personal
+
+# rust
+target
+pkg
