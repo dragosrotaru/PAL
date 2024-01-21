@@ -58,8 +58,6 @@ Schema {
 // actions? break down properties into 
 Function: (Object) => Object
 
-
-
 Page
     Block
 

@@ -1,6 +1,5 @@
 # Editor
 
-
 I need a virtual filesystem / module resolver which serves the language server, standalone compiler and bundler
 
 - editing in VSCode - Language Server
