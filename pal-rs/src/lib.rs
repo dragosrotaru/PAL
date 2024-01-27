@@ -1,11 +1,10 @@
 use std::fs;
-use syn::parse::{Parse, ParseStream};
-use proc_macro::TokenStream;
-use quote::ToTokens;
+use syn::{parse::ParseStream, Error};
+use proc_macro2::TokenStream;
+use crate::ast::AST;
 
+mod ast;
 mod pretty;
-
-pub trait AST: Parse + ToTokens {}
 
 pub struct File {
     path: String,
@@ -35,10 +34,10 @@ pub fn from_filesystem(path: &str) -> Vec<File> {
  followed by a parse stream, and finally an AST.
  Applies the correct parser based on the file extension.
  */
-pub fn parse(file: File) -> AST {
+pub fn parse<T: AST>(file: File) -> Result<T, Error> {
     // todo this should use a different parsing method per extension
     let tokens = file.content.parse::<TokenStream>().unwrap();
-    let parse_stream = ParseStream::new(tokens);
+    let parse_stream = ParseStream::new(tokens); // todo fix
     match file.ext.as_str() {
         "pretty" => pretty::parse(parse_stream),
         _ => panic!("Unsupported extension"),
@@ -49,6 +48,6 @@ pub fn parse(file: File) -> AST {
  Take ASTs and does the magic, turning it into rust code.
  Calls the compiler on the rust code.
 */
-pub fn compile(ast: Vec<AST>) {
+pub fn compile<T: AST>(ast: T) {
 
 }

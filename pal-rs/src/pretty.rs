@@ -1,11 +1,14 @@
+use syn::{parse::{Parse, ParseStream}, Error};
+use component::Component;
 mod component;
 mod property;
 mod value;
 
-pub fn parse(parse_stream: ParseStream) -> crate::AST {
-    let mut components = Vec::new();
+pub fn parse(parse_stream: ParseStream) -> Result<Vec<Component>, Error> {
+    let mut components: Vec<Component> = Vec::new();
     while !parse_stream.is_empty() {
-        components.push(component::parse(parse_stream));
+        let component = Component::parse(parse_stream)?;
+        components.push(component);
     }
-    crate::AST::Pretty { components }
+    Ok(components)
 }

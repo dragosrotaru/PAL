@@ -1,7 +1,7 @@
 use proc_macro2::Ident;
 use syn::{parse::{Parse, ParseStream}, Error};
 
-use crate::value::{pixel::Pixel, percent::Percent};
+use super::super::value::{pixel::Pixel, percent::Percent};
 
 pub enum WidthValue {
     Pixel(Pixel),

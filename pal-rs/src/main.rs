@@ -6,5 +6,6 @@ fn main() {
     let files = from_filesystem(path);
     println!("{:?}", files);
     let asts = files.iter().map(|file| parse(file));
+    // todo output to rust files
     compile(asts);
 }
