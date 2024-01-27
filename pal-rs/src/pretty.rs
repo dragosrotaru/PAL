@@ -1,13 +1,26 @@
-use syn::{parse::{Parse, ParseStream}, Error};
+use proc_macro2::TokenStream;
+use syn::Error;
 use component::Component;
 pub mod component;
 pub mod property;
 pub mod value;
 
-pub fn parse(parse_stream: ParseStream) -> Result<Component, Error> {
-    let component = Component::parse(parse_stream)?;
-    if !parse_stream.is_empty() {
-        return Err(Error::new(parse_stream.span(), "Expected end of file"));
-    }
+pub fn parse(tokens: TokenStream) -> Result<Component, Error> {
+    let component = syn::parse2::<Component>(tokens)?;
     Ok(component)
+}
+
+/** Check for errors */
+pub fn check(components: Vec<Component>) -> Vec<Error> {
+    let mut errors = Vec::new();
+
+    // generate dependency graph
+
+    // check for circular references
+
+    // check external dependencies
+
+    // flatten inheritance tree
+    
+    errors
 }
