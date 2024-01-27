@@ -12,7 +12,6 @@ import {
   
   import {
     Disposable,
-    Executable,
     LanguageClient,
     LanguageClientOptions,
     ServerOptions,
@@ -40,7 +39,7 @@ import {
   
     const traceOutputChannel = window.createOutputChannel("Pal Language Server trace");
     const command = process.env.SERVER_PATH || "pal-lsp";
-    const run: Executable = {
+    const serverOptions: ServerOptions = {
       command,
       options: {
         env: {
@@ -49,10 +48,6 @@ import {
           RUST_LOG: "debug",
         },
       },
-    };
-    const serverOptions: ServerOptions = {
-      run,
-      debug: run,
     };
     // If the extension is launched in debug mode then the debug server options are used
     // Otherwise the run options are used
