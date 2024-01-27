@@ -1,4 +1,5 @@
-use syn::parse::Parse;
-use quote::ToTokens;
+use crate::pretty::component::Component;
 
-pub trait AST: Parse + ToTokens {}
+pub enum AST {
+    Component(Component)
+}

@@ -1,14 +1,13 @@
 use syn::{parse::{Parse, ParseStream}, Error};
 use component::Component;
-mod component;
-mod property;
-mod value;
+pub mod component;
+pub mod property;
+pub mod value;
 
-pub fn parse(parse_stream: ParseStream) -> Result<Vec<Component>, Error> {
-    let mut components: Vec<Component> = Vec::new();
-    while !parse_stream.is_empty() {
-        let component = Component::parse(parse_stream)?;
-        components.push(component);
+pub fn parse(parse_stream: ParseStream) -> Result<Component, Error> {
+    let component = Component::parse(parse_stream)?;
+    if !parse_stream.is_empty() {
+        return Err(Error::new(parse_stream.span(), "Expected end of file"));
     }
-    Ok(components)
+    Ok(component)
 }
