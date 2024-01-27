@@ -1,8 +1,11 @@
-.vscode
+src
+client
+
 node_modules
-out/
-src/
-tsconfig.json
-webpack.config.js
-client/**
+build
 target
+
+.vscode
+tsconfig.json
+Cargo.toml
+test.pretty
