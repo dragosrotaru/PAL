@@ -4,7 +4,7 @@ use syn::{
     parse::{Parse, ParseStream},
     token::Bracket, Ident, Result, Token, Error, LitStr, bracketed, spanned::Spanned,
 };
-use crate::property::{Property, PropertyIdent};
+use super::property::{Property, PropertyIdent};
 
 pub struct ComponentIdent {
     pub value: Ident,

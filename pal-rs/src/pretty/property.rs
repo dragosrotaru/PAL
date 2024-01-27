@@ -55,7 +55,6 @@ impl ToTokens for PropertyIdent {
     }
 }
 
-
 #[derive(Debug, Clone)]
 pub struct PropertyValue {
     pub value: i32,
