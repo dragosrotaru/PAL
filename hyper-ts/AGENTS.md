@@ -1,21 +1,13 @@
-# AGENTS.md — hyper
+# AGENTS.md — hyper-ts
 
-> AI-audience orientation guide for the `hyper` sub-project family.
+> AI-audience orientation guide for the `hyper-ts` TypeScript library.
 > @author claude
 
 ## What this is
 
-A collection of sub-projects building toward a **P2P encrypted hypergraph database**
-accessible via a FUSE filesystem. Conceptually: a content-addressed, peer-to-peer
-knowledge store where any data (nodes) and any relationship (edges) can be persisted,
-named, retrieved, and searched.
-
-## Sub-projects
-
-| Directory       | Language         | Purpose                                                                                 |
-| --------------- | ---------------- | --------------------------------------------------------------------------------------- |
-| `hyper-ts/`     | TypeScript       | Core library: `HyperGraph`, `HyperNode`, `HyperEdge`, `Client`, crypto                  |
-| `hyper-fs/`     | TypeScript       | FUSE filesystem that exposes a `Device`'s encrypted HyperGraph as a mountable directory |    |
+The core TypeScript library for a **P2P encrypted hypergraph database**.
+Provides `HyperGraph`, `HyperNode`, `HyperEdge`, an encrypted `Agent` identity model,
+and a `Client` session lifecycle. Data is content-addressed (UUID + Buffer).
 
 ## Architecture
 
@@ -30,11 +22,6 @@ hyper-ts (data layer)
         ├── IHyperGraphRepository   — local node/edge storage (one impl: in-memory)
         ├── IPetNameRepository      — name → ID mapping
         └── IAgentRepository        — encrypted agent blobs
-
-hyper-fs (filesystem)
-  └── Device (password + config)
-        └── FUSE mount at ./mount
-              └── FuseHandlers → Device → HyperGraph ops
 ```
 
 ## Encryption model
@@ -46,24 +33,22 @@ hyper-fs (filesystem)
 
 ## Entry points
 
-| Task                  | File                                                                              |
-| --------------------- | --------------------------------------------------------------------------------- |
-| Smoke-test hyper-ts   | `hyper-ts/src/index.ts` (demo: create agent, persist/retrieve/name/search/delete) |
-| Mount FUSE filesystem | `hyper-fs/src/index.ts` (args: password, config-file)                             |
-                             |
+| Task             | File                                                                              |
+| ---------------- | --------------------------------------------------------------------------------- |
+| Smoke test       | `src/index.ts` (demo: create agent, persist/retrieve/name/search/delete)          |
 
 ## Known stubs / missing pieces
 
-- **Network**: `Client.connect()` and `Client.disconnect()` are no-ops (pass with ~99.9% prob).
-  P2P replication is not implemented.
+- **Network**: `Client.connect()` and `Client.disconnect()` are no-ops. P2P replication is not implemented.
 - **HyperGraph.traverse()**: calls `console.log(this.net)` — no traversal logic.
+- Several dependency modules were never implemented: `password`, `hash-id`, `symmetric-key`,
+  `object-type-guard`. Build will fail until these are added or replaced.
 
 ## Build
 
 ```bash
-# hyper-ts
-cd hyper-ts && npm install && npx tsc
+pnpm run build   # tsgo
+pnpm run typecheck
+```
 
-# hyper-fs
-cd hyper-fs && npm install && npx tsc
-node dist/index.js <password> <config.json>
+> Note: Build currently fails due to missing internal module implementations.

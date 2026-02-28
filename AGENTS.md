@@ -24,18 +24,20 @@ Pal is a Lisp interpreter where:
 
 ## Sub-projects overview
 
-| Project                                         | Language   | Status                  | Purpose                                                                          |
-| ----------------------------------------------- | ---------- | ----------------------- | -------------------------------------------------------------------------------- |
-| [`pal-ts/`](pal-ts/AGENTS.md)                   | TypeScript | Most complete prototype | Lisp interpreter with GPT, filesystem-mapped env, web UI                         |
-| [`pal-rs/`](pal-rs/AGENTS.md)                   | Rust       | Early prototype         | `.pretty` DSL parser → Rust codegen (compile() is a stub)                        |
-| [`pal-fs/`](pal-fs/AGENTS.md)                   | Rust       | Skeleton                | FUSE filesystem (fuser crate) — all methods are stubs                            |
-| [`wingman/`](wingman/AGENTS.md)                 | Rust       | Visible rendering       | WebGPU text editor / IDE runtime (no text editing yet)                           |
-| [`pal-lsp/`](pal-lsp/AGENTS.md)                 | Rust + TS  | Working LSP             | Language server for `.pretty`/`.pal` files (chumsky parser, not Pal grammar yet) |
-| [`pal-vscode/`](pal-vscode/AGENTS.md)           | TypeScript | Working                 | VS Code extension: in-memory virtual filesystem (`palfs://`)                     |
-| [`hyper/`](hyper/AGENTS.md)                     | TypeScript | Older experiments       | P2P encrypted hypergraph DB, FUSE FS, Yjs CRDT editor, React web UI              |
-| [`pal-os/`](pal-os/AGENTS.md)                   | Dockerfile | Incomplete              | Linux From Scratch starting point for a custom Pal OS                            |
-| [`pal-lsp-example/`](pal-lsp-example/AGENTS.md) | TypeScript | Template                | Minimal VS Code LSP client skeleton (server command is empty)                    |
-| `notes/`                                        | Markdown   | Reference               | Design notes, research links, BNF grammars, architecture sketches                |
+| Project                                           | Language   | Status            | Purpose                                                                          |
+| ------------------------------------------------- | ---------- | ----------------- | -------------------------------------------------------------------------------- |
+| [`pal-ts/`](pal-ts/AGENTS.md)                     | TypeScript | Most complete     | Lisp interpreter with GPT, filesystem-mapped env, web UI                         |
+| [`pal-rs/`](pal-rs/AGENTS.md)                     | Rust       | Early prototype   | `.pretty` DSL parser → Rust codegen (`compile()` is a stub)                      |
+| [`pal-eval/`](pal-eval/AGENTS.md)                 | Rust       | Functional        | Standalone Lisp evaluator: one S-expr in, JSON out (no deps)                    |
+| [`pal-fs/`](pal-fs/AGENTS.md)                     | Rust       | Skeleton          | FUSE filesystem (fuser crate) — all methods are stubs                            |
+| [`wingman/`](wingman/AGENTS.md)                   | Rust       | Visible rendering | WebGPU text editor / IDE runtime (no text editing yet)                           |
+| [`pal-lsp/`](pal-lsp/AGENTS.md)                   | Rust + TS  | Working LSP       | Language server for `.pretty`/`.pal` files (chumsky parser, not Pal grammar yet) |
+| [`pal-fs-vscode/`](pal-fs-vscode/AGENTS.md)       | TypeScript | Working           | VS Code extension: in-memory virtual filesystem (`palfs://`)                     |
+| [`hyper-ts/`](hyper-ts/AGENTS.md)                 | TypeScript | Broken build      | P2P encrypted hypergraph DB core library (missing module impls)                  |
+| [`hyper-fs/`](hyper-fs/AGENTS.md)                 | TypeScript | Broken build      | FUSE filesystem over hyper-ts (blocked by same missing module impls)             |
+| [`pal-os/`](pal-os/AGENTS.md)                     | Dockerfile | Incomplete        | Linux From Scratch starting point for a custom Pal OS                            |
+| [`pal-lsp-example/`](pal-lsp-example/AGENTS.md)   | TypeScript | Template          | Minimal VS Code LSP client skeleton (server command is empty)                    |
+| `notes/`                                          | Markdown   | Reference         | Design notes, research links, BNF grammars, architecture sketches                |
 
 ## Architecture layers
 
@@ -43,19 +45,21 @@ Pal is a Lisp interpreter where:
 ┌─────────────────────────────────────────────────────────────────┐
 │  UI layer                                                        │
 │  wingman (WebGPU native)  │  pal-ts web (React/WebSocket)        │
-│  pal-vscode (VS Code extension)      │
+│  pal-fs-vscode (VS Code virtual filesystem extension)            │
 ├─────────────────────────────────────────────────────────────────┤
 │  Language / IDE layer                                            │
-│  pal-lsp (LSP server)     │  pal-lsp-example (LSP client stub)   │
+│  pal-lsp (LSP server)     │  pal-lsp/client (LSP VS Code ext)    │
 │  pal-rs (.pretty DSL)     │  pal-ts/language (S-expr parser)     │
+│  pal-lsp-example (LSP client stub)                               │
 ├─────────────────────────────────────────────────────────────────┤
 │  Runtime / Environment layer                                     │
 │  pal-ts (Lisp evaluator + reactive Env + GPT special form)       │
-│  pal-rs::compile() [STUB] │  pal-ts::FileSystem (chokidar)        │
+│  pal-eval (standalone Lisp eval — no deps, JSON out)             │
+│  pal-rs::compile() [STUB] │  pal-ts::FileSystem (chokidar)       │
 ├─────────────────────────────────────────────────────────────────┤
 │  Filesystem layer                                                │
 │  pal-fs (FUSE via fuser — stubs)                                 │
-│  hyper-fs (FUSE via fuse-native — functional)                    │
+│  hyper-fs (FUSE via fuse-native — broken build)                  │
 ├─────────────────────────────────────────────────────────────────┤
 │  Data layer                                                      │
 │  hyper-ts (HyperGraph, HyperNode, HyperEdge, encryption)         │
@@ -92,13 +96,14 @@ ComponentName[:ParentComponent] [
 
 ## Entry points for common tasks
 
-| Task                    | Where to start                                          |
-| ----------------------- | ------------------------------------------------------- |
-| Run the Lisp REPL       | `pal-ts/`: `npm start`                                  |
-| Parse a `.pretty` file  | `pal-rs/`: `cargo run -p pal-rs -- <directory>`         |
-| Start the LSP server    | `pal-lsp/`: `cargo run -p pal-lsp`                      |
-| Mount a FUSE filesystem | `hyper-fs/`: `node dist/index.js <pass> <config>` |
-| Launch the WebGPU IDE   | `wingman/`: `cargo run -p wingman`                      |
+| Task                    | Where to start                                                      |
+| ----------------------- | ------------------------------------------------------------------- |
+| Run the Lisp REPL       | `pal-ts/`: `pnpm run build && node build/index.js < /dev/null`      |
+| Evaluate one S-expr     | `pal-eval/`: `cargo run -p pal-eval -- '(+ 1 2)'`                   |
+| Parse a `.pretty` file  | `pal-rs/`: `cargo run -p pal-rs -- <directory>`                     |
+| Start the LSP server    | `pal-lsp/`: `cargo run -p pal-lsp`                                  |
+| Mount a FUSE filesystem | `hyper-fs/`: `pnpm run build && node build/index.js <pass> <config>`|
+| Launch the WebGPU IDE   | `wingman/`: `cargo run -p wingman`                                  |
 
 ## Notes directory
 
@@ -116,8 +121,10 @@ of the project. Key files:
 
 ## What's NOT connected yet
 
-- None of the Rust crates are wired together (pal-rs, pal-fs, wingman are independent).
+- None of the Rust crates are wired together (pal-rs, pal-fs, pal-eval, wingman are independent).
 - pal-ts and pal-rs are parallel implementations — no shared runtime.
+- pal-eval (Rust Lisp) and pal-ts (TS Lisp) are separate, incompatible evaluators.
 - pal-lsp uses a tutorial parser ("Nano Rust"), not the actual Pal grammar.
 - pal-os is a Docker LFS experiment with no Pal-specific content yet.
-- hyper (P2P, network) is not connected to pal-ts (Lisp runtime).
+- hyper-ts / hyper-fs (P2P, network) are not connected to pal-ts (Lisp runtime).
+- hyper-ts build is broken — several dependency modules were never implemented.

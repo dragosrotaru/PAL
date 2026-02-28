@@ -73,7 +73,7 @@ Change events are debounced 5 ms via `_fireSoon`.
 ## Build
 
 ```bash
-# From the pal-vscode/ directory
-npm install
-npx vsce package   # or: press F5 in VS Code to launch the Extension Development Host
+# From the pal-fs-vscode/ directory (package name: pal-vscode)
+pnpm run build   # tsgo
+# or: press F5 in VS Code to launch the Extension Development Host
 ```

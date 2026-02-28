@@ -9,8 +9,8 @@ A Language Server Protocol (LSP) server for the Pal language (`.pretty`, `.pal` 
 Written in Rust using `tower-lsp` (async LSP framework) and `chumsky` (parser combinators).
 Communicates with the editor over stdin/stdout via JSON-RPC.
 
-A companion VS Code **client** extension lives in `client/src/extension.ts` and spawns this
-binary as a child process.
+A companion VS Code **client** extension lives in `client/` (package: `pal-lsp-client`,
+in the pnpm workspace as `pal-lsp/client`) and spawns this binary as a child process.
 
 ## Architecture
 
@@ -99,11 +99,11 @@ Expr { Error | Value(Value) | List | Local | Let | Then | Binary | Call | If | P
 ## Build
 
 ```bash
-# Server binary
+# Server binary (Rust)
 cargo build -p pal-lsp
 
-# Client extension (from pal-lsp/ directory)
-npm install
-npx webpack
+# Client extension (TypeScript — package name: pal-lsp-client)
+# Run from pal-lsp/client/ or via pnpm workspace:
+pnpm --filter pal-lsp-client run build
 # Then install the built .vsix or launch via VS Code launch.json
 ```
