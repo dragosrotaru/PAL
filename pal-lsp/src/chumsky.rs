@@ -1,9 +1,9 @@
-use chumsky::Parser;
-use chumsky::{prelude::*, stream::Stream};
 use core::fmt;
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use tower_lsp::lsp_types::SemanticTokenType;
+use serde::{Deserialize, Serialize};
+use chumsky::Parser;
+use chumsky::{prelude::*, stream::Stream};
 
 use crate::semantic_token::LEGEND_TYPE;
 
