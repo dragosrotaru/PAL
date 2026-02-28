@@ -123,12 +123,11 @@ export const tokenizer = (source: string): string[] => source.trim().split("");
 export const parse = (source: string) => {
   const tokens = tokenizer(source);
   const parsed = parser(tokens, []);
-  // todo @claude: awful hack — empty-list check uses wrong regex (/S+/ should be /\s+/); fix the regex to correctly detect whitespace-only input
   // TODO get rid of this awful hack
   if (
     STATIC.IsList(parsed) &&
     parsed.length === 0 &&
-    source.replace(/S+/g, "") !== "()"
+    source.replace(/\s+/g, "") !== "()"
   ) {
     return undefined;
   }

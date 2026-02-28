@@ -2,7 +2,7 @@
 //! For WASM builds, wasm_bindgen(start) on lib.rs::run() serves as the entry point instead.
 //! @author claude
 
-use prophet::run;
+use wingman::run;
 
 fn main() {
     pollster::block_on(run());

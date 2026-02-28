@@ -194,12 +194,10 @@ export class TypeSystem {
     return guard(ast);
   };
 
-  // todo @claude: structuralTypeOf has broken guard (types.length === 0 || types.length > 0 is always true),
-  //               causing it to always throw; fix to only throw on ambiguous (>1) or missing (0) matches
   structuralTypeOf = (ast: Lang.AST): Lang.IDTree => {
     const entries = [...this.registry.entries()];
     const types = entries.filter(([_, guard]) => guard(ast));
-    if (types.length >= 0) {
+    if (types.length === 0 || types.length > 1) {
       // todo what if multiple answers? is that possible? how to prevent?
       // todo should return undefined, or any?
       throw new Error("undefined behaviour in typechecking");

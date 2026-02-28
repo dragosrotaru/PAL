@@ -20,7 +20,6 @@
     "web-vitals": "^1.0.1",
     "xterm": "^4.11.0",
     "xterm-addon-web-links": "^0.4.0",
-    "y-dat": "0.0.1",
     "y-indexeddb": "^9.0.6",
     "y-monaco": "^0.1.2",
     "y-protocols": "^1.0.4",
@@ -29,9 +28,9 @@
     "yjs": "^13.5.4"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider craco start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider craco build",
+    "test": "NODE_OPTIONS=--openssl-legacy-provider craco test",
     "eject": "craco eject"
   },
   "eslintConfig": {
@@ -68,5 +67,10 @@
     "monaco-editor-webpack-plugin": "^3.0.1",
     "prettier": "^2.2.1",
     "prettier-eslint": "^12.0.0"
+  },
+  "packageManager": "pnpm@10.29.3",
+  "engines": {
+    "node": "24.13.0",
+    "pnpm": ">=10.0.0"
   }
 }
