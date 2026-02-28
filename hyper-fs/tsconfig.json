@@ -2,9 +2,8 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["esnext", "dom"],
+    "lib": ["esnext"],
     "rootDir": "src",
     "outDir": "build",
-    "jsx": "react"
-  },
+  }
 }

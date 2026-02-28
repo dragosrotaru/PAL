@@ -202,7 +202,7 @@ export class TypeSystem {
       // todo should return undefined, or any?
       throw new Error("undefined behaviour in typechecking");
     }
-    const sym = types[0][0];
+    const sym = types[0]![0];
     if (sym === STATIC.LIST) {
       return (ast as Lang.List).map(this.structuralTypeOf);
     }

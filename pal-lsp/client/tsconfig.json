@@ -1,10 +1,10 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2022",
     "lib": ["esnext", "dom"],
     "rootDir": "src",
     "outDir": "build",
-    "jsx": "react"
-  },
+    "types": ["node", "vscode"]
+  }
 }

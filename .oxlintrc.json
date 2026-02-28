@@ -6,12 +6,11 @@
     "suspicious": "warn"
   },
   "rules": {
-    "no-console": "warn",
-    "no-throw-literal": "warn",
-    "only-throw-error": "warn",
+    "no-unused-vars": "warn",
+    "only-throw-error": "error",
     "typescript/no-floating-promises": "error",
     "typescript/return-await": "error",
-    "typescript/no-explicit-any": "warn"
+    "typescript/no-explicit-any": "error"
   },
   "overrides": [
     {

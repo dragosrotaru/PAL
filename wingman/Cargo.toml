@@ -7,15 +7,15 @@ edition = "2021"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-automerge = "0.5.6"
+automerge = "0.6"
 cfg-if = "1"
-env_logger = "0.10"
+env_logger = "0.11"
 log = "0.4"
 pollster = "0.3"
 winit = "0.28"
 wgpu = "0.18"
-glyphon = { git = "https://github.com/grovesNL/glyphon" }
-bytemuck = "1.14.0"
+glyphon = { git = "https://github.com/grovesNL/glyphon", rev = "b15437b87f4082e7a96a2ba05ed5063a6047cf95" }
+bytemuck = "1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 console_error_panic_hook = "0.1.6"

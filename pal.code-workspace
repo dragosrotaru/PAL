@@ -5,10 +5,8 @@
     { "name": "pal-vscode", "path": "pal-vscode" },
     { "name": "pal-lsp", "path": "pal-lsp" },
     { "name": "pal-lsp-example", "path": "pal-lsp-example" },
-    { "name": "hyper-ts", "path": "hyper/hyper-ts" },
-    { "name": "hyper-fs", "path": "hyper/hyper-fs" },
-    { "name": "hyper-server", "path": "hyper/hyper-server" },
-    { "name": "hyper-web", "path": "hyper/hyper-web" },
+    { "name": "hyper-ts", "path": "hyper-ts" },
+    { "name": "hyper-fs", "path": "hyper-fs" },
   ],
   "settings": {
     "typescript.experimental.useTsgo": true,

@@ -33,7 +33,6 @@ Pal is a Lisp interpreter where:
 | [`pal-lsp/`](pal-lsp/AGENTS.md)                 | Rust + TS  | Working LSP             | Language server for `.pretty`/`.pal` files (chumsky parser, not Pal grammar yet) |
 | [`pal-vscode/`](pal-vscode/AGENTS.md)           | TypeScript | Working                 | VS Code extension: in-memory virtual filesystem (`palfs://`)                     |
 | [`hyper/`](hyper/AGENTS.md)                     | TypeScript | Older experiments       | P2P encrypted hypergraph DB, FUSE FS, Yjs CRDT editor, React web UI              |
-| [`rabbithole/`](rabbithole/AGENTS.md)           | JavaScript | Minimal stub            | Browser extension: save selected text / URLs (in-memory only)                    |
 | [`pal-os/`](pal-os/AGENTS.md)                   | Dockerfile | Incomplete              | Linux From Scratch starting point for a custom Pal OS                            |
 | [`pal-lsp-example/`](pal-lsp-example/AGENTS.md) | TypeScript | Template                | Minimal VS Code LSP client skeleton (server command is empty)                    |
 | `notes/`                                        | Markdown   | Reference               | Design notes, research links, BNF grammars, architecture sketches                |
@@ -44,7 +43,7 @@ Pal is a Lisp interpreter where:
 ┌─────────────────────────────────────────────────────────────────┐
 │  UI layer                                                        │
 │  wingman (WebGPU native)  │  pal-ts web (React/WebSocket)        │
-│  hyper-web (React/Yjs)    │  pal-vscode (VS Code extension)      │
+│  pal-vscode (VS Code extension)      │
 ├─────────────────────────────────────────────────────────────────┤
 │  Language / IDE layer                                            │
 │  pal-lsp (LSP server)     │  pal-lsp-example (LSP client stub)   │
@@ -98,9 +97,8 @@ ComponentName[:ParentComponent] [
 | Run the Lisp REPL       | `pal-ts/`: `npm start`                                  |
 | Parse a `.pretty` file  | `pal-rs/`: `cargo run -p pal-rs -- <directory>`         |
 | Start the LSP server    | `pal-lsp/`: `cargo run -p pal-lsp`                      |
-| Mount a FUSE filesystem | `hyper/hyper-fs/`: `node dist/index.js <pass> <config>` |
+| Mount a FUSE filesystem | `hyper-fs/`: `node dist/index.js <pass> <config>` |
 | Launch the WebGPU IDE   | `wingman/`: `cargo run -p wingman`                      |
-| Run the web UI          | `hyper/hyper-web/`: `npm start`                         |
 
 ## Notes directory
 
@@ -121,6 +119,5 @@ of the project. Key files:
 - None of the Rust crates are wired together (pal-rs, pal-fs, wingman are independent).
 - pal-ts and pal-rs are parallel implementations — no shared runtime.
 - pal-lsp uses a tutorial parser ("Nano Rust"), not the actual Pal grammar.
-- rabbithole has no connection to the Pal environment.
 - pal-os is a Docker LFS experiment with no Pal-specific content yet.
 - hyper (P2P, network) is not connected to pal-ts (Lisp runtime).

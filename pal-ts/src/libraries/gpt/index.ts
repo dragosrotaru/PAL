@@ -20,7 +20,7 @@ export const openai = new OpenAIApi(
   }),
 );
 
-const tokenizer = new GPT3Tokenizer.default({ type: "gpt3" });
+const tokenizer = new GPT3Tokenizer({ type: "gpt3" });
 
 const codeBlockRegex = (language: string) => new RegExp(`\`\`\`${language}([\\s\\S]+?)\`\`\``);
 

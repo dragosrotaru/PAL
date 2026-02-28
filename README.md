@@ -6,13 +6,35 @@ Pal is a personal AI programming environment. It is a re-imagination of what is 
 
 In its current state, it is more a vehicle for learning than a useable tool. The most complete version is pal-ts, Which is essentially a lisp interpreter with some very unique features, including a built in LLM, filesystem-mapped environment and file extensions as Types. The current version is in Rust. Otherwise, there are bits and pieces of projects here and there which I have attempted to converge into a cohesive vision.
 
-## Project Structure
+## Hyper
 
-- `wingman` - integrated development environment / runtime in Rust
-- `pal-rs` - current implementation of Pal language in Rust
-- `pal-fs` - FUSE filesystem integration in Rust
-- `pal-ts` - older experimental implementation of Pal in TypeScript
-- `pal-vscode` - VSCode extension for Pal
-- `pal-os` - Starting point for creating a linux distro
-- `rabbithole` - firefox/chrome web extension
-- `hyper` - older experiments in TypeScript
+- CRDT based
+- content addressed
+- pet-named
+- p2p
+- encrypted
+- hypergraph database/protocol
+
+## Pal
+
+- Extensible Lisp like Interpreter 
+- UI auto gen from data
+- File System synced to intepreter environment
+- AI as first class form in language
+- constrained decoding
+- file extensions as type system
+
+## Repo Structure
+
+- `pal-ts` - TS core pal implementation
+- `pal-fs-vscode` - TS vscode extension for a virtual filesystem
+- `pal-lsp-example` - TS vscode extension but just for pretty format
+- `pal-eval` - Rust pal implementation for ts to rust testing 
+- `pal-lsp` - Rust language server protocol + pal implementation
+    - `pal-lsp/client` - TS lsp client for the Rust LSP above
+- `pal-fs` - Rust fuse virtual FS stub for pal
+- `pal-rs` - Rust pretty format specific macro compilation
+- `hyper-ts` - protocol implementation
+- `hyper-fs` - fuse virtual filesystem adapter 
+- `pal-os` - what if it was an operating system?
+- `wingman` - what if it was a webgpu IDE / runtime written in Rust?

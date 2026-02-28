@@ -63,7 +63,7 @@ export const parse = (input: string): Lang.CSV => {
   const csv: Lang.CSV = [];
 
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const line = lines[i]!;
     if (line.trim() === EMPTY) continue; // Skip empty lines
     csv.push(parseRow(line));
   }

@@ -16,15 +16,15 @@
  */
 
 import {
-  workspace,
+  commands,
   EventEmitter,
   ExtensionContext,
-  window,
   Range,
-  TextDocumentChangeEvent,
-  commands,
   Selection,
+  TextDocumentChangeEvent,
   Uri,
+  window,
+  workspace,
 } from "vscode";
 
 import {
@@ -51,11 +51,12 @@ export async function activate(context: ExtensionContext) {
     let document = await workspace.openTextDocument(uri);
     await window.showTextDocument(document);
 
-    // console.log(uri)
-    window.activeTextEditor.document;
+    console.log(url);
     let editor = window.activeTextEditor;
     let range = new Range(1, 1, 1, 1);
-    editor.selection = new Selection(range.start, range.end);
+    if (editor) {
+      editor.selection = new Selection(range.start, range.end);
+    }
   });
 
   context.subscriptions.push(disposable);
@@ -67,7 +68,6 @@ export async function activate(context: ExtensionContext) {
     options: {
       env: {
         ...process.env,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
         RUST_LOG: "debug",
       },
     },

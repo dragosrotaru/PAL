@@ -136,7 +136,7 @@ export const Expand = (ctx: IContext) => (ast: Lang.AST) => {
 
   const matches: { macro: Macro; binding: Bindings }[] = [];
   for (let i = 0; i < ctx.macros.length; i++) {
-    const macro = ctx.macros[i];
+    const macro = ctx.macros[i]!;
     const binding = bindingMatch(macro.pattern, ast);
     if (binding !== null) {
       matches.push({ macro, binding });
@@ -144,7 +144,7 @@ export const Expand = (ctx: IContext) => (ast: Lang.AST) => {
   }
   if (matches.length === 0) return ast;
   if (matches.length > 1) throw new Error("multiple macros match, this is not supported yet");
-  const theOne = matches[0];
+  const theOne = matches[0]!;
 
   return substitute(theOne.macro.template, theOne.binding);
 };
