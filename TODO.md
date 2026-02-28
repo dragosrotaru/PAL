@@ -1,3 +1,3 @@
-- update all project dependencies. migrate to more modern tooling - vitest, oxclint/fmt, tsgo, update code-workspace, add anything else that is missing or should be done better from a tooling perspective to TOOLGAPS.md. We will use the swm project as our template for preferences when it comes to typescript project setup/tooling
-- write a test harness to test pal-rs and pal-ts against each other for equivalence
 - reorganize documentation
+- update all the TS/rust dependencies
+- consolidate projects

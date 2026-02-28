@@ -1,14 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "build",
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
     "rootDir": "src",
+    "outDir": "build",
     "types": ["node", "vscode"]
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
 }

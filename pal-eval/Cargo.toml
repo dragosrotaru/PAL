@@ -1,0 +1,9 @@
+[package]
+name = "pal-eval"
+version = "0.1.0"
+edition = "2021"
+description = "Minimal PAL Lisp evaluator — accepts one S-expression as a CLI argument, evaluates it, prints the result as JSON."
+
+[[bin]]
+name = "pal-eval"
+path = "src/main.rs"

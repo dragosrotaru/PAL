@@ -1,20 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "esnext",
     "lib": ["esnext", "dom"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "jsx": "react",
     "rootDir": "src",
     "outDir": "build",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "types": ["node"],
-    "paths": {
-      "#src/*": ["./src/*"]
-    }
+    "jsx": "react"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
 }

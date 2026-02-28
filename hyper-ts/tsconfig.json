@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext"],
+    "rootDir": "src",
+    "outDir": "build",
+  }
+}

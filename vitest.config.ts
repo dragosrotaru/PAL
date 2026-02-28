@@ -11,8 +11,7 @@ export default defineConfig({
       "**/lib/**",
       "**/out/**",
       "**/dist/**",
-      "hyper/hyper-web/**",
-      "hyper/hyper-fs/**",
+      "hyper-fs/**",
     ],
   },
 });

@@ -19,8 +19,7 @@ impl Filesystem for PalFS {
       return Ok(());
     }
     fn destroy(
-      &mut self,
-      _req: &Request<'_>) {
+      &mut self) {
         return;
     }
 
@@ -48,6 +47,7 @@ impl Filesystem for PalFS {
       &mut self,
       _req: &Request<'_>,
       _ino: u64,
+      _fh: Option<u64>,
       reply: fuser::ReplyAttr)
       {
 
@@ -463,36 +463,6 @@ impl Filesystem for PalFS {
 
     }
 
-    fn setvolname(
-      &mut self,
-      _req: &Request<'_>,
-      _name: &std::ffi::OsStr,
-      reply: fuser::ReplyEmpty
-    ) {
-
-    }
-
-    fn exchange(
-      &mut self,
-      _req: &Request<'_>,
-      _parent: u64,
-      _name: &std::ffi::OsStr,
-      _newparent: u64,
-      _newname: &std::ffi::OsStr,
-      _options: u64,
-      reply: fuser::ReplyEmpty,
-    ) {
-
-    }
-
-    fn getxtimes(
-      &mut self,
-      _req: &Request<'_>,
-      _ino: u64,
-      reply: fuser::ReplyXTimes
-    ) {
-
-    }
 }
 
 fn main() {
