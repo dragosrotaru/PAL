@@ -1,67 +1,69 @@
 {
-    "name": "pal-lsp",
-    "description": "Pal Language Server",
-    "license": "MIT",
-    "version": "0.1.0",
-    "categories": [],
-    "keywords": [
-      "language-server",
-      "pal"
+  "name": "pal-lsp",
+  "description": "Pal Language Server",
+  "license": "MIT",
+  "version": "0.1.0",
+  "categories": [],
+  "keywords": [
+    "language-server",
+    "pal"
+  ],
+  "engines": {
+    "vscode": "^1.83.0",
+    "node": "24.13.0",
+    "pnpm": ">=10.0.0"
+  },
+  "enabledApiProposals": [],
+  "activationEvents": [
+    "onLanguage:pal"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "pal",
+        "extensions": [
+          ".pal"
+        ]
+      },
+      {
+        "id": "pretty",
+        "extensions": [
+          ".pretty"
+        ]
+      }
     ],
-    "engines": {
-      "vscode": "^1.83.0"
-    },
-    "enabledApiProposals": [],
-    "activationEvents": [
-      "onLanguage:pal"
-    ],
-    "main": "./dist/extension.js",
-    "contributes": {
-      "languages": [
-        {
-          "id": "pal",
-          "extensions": [
-            ".pal"
-          ]
-        },
-        {
-            "id": "pretty",
-            "extensions": [
-              ".pretty"
-            ]
-          }
-      ],
-      "configuration": {
-        "type": "object",
-        "title": "pal-lsp",
-        "properties": {
-          "pal-lsp.trace.server": {
-            "type": "string",
-            "scope": "window",
-            "enum": [
-              "off",
-              "messages",
-              "verbose"
-            ],
-            "enumDescriptions": [
-              "No traces",
-              "Error only",
-              "Full log"
-            ],
-            "default": "off",
-            "description": "Traces the communication between VS Code and the language server."
-          }
+    "configuration": {
+      "type": "object",
+      "title": "pal-lsp",
+      "properties": {
+        "pal-lsp.trace.server": {
+          "type": "string",
+          "scope": "window",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "enumDescriptions": [
+            "No traces",
+            "Error only",
+            "Full log"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the language server."
         }
       }
-    },
-    "scripts": {
-    },
-    "devDependencies": {
-      "typescript": "^5.3.3",
-      "@types/vscode": "^1.75.1",
-		  "@types/node": "^18.14.6"
-    },
-    "dependencies": {
-      "vscode-languageclient": "^9.0.1"
     }
-  }
+  },
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/vscode": "^1.75.1",
+    "@types/node": "^18.14.6"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "packageManager": "pnpm@10.29.3"
+}

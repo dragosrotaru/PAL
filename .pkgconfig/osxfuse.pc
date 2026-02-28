@@ -1,0 +1,11 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: osxfuse
+Description: Filesystem in Userspace (macFUSE)
+Version: 2.9.9
+Libs: -L${libdir} -lfuse -pthread
+Libs.private: -liconv -framework CoreFoundation -framework DiskArbitration
+Cflags: -I${includedir}/fuse -D_FILE_OFFSET_BITS=64

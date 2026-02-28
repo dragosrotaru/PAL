@@ -1,5 +1,5 @@
 class ASTEdge {
-    public id: string;
+    public id!: string;
     public content: (AST)[];
     constructor(
         ...args: (AST)[]
@@ -12,12 +12,12 @@ class Sym {
 }
 
 class Atom {
-    public id: string
+    public id!: string;
     constructor(public content: string) {}
 }
 
 class Edge {
-    public id: string;
+    public id!: string;
     public content: string[];
     constructor(
         ...args: (Sym|Edge|Atom)[]
@@ -84,7 +84,7 @@ export class Compiler {
     }
     
     parse(node: Edge): AST {
-        return new ASTEdge(...node.content.map((id) => {
+        return new ASTEdge(...node.content.map((id): AST => {
             const child = this.data.get(id);
             if (!child) {
                 // TODO add network resolver
@@ -95,6 +95,8 @@ export class Compiler {
                 return child;
             } else if (child instanceof Edge) {
                 return this.parse(child);
+            } else {
+                throw new Error("Unknown child type");
             }
         }));
     }
@@ -136,8 +138,8 @@ type ExtensionScope = {
 /**
 * Type:String Atom:Value
 */
-function String() {
-    const { node: { content } } = this as ExtensionScope;
+function String(this: ExtensionScope) {
+    const { node: { content } } = this;
     if (content.length !== 2) {
         throw new Error("Invalid String Edge");
     }
@@ -156,8 +158,8 @@ const StringType = new ASTEdge(TYPE, new Sym('String'), new Atom(String.toString
 /**
  * Type:Property Atom:Name Atom:Value
  */
-function Property() {
-    const { node: { content }, context } = this as ExtensionScope;
+function Property(this: ExtensionScope) {
+    const { node: { content }, context } = this;
     if (content.length !== 3) {
         throw new Error("Invalid Property Edge");
     }
@@ -175,8 +177,8 @@ const PropertyType = new ASTEdge(TYPE, new Sym('Property'), new Atom(Property.to
 /**
  * Type:Object Edge:Property Edge:Property
  */
-function Object() {
-    const { node: { content }, context } = this as ExtensionScope;
+function Object(this: ExtensionScope) {
+    const { node: { content }, context } = this;
     if (content.length < 2) {
         throw new Error("Invalid Object Edge: Must Have a Type");
     }
@@ -184,12 +186,12 @@ function Object() {
     if (!(type instanceof Sym)) {
         throw new Error("Invalid Object Edge: Must Have a Type");
     }
-    const obj = {};
+    const obj: Record<string, unknown> = {};
     const properties = content.slice(2);
     properties.forEach(property => {
         if (property instanceof ASTEdge) {
             const { name, value } = context.compile(property);
-            obj[name] = value;
+            obj[name as string] = value;
         }
         
     })
@@ -224,8 +226,8 @@ compiler.compile(Task);
 
 
 class Obj {
-    data: object;
-    meta: {
+    data!: object;
+    meta!: {
         id: string;
         defaultInterface: string;
         type: string;
@@ -233,7 +235,7 @@ class Obj {
 }
 
 class Type extends Obj {
-    data: {
+    declare data: {
         name: string;
         defaultInterface: string;
         knownInterfaces: string[];
@@ -250,7 +252,7 @@ class Type extends Obj {
 }
 
 class Interface  extends Obj {
-    data: {
+    declare data: {
         name: string;
         defaultType: string;
         knownTypes: string[];
@@ -267,7 +269,7 @@ class Interface  extends Obj {
 }
 
 class Schema {
-    meta: {
+    meta!: {
         id: string;
     }
 }
@@ -284,6 +286,7 @@ export class UserInterface {
         if (objDefaultInterface) return objDefaultInterface;
         
         const type = this.types.get(obj.meta.type);
+        if (!type) throw new Error("Type not found");
         const typeDefaultInterface = this.interfaces.get(type.data.defaultInterface);
         if (typeDefaultInterface) return typeDefaultInterface;
 
