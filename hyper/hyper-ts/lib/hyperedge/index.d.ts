@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { ID } from "../id";
 interface FromData {
     data: ID[];
@@ -6,7 +5,7 @@ interface FromData {
 interface FromSerialized {
     serialized: Buffer;
 }
-declare type From = FromData | FromSerialized;
+type From = FromData | FromSerialized;
 export declare class HyperEdge {
     static readonly type: Buffer;
     readonly id: ID;

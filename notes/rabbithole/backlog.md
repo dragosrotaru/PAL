@@ -10,8 +10,8 @@
 ☐ persist to centralized server OR localhost server OR localStorage
 ☐ publish to your profile
 ☐ collaborative surf (co-browsing)
-  ☐ mirror surf session on multiple browsers
-  ☐ real-time chat and see who is also browsing
+☐ mirror surf session on multiple browsers
+☐ real-time chat and see who is also browsing
 ☐ view other users published data in your browser (i.e. view highlights from Patrick)
 ☐ comment on a highlight
 ☐ create a collection

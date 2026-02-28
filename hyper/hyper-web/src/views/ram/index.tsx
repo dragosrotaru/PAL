@@ -7,19 +7,18 @@ import { CRDTEditor } from "../crdt-editor";
 import { toNestedAccordionListData } from "../tasks";
 import "./style.css";
 
-
 const DoToday = () => {
-     const [state] = useAPI(download)
-    if (state.isLoading) {
+  const [state] = useAPI(download);
+  if (state.isLoading) {
     return <div>loading...</div>;
   } else if (state.isError) {
     return <div>error: {state.error}</div>;
   } else if (state.data) {
-      return (<NestedAccordionList data={toNestedAccordionListData(dueNow(state.data))} />);
+    return <NestedAccordionList data={toNestedAccordionListData(dueNow(state.data))} />;
   } else {
-    return <div>idle</div>
+    return <div>idle</div>;
   }
-}
+};
 
 export const RAM = () => (
   <div className="ram-container">

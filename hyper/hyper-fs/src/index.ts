@@ -42,9 +42,7 @@ const mount_point = "./mount";
     throw new Error("config file path is required");
   }
   const configFilePath = path.resolve(__dirname, configFilePathInput);
-  const config = DeviceConfig.parse(
-    (await fs.readFile(configFilePath)).toString("utf-8")
-  );
+  const config = DeviceConfig.parse((await fs.readFile(configFilePath)).toString("utf-8"));
 
   const device = new Device(password, config);
 
@@ -56,7 +54,7 @@ const mount_point = "./mount";
       debug: false,
       force: false,
       mkdir: false,
-    }
+    },
   );
 
   fuse.mount((err: any) => {

@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { IAgent, Name, AgentPreferences, IDevice, IPeer, EncryptedAgent, SymmetricKey, PublicKey, PrivateKey, EncryptedSymmetricKey } from "../interfaces";
 interface CreationProps {
     type: "creation";
@@ -13,7 +12,7 @@ interface DecryptionProps {
     privateKey: PrivateKey;
     publicKey: PrivateKey;
 }
-declare type Props = DecryptionProps | CreationProps;
+type Props = DecryptionProps | CreationProps;
 export declare class Agent implements IAgent {
     name: Name;
     devices: IDevice[];
@@ -25,7 +24,7 @@ export declare class Agent implements IAgent {
     addDevices(...devices: IDevice[]): void;
     addPeers(...peers: IPeer[]): void;
     get encrypted(): EncryptedAgent;
-    get encryptedSymmetricKey(): Buffer;
+    get encryptedSymmetricKey(): Buffer<ArrayBufferLike>;
 }
 export {};
 //# sourceMappingURL=index.d.ts.map

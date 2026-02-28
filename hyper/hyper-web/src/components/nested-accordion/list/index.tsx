@@ -16,7 +16,12 @@ export const NestedAccordionList = ({
   return (
     <ul className="nested-accordion-list-container">
       {data.map((entry, index) => (
-        <NestedAccordionListItem key={index} data={entry} expand={expand} expandBehaviour={expandBehaviour} />
+        <NestedAccordionListItem
+          key={index}
+          data={entry}
+          expand={expand}
+          expandBehaviour={expandBehaviour}
+        />
       ))}
     </ul>
   );

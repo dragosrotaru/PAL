@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { PublicKey, PrivateKey, SymmetricKey } from "../interfaces";
 declare let encryptRSA: (publicKey: PublicKey, input: Buffer) => Buffer;
 declare let decryptRSA: (privateKey: PrivateKey, input: Buffer) => Buffer;

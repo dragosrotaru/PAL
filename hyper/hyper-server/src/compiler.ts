@@ -98,7 +98,7 @@ class CustomCompilerHost implements ts.CompilerHost {
     fileName: string,
     languageVersion: ts.ScriptTarget,
     onError?: (message: string) => void,
-    shouldCreateNewSourceFile?: boolean
+    shouldCreateNewSourceFile?: boolean,
   ): ts.SourceFile | undefined {
     throw new Error("not implemented yet");
   }
@@ -107,7 +107,7 @@ class CustomCompilerHost implements ts.CompilerHost {
     path: ts.Path,
     languageVersion: ts.ScriptTarget,
     onError?: (message: string) => void,
-    shouldCreateNewSourceFile?: boolean
+    shouldCreateNewSourceFile?: boolean,
   ): ts.SourceFile | undefined {
     throw new Error("not implemented yet");
   }
@@ -125,7 +125,7 @@ class CustomCompilerHost implements ts.CompilerHost {
     data: string,
     writeByteOrderMark: boolean,
     onError?: (message: string) => void,
-    sourceFiles?: readonly ts.SourceFile[]
+    sourceFiles?: readonly ts.SourceFile[],
   ): void {
     throw new Error("not implemented yet");
   }
@@ -146,7 +146,7 @@ class CustomCompilerHost implements ts.CompilerHost {
     extensions: readonly string[],
     excludes: readonly string[] | undefined,
     includes: readonly string[],
-    depth?: number
+    depth?: number,
   ): string[] {
     throw new Error("not implemented yet");
   }
@@ -155,7 +155,7 @@ class CustomCompilerHost implements ts.CompilerHost {
     containingFile: string,
     reusedNames: string[] | undefined,
     redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions
+    options: ts.CompilerOptions,
   ): (ts.ResolvedModule | undefined)[] {
     throw new Error("not implemented yet");
   }
@@ -163,7 +163,7 @@ class CustomCompilerHost implements ts.CompilerHost {
     typeReferenceDirectiveNames: string[],
     containingFile: string,
     redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions
+    options: ts.CompilerOptions,
   ): (ts.ResolvedTypeReferenceDirective | undefined)[] {
     throw new Error("not implemented yet");
   }
@@ -203,26 +203,17 @@ const compile = () => {
     // host: new CustomCompilerHost(),
   });
   const emitResult = program.emit();
-  const allDiagnostics = ts
-    .getPreEmitDiagnostics(program)
-    .concat(emitResult.diagnostics);
+  const allDiagnostics = ts.getPreEmitDiagnostics(program).concat(emitResult.diagnostics);
   allDiagnostics.forEach((diagnostic) => {
     if (diagnostic.file) {
       let { line, character } = ts.getLineAndCharacterOfPosition(
         diagnostic.file,
-        diagnostic.start!
+        diagnostic.start!,
       );
-      let message = ts.flattenDiagnosticMessageText(
-        diagnostic.messageText,
-        "\n"
-      );
-      console.log(
-        `${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`
-      );
+      let message = ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+      console.log(`${diagnostic.file.fileName} (${line + 1},${character + 1}): ${message}`);
     } else {
-      console.log(
-        ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n")
-      );
+      console.log(ts.flattenDiagnosticMessageText(diagnostic.messageText, "\n"));
     }
   });
   const sourceFile = program
@@ -230,10 +221,11 @@ const compile = () => {
     .filter((s) => s.fileName === "src/a.ts")[0] as ts.SourceFile;
   const printer: ts.Printer = ts.createPrinter();
 
-  const transformResult: ts.TransformationResult<ts.SourceFile> =
-    ts.transform<ts.SourceFile>(sourceFile, [transformer]);
-  const transformedSourceFile: ts.SourceFile = transformResult
-    .transformed[0] as ts.SourceFile;
+  const transformResult: ts.TransformationResult<ts.SourceFile> = ts.transform<ts.SourceFile>(
+    sourceFile,
+    [transformer],
+  );
+  const transformedSourceFile: ts.SourceFile = transformResult.transformed[0] as ts.SourceFile;
   const newContent = printer.printFile(transformedSourceFile);
   console.log(newContent);
   transformResult.dispose();
@@ -251,14 +243,10 @@ const transformer =
       node = ts.visitEachChild(node, visit, context);
       // in a property access expression like "foo.bar" "foo" is the expression and "bar" is the name :
       // we replace the whole expression with just node.expression in the case name is "accessorToBeRemoved"
-      if (
-        ts.isVariableDeclaration(node) &&
-        node.name &&
-        node.name.getText() === "myConstant"
-      ) {
+      if (ts.isVariableDeclaration(node) && node.name && node.name.getText() === "myConstant") {
         console.log(node);
       }
       return node;
     }
-    return ts.visitNode(rootNode, visit);
+    return ts.visitNode(rootNode, visit) as T;
   };

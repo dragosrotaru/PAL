@@ -25,25 +25,30 @@
 ## VSCode Commands
 
 ## Application
+
 quit – command + s
 close window – command + w
 
-## Universal 
+## Universal
+
 command palette – shift + command + p
 find – command + f
 find selected – command + e
 find in files – shift + command + f
 
 ## UI Navigation
+
 toggle sidebar – command + b
 
 ## File State
+
 new file – command + n
 save – command + s
 undo – command + z
 redo – shift + command + z
 
 ## Content Navigation
+
 go to start of file – command + up
 go to end of file – command + up
 go to start of line – command + left
@@ -51,7 +56,7 @@ go to end of line – command + right
 go one token left – option + left
 go one token right – option + right
 
-## Content Modification 
+## Content Modification
 
 cut – command + x
 copy – command + c
@@ -73,6 +78,7 @@ shift line over left – command + [
 comment out section – shift + option + a
 
 ## Focus
+
 select all – command + a
 add next occurrence – shift + command + d
 select all occurrences – shift + command + l

@@ -1,7 +1,7 @@
 # HyperFS
 
-## Current Roadmap 
-  
+## Current Roadmap
+
 - single user, single device
 - back up salt+password to paper and SD card
 - back up to AWS S3 and an SD Card

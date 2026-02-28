@@ -46,4 +46,3 @@ Like sediment layers or ice core samples, Our software stack shows its history. 
   - browser
   - webkit
   - javascript
-

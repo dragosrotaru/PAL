@@ -6,7 +6,7 @@
   - Hide/Show Editor/Terminal
 - Atom Type: Markdown
 - Atom Type: MDX (Markdown+JSX)
-- Atom Type: P2P Collaborative Editing Data Structure 
+- Atom Type: P2P Collaborative Editing Data Structure
 - Atom Edit History Graph View
 - Electron App
 

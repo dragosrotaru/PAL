@@ -22,7 +22,7 @@ On top of this, we have the network, which may look like:
 ## Issues
 
 - databases are a form of nexus rejection - they overlay the filesystem to provide added functionality,
-without adhering to the filesystem API. interacting with the files owned by a running database is not allowed.
+  without adhering to the filesystem API. interacting with the files owned by a running database is not allowed.
 - database Durability (D in ACID) is not achieved in practice
 - the performance tradeoffs in space and time are limited by the number of layers in the stack.
 - the stack is not user-centric. data is not controlled by the user, it is controlled by the system.
@@ -37,8 +37,6 @@ without adhering to the filesystem API. interacting with the files owned by a ru
   - Command Line Interface
 - HyperFSDB stores end-user data on the end-user's machine
 
-
 ## Resources
 
 - Database as Filesystem (MySQLFS): https://www.youtube.com/watch?v=wN6IwNriwHc
-

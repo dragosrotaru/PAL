@@ -6,14 +6,8 @@ const https = require("https");
 
 // TLS Encryption
 const credentials = {
-  key: fs.readFileSync(
-    "/etc/letsencrypt/live/changetheweb.xyz/privkey.pem",
-    "utf8"
-  ),
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/changetheweb.xyz/fullchain.pem",
-    "utf8"
-  ),
+  key: fs.readFileSync("/etc/letsencrypt/live/changetheweb.xyz/privkey.pem", "utf8"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/changetheweb.xyz/fullchain.pem", "utf8"),
 };
 
 const secretSerialized = process.env.SECRET;
@@ -80,7 +74,7 @@ wss.on("connection", (ws) => {
   ws.send(
     JSON.stringify({
       meta,
-    })
+    }),
   );
 
   ws.on("error", () => {
@@ -109,18 +103,12 @@ wss.on("connection", (ws) => {
 
       // Add Information Meta
       const newMetaSerialized = JSON.stringify(meta, null, 2);
-      fs.writeFileSync(
-        informationPath + sha256Digest(newMetaSerialized),
-        newMetaSerialized
-      );
+      fs.writeFileSync(informationPath + sha256Digest(newMetaSerialized), newMetaSerialized);
       // Update Source Name
       fs.writeFileSync(sourcePath + data.name, data.serialized);
 
       // Add Information Name
-      fs.writeFileSync(
-        informationPath + sha256Digest(data.serialized),
-        data.serialized
-      );
+      fs.writeFileSync(informationPath + sha256Digest(data.serialized), data.serialized);
       // Broadcast to everyone else
       data.secret = undefined; // DONT LEAK SECRET
       wss.clients.forEach((client) => {

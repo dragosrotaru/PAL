@@ -36,15 +36,10 @@ Todos [
 ]
 ```
 
-
-
-
-
-
 First we want to be able to write a subset of Rust.
 
 In order for me to implement a Structural Editor,
-I need to have an AST representation of the code. This AST does not have to match the AST of the underlying language, as we see in the example of rust-analyzer. 
+I need to have an AST representation of the code. This AST does not have to match the AST of the underlying language, as we see in the example of rust-analyzer.
 
 The language I build, is going to be a loose super-set of Rust, but it is not Rust.
 

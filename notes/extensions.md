@@ -5,6 +5,7 @@
 This list includes all of the languages I would like to provide first party support for. The level of integration will vary.
 
 ### Host/Native Languages
+
 - rust
 - pal
 - pretty
@@ -16,6 +17,7 @@ This list includes all of the languages I would like to provide first party supp
 - python
 
 ### Data Formats
+
 - Text
 - JSON
 - CSV/Excel
@@ -23,6 +25,7 @@ This list includes all of the languages I would like to provide first party supp
 - XML
 
 ### Presentation
+
 - HTML/CSS
 - SVG
 - Markdown
@@ -32,6 +35,7 @@ This list includes all of the languages I would like to provide first party supp
 - Word Docs
 
 ### Visual Media
+
 - jpeg
 - png
 - gif

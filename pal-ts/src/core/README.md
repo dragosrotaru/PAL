@@ -4,12 +4,12 @@ The runtime kernel of the Pal interpreter.
 
 ## Components
 
-| File | Purpose |
-|------|---------|
-| `environment.ts` | Proxy-wrapped reactive Map<ID, AST>. Fires events (`env/new`, `env/set`, `env/del`, `env/sub`, `env/unsub`, `env`) so subscribers react to state changes. Change detection via `valueEquals` prevents no-op notifications. |
-| `evaluator.ts` | The eval-apply recursion. Dispatch priority: primitives → JSON objects → macro expansion → special forms → procedure application → ID lookup → list fixpoint. |
-| `filesystem.ts` | Bidirectional chokidar-based FS↔env sync. File path = symbol key; file extension = parser clue. Prevents loops by unsubscribing before env writes, resubscribing after. |
-| `messageHistory.ts` | GPT conversation history persisted to the env (and thus disk). Subscribes to the history JSON file so it can be hot-edited externally. |
+| File                | Purpose                                                                                                                                                                                                                    |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `environment.ts`    | Proxy-wrapped reactive Map<ID, AST>. Fires events (`env/new`, `env/set`, `env/del`, `env/sub`, `env/unsub`, `env`) so subscribers react to state changes. Change detection via `valueEquals` prevents no-op notifications. |
+| `evaluator.ts`      | The eval-apply recursion. Dispatch priority: primitives → JSON objects → macro expansion → special forms → procedure application → ID lookup → list fixpoint.                                                              |
+| `filesystem.ts`     | Bidirectional chokidar-based FS↔env sync. File path = symbol key; file extension = parser clue. Prevents loops by unsubscribing before env writes, resubscribing after.                                                    |
+| `messageHistory.ts` | GPT conversation history persisted to the env (and thus disk). Subscribes to the history JSON file so it can be hot-edited externally.                                                                                     |
 
 ## Invariants
 

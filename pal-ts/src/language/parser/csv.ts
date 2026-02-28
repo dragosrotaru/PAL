@@ -10,7 +10,7 @@ const DELIMITER = ",";
 const QUOTE = '"';
 const EMPTY = "";
 
-/* 
+/*
 - skips empty lines
 - trims whitespace on value
 - does not enforce header or shape rules
@@ -20,8 +20,7 @@ const EMPTY = "";
 
 const parseAtom = (value: string): Lang.CSV.Atom => {
   value = value.trim();
-  if (value.includes(QUOTE))
-    value = value.replace(new RegExp(QUOTE + QUOTE, "g"), QUOTE);
+  if (value.includes(QUOTE)) value = value.replace(new RegExp(QUOTE + QUOTE, "g"), QUOTE);
 
   if (!isNaN(Number(value))) return parseFloat(value);
   if (value.toLowerCase() === "true") return true;
@@ -76,11 +75,7 @@ const writeAtom = (value: Lang.CSV.Atom): string => {
   if (typeof value === "boolean") return value.toString();
 
   // Add quotes if value contains special characters
-  if (
-    value.includes(DELIMITER) ||
-    value.includes(NEWLINE) ||
-    value.includes(QUOTE)
-  ) {
+  if (value.includes(DELIMITER) || value.includes(NEWLINE) || value.includes(QUOTE)) {
     // Escape any quotes inside the value
     value = value.replace(new RegExp(QUOTE, "g"), QUOTE + QUOTE);
     return QUOTE + value + QUOTE;

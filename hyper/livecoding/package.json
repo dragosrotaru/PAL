@@ -1,9 +1,9 @@
 {
   "name": "livecoding",
   "version": "0.0.1",
+  "private": true,
   "description": "A live coding site",
   "author": "Dragos Rotaru",
-  "private": true,
   "main": "index.js",
   "scripts": {
     "watcher": "node -r dotenv/config source/watcher.js > log/watcher.log 2>&1 & npm run watcher:log",

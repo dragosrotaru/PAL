@@ -26,4 +26,3 @@ How do we give the transformer feedback loops back into the system? test code, d
 ## fine-tune foundation model
 
 The neurosymbolic compiler is a transformer model tuned with Arxiv and Code samples. On top of that, we can fine tune it with synthetic programs?
-

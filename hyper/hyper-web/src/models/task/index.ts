@@ -109,7 +109,9 @@ export const download = async (): Promise<Task[]> => {
   const deserialized: Task[] = [];
   while (serialized.length > 0) {
     const task = serialized[0];
-    const deserializedPrerequisites = task.prerequisites.map((p) => deserialized.filter((d) => d.id === p)[0]);
+    const deserializedPrerequisites = task.prerequisites.map(
+      (p) => deserialized.filter((d) => d.id === p)[0],
+    );
     if (deserializedPrerequisites.length !== task.prerequisites.length) {
       throw new Error("deserialization algorithm is inefficient");
     } else {

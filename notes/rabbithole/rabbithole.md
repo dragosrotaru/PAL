@@ -10,31 +10,31 @@ Use on MacOS and Firefox.
 
 ## Use Cases
 
-- I want to be able to save the url to a web page I am looking at into my links table and close the page  with one command - ctrl+s
+- I want to be able to save the url to a web page I am looking at into my links table and close the page with one command - ctrl+s
 - I want to be able to look at the links table and sort by datetime added
 - I want the links table to be viewable on the web by anyone.
 - I want links to save with the title
-    - Youtube
-    - Wikipedia
-    - title or h1 tag
-    - Stack Overflow
-    - Github
+  - Youtube
+  - Wikipedia
+  - title or h1 tag
+  - Stack Overflow
+  - Github
 - I want to save with the description
-    - github
-    - meta
+  - github
+  - meta
 - I want links to be normalize when saved
-    - https when possible
-    - encoding
-    - index.html
-    - trailing "/"
-    - hashes
-    - query params
+  - https when possible
+  - encoding
+  - index.html
+  - trailing "/"
+  - hashes
+  - query params
 - I want to save a link for later without actually clicking on it by ctrl+alt+click
 - I want link saving to work kind of like git commits, where I have a chance to:
-    - fix url normalization
-    - fix title, description
-    - remove a link
-    - tag links
+  - fix url normalization
+  - fix title, description
+  - remove a link
+  - tag links
 - I want to be able to manipulate the saved links manually
 - Add a private setting to content that is viewable by others
 

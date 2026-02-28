@@ -16,4 +16,3 @@ without compromising quality or performance in the next wave of software. The wa
 The tool will enable humans of all skill levels to cooperate. Some people write natural language descriptions of the software. Other people/agents take those descriptions and turn them into more accurate descriptions. There is a fluid refinement. The descriptions are turned into code, which in turn is refined further. skilled developers can improve the performance, or restructure the code for better readability. engineers and scientists can write high performance compiler extensions in Rust.
 
 At the bottom of the pyramid, you need to be able to extend the system by writing rust code directly.
-

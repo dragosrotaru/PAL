@@ -10,7 +10,6 @@
 - git-secret
 - git-remote-gcrypt
 
-
 - indieweb
 - perkeep
 - upspin

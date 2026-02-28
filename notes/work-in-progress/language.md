@@ -28,4 +28,3 @@ Where the UAST is stored in an enviornment data structure that supports embedded
 This enviroment is synced with the filesystem, it exists in memory. We keep the unix philosophy of everything is a file, and overlay it with the philosophy of everything is an object and everything is an AST. this provides new system wide generic interfaces.
 
 The parser and evaluator are programs, and they rely on the default system implementations of parsers and evaluators where available. the parser maps the ASTs to its own UAST format.
-

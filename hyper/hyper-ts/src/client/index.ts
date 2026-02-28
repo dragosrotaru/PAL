@@ -33,14 +33,14 @@ export class Client {
     private agentRepo: IAgentRepository,
     private graphRepo: IHyperGraphRepository,
     private nameRepo: IPetNameRepository,
-    private network: INetwork
+    private network: INetwork,
   ) {}
   async createAgent(name: Name, publicKey: PublicKey) {
     const agent = new Agent({ type: "creation", name, publicKey });
     return await this.agentRepo.persistAgent(
       publicKey,
       agent.encrypted,
-      agent.encryptedSymmetricKey
+      agent.encryptedSymmetricKey,
     );
   }
   async openSession(publicKey: PublicKey, privateKey: PrivateKey) {
@@ -57,7 +57,7 @@ export class Client {
     await this.agentRepo.persistAgent(
       this.agent.publicKey,
       this.agent.encrypted,
-      this.agent.encryptedSymmetricKey
+      this.agent.encryptedSymmetricKey,
     );
     let errorMaybe = await this.encryptStorage();
     if (errorMaybe instanceof Error) return errorMaybe;
@@ -65,13 +65,9 @@ export class Client {
     return errorMaybe;
   }
   private async login(publicKey: PublicKey, privateKey: PrivateKey) {
-    const encryptedAgent = await this.agentRepo.retrieveEncryptedAgent(
-      publicKey
-    );
+    const encryptedAgent = await this.agentRepo.retrieveEncryptedAgent(publicKey);
     if (encryptedAgent instanceof Error) return encryptedAgent;
-    const encryptedSymmetricKey = await this.agentRepo.retrieveEncryptedSymmetricKey(
-      publicKey
-    );
+    const encryptedSymmetricKey = await this.agentRepo.retrieveEncryptedSymmetricKey(publicKey);
     if (encryptedSymmetricKey instanceof Error) return encryptedSymmetricKey;
     const decryptedagent = new Agent({
       type: "decryption",

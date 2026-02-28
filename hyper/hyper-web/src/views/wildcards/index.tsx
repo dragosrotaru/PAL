@@ -17,28 +17,26 @@ const toNestedAccordionListData = (nodes: NameSpace[]): NestedData[] =>
   }));
 
 type Atom = {
-  src: string,
-  title: string,
-}
+  src: string;
+  title: string;
+};
 
 export const WildCards = () => {
   const [atom, setAtom] = useState<Atom | null>(null);
   return (
-  <div className="wildcards-container">
-    <div className="wildcards-left-panel">
-      <div>
-        <h3>namespace</h3>
-        <NestedAccordionList
-          data={toNestedAccordionListData(NAMESPACE)}
-          expandBehaviour={ExpandBehaviour.EXPAND_SELF_ONLY}
-        ></NestedAccordionList>
+    <div className="wildcards-container">
+      <div className="wildcards-left-panel">
+        <div>
+          <h3>namespace</h3>
+          <NestedAccordionList
+            data={toNestedAccordionListData(NAMESPACE)}
+            expandBehaviour={ExpandBehaviour.EXPAND_SELF_ONLY}
+          ></NestedAccordionList>
+        </div>
+      </div>
+      <div className="wildcards-right-panel">
+        {atom ? <IFrame src={atom.src} name={atom.src} title={atom.title} /> : "no atom picked"}
       </div>
     </div>
-    <div className="wildcards-right-panel">
-      { atom ? 
-      <IFrame src={atom.src} name={atom.src} title={atom.title}  />
-      : "no atom picked" }
-    </div>
-  </div>
-)
+  );
 };

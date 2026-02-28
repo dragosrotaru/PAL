@@ -1,4 +1,4 @@
-/* 
+/*
 This file, called watcher.js, is a program written in the language JavaScript, written specifically to run on the NodeJS runtime.
 Runtime is the time when the code is actually executed, in other words when its doing what it says. There is also design-time,
 which is when you are writing the code, and compile-time, Which is when the program is converted from the language its written into
@@ -23,7 +23,7 @@ const crypto = require("crypto");
 // child_process is a NodeJS module enables your code to execute other code.
 const child_process = require("child_process");
 
-/* 
+/*
 ws is a third party module, made available 
 WebSockets is a full-duplex communication protocol built on top of TCP/IP.
 It allows two parties to communicate with each other in real-time. 
@@ -39,7 +39,7 @@ const WebSocket = require("ws");
 /* JavaScript Parser to know when the changes made to Watcher.JS should be ignored */
 const Parser = require("acorn");
 
-/* 
+/*
 the secret is a long, random and unique string of characters
 that is only known to me and gives me control over capabilities in the code.
 we are loading this secret from the environment variable called secret.
@@ -80,7 +80,7 @@ const sha256Digest = (data) => {
   return hash.digest().toString("hex");
 };
 
-/* 
+/*
 wss:// is like https://, where the "s" stands for secure.
 This line of code is where the connection to the other pary is officially being made.
 */
@@ -96,7 +96,7 @@ And the timer, called a timeout, is reset.
 */
 let alive = false;
 
-/* 
+/*
 NodeJS is an event-driven architecture. What this means is that this "ws" object, for instance, can be listened to for events happening
 using the on() function. "open" is the event to listen to be notified when the websocket connection is made.
 () => {} is called an arrow function.
@@ -130,7 +130,7 @@ ws.on("open", () => {
       type: "sync",
       secret: secretSerialized,
       meta,
-    })
+    }),
   );
 
   // After a connection has been opened, start listening to all of these different events
@@ -164,7 +164,7 @@ ws.on("open", () => {
       const watcherMeta = JSON.parse(watcherMetaSerialized);
       const watcherMetaDigest = sha256Digest(watcherMetaSerialized);
 
-      /* 
+      /*
       basically, all nodes should be allowed to have their own
       conflicting versions of reality. The acknowledgement
       of sameness is useless because it cannot be verified or acted on.
@@ -223,7 +223,7 @@ fs.watch(sourcePath, async (event, name) => {
     encoding: "utf8",
   });
 
-  /* 
+  /*
   This file is JSON (JavaScript Object Notation) data format for ease of use and human readability. JSON itself is encoded and stored in UTF-8, as we see above.
   Thats what "serialized" means. Its just a meaningless string, until we "parse" it. Meaning, until we read that meaningless string and turn it into an JavaScript object.
   */
@@ -240,10 +240,7 @@ fs.watch(sourcePath, async (event, name) => {
   if (meta[name] === undefined) meta[name] = [];
 
   // If the digest didn't change ignore it.
-  if (
-    meta[name][meta[name].length - 1] &&
-    meta[name][meta[name].length - 1].digest === digest
-  )
+  if (meta[name][meta[name].length - 1] && meta[name][meta[name].length - 1].digest === digest)
     return;
 
   // Add the change to the meta
@@ -263,14 +260,8 @@ fs.watch(sourcePath, async (event, name) => {
   fs.writeFileSync(metaPath, metaSerialized);
 
   // Save history
-  fs.writeFileSync(
-    informationPath + digest,
-    JSON.stringify(serialized, null, 2)
-  );
-  fs.writeFileSync(
-    informationPath + metaDigest,
-    JSON.stringify(metaSerialized, null, 2)
-  );
+  fs.writeFileSync(informationPath + digest, JSON.stringify(serialized, null, 2));
+  fs.writeFileSync(informationPath + metaDigest, JSON.stringify(metaSerialized, null, 2));
 
   // TODO catch errors
   if (alive) {
@@ -282,7 +273,7 @@ fs.watch(sourcePath, async (event, name) => {
         name,
         serialized,
         secret: secretSerialized, // DO NOT LEAK API KEY
-      })
+      }),
     );
   }
 

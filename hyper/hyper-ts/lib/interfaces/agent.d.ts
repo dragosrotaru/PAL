@@ -1,11 +1,25 @@
-/// <reference types="node" />
 import { IDevice, IPeer, Name } from "./other";
-export declare type PrivateKey = string;
-export declare type PublicKey = string;
-export declare type SymmetricKey = Buffer;
-export declare type EncryptedSymmetricKey = Buffer;
-export declare type EncryptedAgent = Buffer;
-export declare type AgentPreferences = {};
+/**
+ * RSA 4096 Private Key
+ */
+export type PrivateKey = string;
+/**
+ * RSA 4096 Public Key
+ */
+export type PublicKey = string;
+/**
+ * AES256 Symmetric Key
+ */
+export type SymmetricKey = Buffer;
+/**
+ * AES256 Symmetric Key encrypted with PrivateKey
+ */
+export type EncryptedSymmetricKey = Buffer;
+/**
+ * encrypted with AES256 Symmetric Key
+ */
+export type EncryptedAgent = Buffer;
+export type AgentPreferences = {};
 export interface IAgent {
     name: Name;
     devices: IDevice[];

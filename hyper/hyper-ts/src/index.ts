@@ -28,7 +28,7 @@ const client = new Client(
   new AgentRepository(),
   new HyperGraphRepository(),
   new PetNameRepository(),
-  new Network()
+  new Network(),
 );
 
 (async () => {
@@ -52,10 +52,7 @@ const client = new Client(
     data: [Encoding.id, ASCIIEncoding.id, HelloWorld.id],
   });
   graph.persist([Encoding, HelloWorld, ASCIIEncoding, HelloWorldEncoding], {});
-  await graph.retrieve(
-    [Encoding.id, HelloWorld.id, ASCIIEncoding.id, HelloWorldEncoding.id],
-    {}
-  );
+  await graph.retrieve([Encoding.id, HelloWorld.id, ASCIIEncoding.id, HelloWorldEncoding.id], {});
   await graph.name("favourite encoding", ASCIIEncoding.id);
   let res = await graph.search("favourite encoding", {});
   console.log("search", res);

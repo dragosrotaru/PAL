@@ -17,10 +17,10 @@ declare class Edge {
     content: string[];
     constructor(...args: (Sym | Edge | Atom)[]);
 }
-declare type AST = ASTEdge | Sym | Atom;
+type AST = ASTEdge | Sym | Atom;
 export declare class Compiler {
     TYPE: Sym;
-    data: Map<string, Sym | Atom | Edge>;
+    data: Map<string, Atom | Edge | Sym>;
     extensions: Map<string, Function>;
     addToMap(node: Sym | Atom | Edge): void;
     addExtension(type: Sym, code: string): void;

@@ -15,8 +15,9 @@ Partial application makes so much sense
 
 No distinction between params and returns
 
-    ghci> :t head  
-    head :: [a] -> a  
+    ghci> :t head
+    head :: [a] -> a
+
 Lower case a is a type variable - polymorphic type
 
 Haskell has a concept of typeclass : eq is a typeclass that does not include monads or functions
@@ -29,7 +30,7 @@ If, case and pattern match build on each other
 
 Where and let are useful constructs
 
-$ for lowest priority function application 
+$ for lowest priority function application
 . For function composition
 
 - fix weird json glitch
@@ -38,22 +39,20 @@ $ for lowest priority function application
 - be able to select the code block of gpt
 - give it ability to lint/typecheck it's JS code
 
-
 Add parser types
 Add restart
 
+We need to figure out the semantics of the environment and filesystem first, let's get that down pat
 
-We need to figure out the semantics of the environment and filesystem first, let's get that down pat 
-
-Then the language needs to be worked on 
+Then the language needs to be worked on
 
 We need to get to the point where we can use AI to generate the rest of it on top of that, which can only be done if we can generate code save it, experiment with it effortlessly.
 
 The UI will come as a natural consequence of that.
 
-Implement a language server for the language, then a  client for the supported languages.
+Implement a language server for the language, then a client for the supported languages.
 
-Implement a universal parser 
+Implement a universal parser
 
 https://github.com/jaked/programmable-matter
 https://jaked.org/blog/2021-09-07-Reconstructing-TypeScript-part-0

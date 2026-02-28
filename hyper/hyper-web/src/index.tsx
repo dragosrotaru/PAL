@@ -35,7 +35,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route path={"/scratchpad"} exact >
+        <Route path={"/scratchpad"} exact>
           <CRDTEditor namespace="scratchpad"></CRDTEditor>
         </Route>
         <Route path={"/tasks"} component={Tasks} exact />

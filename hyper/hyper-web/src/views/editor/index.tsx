@@ -79,12 +79,16 @@ export const Editor = ({ sourceCode }: Props) => {
     console.log("SOURCE CODE:");
     console.log(sourceCode);
 
-    const transpiledCode = ts.transpileModule(sourceCode, { compilerOptions: { module: ts.ModuleKind.CommonJS } });
+    const transpiledCode = ts.transpileModule(sourceCode, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS },
+    });
     console.log("TRANSPILED CODE:");
     console.log(transpiledCode.outputText);
 
     try {
-      const func = new Function(["exports = {};", transpiledCode.outputText, "return exports;"].join("\n")); // eslint-disable-line no-new-func
+      const func = new Function(
+        ["exports = {};", transpiledCode.outputText, "return exports;"].join("\n"),
+      ); // eslint-disable-line no-new-func
       const result = func();
       console.log("EVALUATION RESULT:");
       alert(result.default);

@@ -43,7 +43,6 @@ It is best to perform compute on these objects before they are triangulated.
 
 We also need a reverse process for picking (mouse interactivity)
 
-
 The best way to do everything is to compute it all on Compute Shaders.
 i can write a special shader for picking which can operate more frequency
 and reuse cached buffers when the rendering pipeline isn't being triggered.
@@ -54,7 +53,7 @@ I can define the geometries without having a reference point to some underlying 
 
 If I were to build a World Space, then the 2D geometries as I defined them would be limited in terms
 of orientation, because they are assumed to have a Z of zero. I can assume that the placement is on a
-predefined plane within the space. 
+predefined plane within the space.
 
 Then they must exist on a plane.
 
@@ -64,6 +63,7 @@ circle based on the radius of a rectangle. then you dont have to define an ellip
 ## Links
 
 ### parallelization
+
 https://www.nickwilcox.com/blog/autovec/
 https://doc.rust-lang.org/std/simd/index.html - simd stdlib
 https://crates.io/crates/wide - intrinsics
@@ -71,44 +71,36 @@ https://github.com/rayon-rs/rayon - parallelization library
 https://crates.io/crates/ultraviolet - used by rayn for SIMD
 
 ### 2D Renderers
+
 https://github.com/bodoni/svg - svg parser
 https://github.com/google/forma - vector graphics renderer
 https://github.com/RazrFalcon/resvg - svg renderer + everything else
 https://github.com/linebender/vello - 2d rendering lib
 https://github.com/servo/pathfinder - fonts and vector graphics
-https://fuchsia.googlesource.com/fuchsia/+/refs/heads/master/src/graphics/lib/compute/spinel/ -  Spinel Vulkan
+https://fuchsia.googlesource.com/fuchsia/+/refs/heads/master/src/graphics/lib/compute/spinel/ - Spinel Vulkan
 
 ### Renderers
+
 https://github.com/fu5ha/rayn - raytracer
 https://github.com/linebender/xilem/ - ui lib uses vello
 https://github.com/servo/servo - browser engine
 
 ## Performance
 
-
 We will want to implement high efficiency algorithms and data structures, leveraging the hardware
 capabilities at our disposal. These include WebGPU, but also Auto-vectorization, SIMD/NEON and Intrinsics
 When possible. Well, I dont know what Im talking about, we need to see if its worth it. If the support is
 lacking in WASM or across various platforms perhaps its best to focus on highly optimised WebGPU code only.
 
-
-
-
-/* 
+/\*
 This is the UI model space. We have to choose how we will represent our Objects
 
-Camera movement:
-    - translate left, right, up, down
-    - zoom in/out
-Object movement:
-    - translate x/y
-    - scale up, down
-    - rotate left, right, up, down
+Camera movement: - translate left, right, up, down - zoom in/out
+Object movement: - translate x/y - scale up, down - rotate left, right, up, down
 
 The camera can be zoomed into something but it cant go further than the object,
 which brings up the question of how to handle the camera's position and zoom level
 in relation to the object's position and scale.
 
-
 For now, lets focus on 2D objects and a 2D camera. We can add 3D later.
-*/
+\*/

@@ -13,4 +13,4 @@ ropey = "1.6.1"
 serde = { version = "1.0.196", features = ["derive"] }
 serde_json = "1.0.112"
 tokio = { version = "1.35.1", features = ["full"] }
-tower-lsp = { version = "0.20.0", features = ["proposed"]}
+tower-lsp = { version = "0.20.0", features = ["proposed"] }

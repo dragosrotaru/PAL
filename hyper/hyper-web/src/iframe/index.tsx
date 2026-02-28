@@ -1,7 +1,6 @@
 import React from "react";
 
-
-/* 
+/*
 
 - Populate IFrame Permissions Type
 - Research Trusted Types: https://w3c.github.io/webappsec-trusted-types/dist/spec/
@@ -13,8 +12,7 @@ import React from "react";
 
 */
 
-
-/* 
+/*
 
 Notes on Content Security Policy:
 
@@ -26,8 +24,7 @@ Notes on Content Security Policy:
 
 */
 
-
-/* 
+/*
 
 Performance
 
@@ -37,8 +34,7 @@ Performance
 
 */
 
-
-/* 
+/*
 
 Notes On Sandboxing:
 
@@ -69,9 +65,7 @@ type SandboxPolicy =
   | "allow-top-navigation-by-user-activation" // Lets the resource navigate the top-level browsing context, but only if initiated by a user gesture.
   | "allow-top-navigation"; // Lets the resource navigate the top-level browsing context (the one named _top).
 
-
-
-/* 
+/*
 
 Notes On Permissions Policy:
 
@@ -86,10 +80,9 @@ Example Best Practice Permissions Policy:
  
 */
 
-type Permission = 
-  | "";
+type Permission = "";
 
-type PermissionScope = 
+type PermissionScope =
   | "*" // The feature will be allowed in this document, and all nested browsing contexts (iframes) regardless of their origin.
   | "self" // The feature will be allowed in this document, and in all nested browsing contexts (iframes) in the same origin.
   | "src" // 'src': (In an iframe allow attribute only) The feature will be allowed in this iframe, as long as the document loaded into it comes from the same origin as the URL in the iframe's src attribute.
@@ -137,7 +130,10 @@ export const IFrame = ({
     height={height}
     width={width}
     sandbox={sandboxPolicies.join(" ")} // unsupported in Internet Explorer <= 9
-    allow={permissionsPolicies.map(policy => policy.join(" ")).join("; ").trim()}
+    allow={permissionsPolicies
+      .map((policy) => policy.join(" "))
+      .join("; ")
+      .trim()}
     referrerPolicy={referrerPolicy} // Send a full URL when performing a same-origin request, only send the origin when the protocol security level stays the same (HTTPS→HTTPS), and send no header to a less secure destination (HTTPS→HTTP).
   ></iframe>
 );

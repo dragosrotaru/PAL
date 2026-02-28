@@ -8,17 +8,17 @@
 
 **Observation** – Some measurement of the Environment
 
-**Observer –** Some Function that returns an Observation from the Environment 
+**Observer –** Some Function that returns an Observation from the Environment
 
 **StateSpace SS: { S }** – The Set of all Possible States the Environment can be in.
 
 **StateModel SM: O ⇒ S** – a Model of the Environment State Space given some Observations of the Environment. StateModel is a Function that takes the set of all Observations made so far and Produces a State. The Domain of this Function is the Observation-Space and the Range is the State-Space
 
-**DynamicsModel** – A Model of how the Environment can change between States in the State Space. This can be a matrix with transition probabilities between every state in the StateSpace. 
+**DynamicsModel** – A Model of how the Environment can change between States in the State Space. This can be a matrix with transition probabilities between every state in the StateSpace.
 
 **Intent I: S ⇒ [0,1] –** A Function that takes the StateSpace and Produces a Value for that StateSpace.
 
-**Action A: { (O, P(O)) }  –** A Probability Distribution over Outcomes which are some particular transition over the StateSpace.
+**Action A: { (O, P(O)) } –** A Probability Distribution over Outcomes which are some particular transition over the StateSpace.
 
 **Policy P: S ⇒ A –** A Function That Maps from the StateSpace to the ActionSpace.
 
@@ -28,21 +28,21 @@
 
 **Gamma Discount Factor (y)** – y=1 means future is equally valuable to immediate reward. y=0 means immediate reward is the only thing that matters
 
-**Exploitation vs Exploration** – The Balance between trying Actions to gather more Observations to learn more optimal Policies and using the existing best policy, which is possibly sub-optimal, to accumulate more Reward. 
+**Exploitation vs Exploration** – The Balance between trying Actions to gather more Observations to learn more optimal Policies and using the existing best policy, which is possibly sub-optimal, to accumulate more Reward.
 
 **Horizon** – The Sequence of decisions that must be made over the lifecycle of the Agent could be finite with some termination states or infinite.
 
 **Episode –** A finite Sequence of Decisions
 
-**MSE – Mean Squared Error** 
+**MSE – Mean Squared Error**
 
 Policy Evaluation:
 
-- Dynamic Programming:  When Process is Markov, Dynamics Model and Reward Model are Known
+- Dynamic Programming: When Process is Markov, Dynamics Model and Reward Model are Known
 - Monte Carlo: When Process is Episodic (Finite, for example every day/week is a new trial)
-    - Every Visit
-    - Single Visit
-    - Incremental (non-stationary domain)
+  - Every Visit
+  - Single Visit
+  - Incremental (non-stationary domain)
 
 # System Design
 
@@ -97,19 +97,19 @@ Systems can be Composed.
 
 The Environment is the Composition of all Systems that Exist. Because it does not have a boundary, it cannot be a System.
 
-The Environment has a State which undergoes the Transformation State_t = T(State_t-1) 
+The Environment has a State which undergoes the Transformation State_t = T(State_t-1)
 
 State is an Information structure which describes the Environment in full.
 
 There are two types of Events – Actions and Observations
 
-Action and Observation compose to form Interaction across System Boundaries. 
+Action and Observation compose to form Interaction across System Boundaries.
 
-That is, interaction between two Systems is defined by an Acton taken by one System and 
+That is, interaction between two Systems is defined by an Acton taken by one System and
 
 The Observation of said Action by another System
 
-A Query (or Request) is an Action-Observation, i.e. an Action inducing an Observation. 
+A Query (or Request) is an Action-Observation, i.e. an Action inducing an Observation.
 
 A Reaction (or Response) is an Observation-Action, i.e. an Observation inducing an Action.
 
@@ -121,6 +121,6 @@ An Actor has Agency
 
 An Actor is said to have Agency from the perspective of another System if there are no Observable Actors Actions do not have an Observable cause. In other words, a Reaction is not sufficient to demonstrate Agency, or Autonomous Behaviour.
 
-Note the definition of Agency is strictly reliant on the lack of Observable Observations.   
+Note the definition of Agency is strictly reliant on the lack of Observable Observations.
 
 $$Q[s,a]^{new} \leftarrow (1 - \alpha) \cdot Q[s_t,a]_{old} + \alpha \cdot (r_t + \gamma \cdot max_a(Q[s_{t+1},a]))$$

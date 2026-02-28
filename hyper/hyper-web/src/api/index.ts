@@ -41,7 +41,9 @@ type Action<Data> =
   | { status: Status.FAILURE; error: string }
   | { status: Status.SUCCESS; payload: Data };
 
-export const useAPI = <Data>(callAPI: () => Promise<Data>): [State<Data>, React.Dispatch<Action<Data>>] => {
+export const useAPI = <Data>(
+  callAPI: () => Promise<Data>,
+): [State<Data>, React.Dispatch<Action<Data>>] => {
   const dataFetchReducer: Reducer<State<Data>, Action<Data>> = (state, action) => {
     switch (action.status) {
       case Status.LOADING:

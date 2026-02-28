@@ -3,6 +3,12 @@
 # typescript
 node_modules
 build
+lib
+out
+dist
+
+# pnpm
+pnpm-lock.yaml
 
 # rust
 target

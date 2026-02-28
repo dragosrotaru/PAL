@@ -5,12 +5,7 @@
 import { Fractional, Numeric, Order, Type, UI } from "../typeclasses.js";
 // Implementation for Number
 export class TSNumber
-  implements
-    Type<number>,
-    UI<number>,
-    Order<number>,
-    Numeric<number>,
-    Fractional<number>
+  implements Type<number>, UI<number>, Order<number>, Numeric<number>, Fractional<number>
 {
   is(a: unknown): a is number {
     return typeof a === "number";

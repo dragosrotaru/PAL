@@ -32,7 +32,7 @@ encryptRSA = (publicKey, input) => {
       oaepHash: "sha256",
       padding: crypto.constants.RSA_PKCS1_PADDING,
     },
-    input
+    input,
   );
 };
 decryptRSA = (privateKey, input) => {
@@ -42,7 +42,7 @@ decryptRSA = (privateKey, input) => {
       oaepHash: "sha256",
       padding: crypto.constants.RSA_PKCS1_PADDING,
     },
-    input
+    input,
   );
 };
 encryptAES = (symmetricKey, input) => {

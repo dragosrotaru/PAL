@@ -44,14 +44,14 @@ app.use(
       callback(null, origin === "http://localhost:3000");
     },
     credentials: true,
-  })
+  }),
 );
 
 // Encodings
 app.use(
   express.json({
     limit: "10mb",
-  })
+  }),
 );
 app.use(express.urlencoded({ extended: false }));
 app.use(express.query({}));
