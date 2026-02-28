@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "notes": "node --experimental-strip-types scripts/notes-build.ts",
     "build": "pnpm -r --if-present --no-bail run build",
     "test": "pnpm -r --if-present --no-bail run test",
     "test:unit": "vitest run",

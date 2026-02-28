@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/notes-hook.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash scripts/agents-hook.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
