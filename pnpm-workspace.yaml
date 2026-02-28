@@ -1,7 +1,7 @@
 packages:
   - "pal-ts"
-  - "pal-vscode"
-  - "pal-lsp"
+  - "pal-fs-vscode"
+  - "pal-lsp/client"
   - "pal-lsp-example"
   - "hyper-ts"
   - "hyper-fs"

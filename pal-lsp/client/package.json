@@ -1,5 +1,5 @@
 {
-  "name": "pal-lsp",
+  "name": "pal-lsp-client",
   "version": "0.1.0",
   "description": "Pal Language Server",
   "categories": [],
@@ -10,6 +10,7 @@
   "license": "MIT",
   "main": "./dist/extension.js",
   "scripts": {
+    "build": "tsgo",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
