@@ -1,7 +1,7 @@
 use std::collections::HashMap;
-use chumsky::Span;
 use im_rc::Vector;
 use ReferenceSymbol::*;
+use chumsky::Span;
 use crate::chumsky::{Expr, Func, Spanned};
 
 #[derive(Debug, Clone)]

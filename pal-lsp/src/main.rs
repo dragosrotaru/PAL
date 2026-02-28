@@ -1,12 +1,5 @@
 use std::collections::HashMap;
 use dashmap::DashMap;
-use nrs_language_server::chumsky::{
-    parse, type_inference, Func, ImCompleteSemanticToken, ParserResult,
-};
-use nrs_language_server::completion::completion;
-use nrs_language_server::jump_definition::get_definition;
-use nrs_language_server::reference::get_reference;
-use nrs_language_server::semantic_token::{semantic_token_from_ast, LEGEND_TYPE};
 use ropey::Rope;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -14,6 +7,14 @@ use tower_lsp::jsonrpc::Result;
 use tower_lsp::lsp_types::notification::Notification;
 use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};
+
+use pal_lsp::chumsky::{
+    parse, type_inference, Func, ImCompleteSemanticToken, ParserResult,
+};
+use pal_lsp::completion::completion;
+use pal_lsp::jump_definition::get_definition;
+use pal_lsp::reference::get_reference;
+use pal_lsp::semantic_token::{semantic_token_from_ast, LEGEND_TYPE};
 
 #[derive(Debug)]
 struct Backend {
@@ -59,7 +60,7 @@ impl LanguageServer for Backend {
                             text_document_registration_options: {
                                 TextDocumentRegistrationOptions {
                                     document_selector: Some(vec![DocumentFilter {
-                                        language: Some("nrs".to_string()),
+                                        language: Some("pal".to_string()),
                                         scheme: Some("file".to_string()),
                                         pattern: None,
                                     }]),
@@ -304,12 +305,12 @@ impl LanguageServer for Backend {
                     k.start,
                     k.end,
                     match v {
-                        nrs_language_server::chumsky::Value::Null => "null".to_string(),
-                        nrs_language_server::chumsky::Value::Bool(_) => "bool".to_string(),
-                        nrs_language_server::chumsky::Value::Num(_) => "number".to_string(),
-                        nrs_language_server::chumsky::Value::Str(_) => "string".to_string(),
-                        nrs_language_server::chumsky::Value::List(_) => "[]".to_string(),
-                        nrs_language_server::chumsky::Value::Func(_) => v.to_string(),
+                        pal_lsp::chumsky::Value::Null => "null".to_string(),
+                        pal_lsp::chumsky::Value::Bool(_) => "bool".to_string(),
+                        pal_lsp::chumsky::Value::Num(_) => "number".to_string(),
+                        pal_lsp::chumsky::Value::Str(_) => "string".to_string(),
+                        pal_lsp::chumsky::Value::List(_) => "[]".to_string(),
+                        pal_lsp::chumsky::Value::Func(_) => v.to_string(),
                     },
                 )
             })
@@ -356,7 +357,7 @@ impl LanguageServer for Backend {
             let mut ret = Vec::with_capacity(completions.len());
             for (_, item) in completions {
                 match item {
-                    nrs_language_server::completion::ImCompleteCompletionItem::Variable(var) => {
+                    pal_lsp::completion::ImCompleteCompletionItem::Variable(var) => {
                         ret.push(CompletionItem {
                             label: var.clone(),
                             insert_text: Some(var.clone()),
@@ -365,7 +366,7 @@ impl LanguageServer for Backend {
                             ..Default::default()
                         });
                     }
-                    nrs_language_server::completion::ImCompleteCompletionItem::Function(
+                    pal_lsp::completion::ImCompleteCompletionItem::Function(
                         name,
                         args,
                     ) => {
