@@ -1,4 +1,10 @@
-use wgpu::{Device, ShaderModuleDescriptor, ShaderSource, PrimitiveState, PrimitiveTopology, PolygonMode, FrontFace, FragmentState, VertexState, MultisampleState, BindGroupDescriptor, PipelineLayoutDescriptor, BindGroupLayoutDescriptor, RenderPipelineDescriptor, ColorTargetState, TextureFormat, RenderPipeline, BindGroup, VertexBufferLayout, BufferAddress, VertexStepMode, vertex_attr_array};
+use wgpu::{
+    vertex_attr_array, BindGroup, BindGroupDescriptor, BindGroupLayoutDescriptor,
+    BufferAddress, ColorTargetState, Device, FragmentState, FrontFace, MultisampleState,
+    PipelineCompilationOptions, PipelineLayoutDescriptor, PolygonMode, PrimitiveState,
+    PrimitiveTopology, RenderPipeline, RenderPipelineDescriptor, ShaderModuleDescriptor,
+    ShaderSource, TextureFormat, VertexBufferLayout, VertexState, VertexStepMode,
+};
 
 use super::geometry::vertex::Vertex;
 
@@ -29,8 +35,7 @@ impl Pipeline {
         let p_layout = device.create_pipeline_layout(&PipelineLayoutDescriptor {
             label: Some("Render Pipeline Layout"),
             bind_group_layouts: &[&bind_group_layout],
-            // todo learn
-            push_constant_ranges: &[],
+            immediate_size: 0,
         });
 
         let vertex_buffer_layout = VertexBufferLayout {
@@ -38,29 +43,27 @@ impl Pipeline {
             step_mode: VertexStepMode::Vertex,
             attributes: &vertex_attr_array![0 => Float32x2],
         };
-        
+
         let pipeline = device.create_render_pipeline(&RenderPipelineDescriptor {
             label: Some("Render Pipeline"),
             layout: Some(&p_layout),
             vertex: VertexState {
                 module: &shader,
-                entry_point: "vs_main",
+                entry_point: Some("vs_main"),
                 buffers: &[vertex_buffer_layout],
+                compilation_options: PipelineCompilationOptions::default(),
             },
             fragment: Some(FragmentState {
                 module: &shader,
-                entry_point: "fs_main",
-                targets: &[
-                    Some(ColorTargetState {
-                        format,
-                        // todo learn
-                        blend: None,
-                        write_mask: Default::default(),
-                    })
-                ],
+                entry_point: Some("fs_main"),
+                targets: &[Some(ColorTargetState {
+                    format,
+                    blend: None,
+                    write_mask: Default::default(),
+                })],
+                compilation_options: PipelineCompilationOptions::default(),
             }),
-            // todo learn
-            multiview: None,
+            multiview_mask: None,
             primitive: PrimitiveState {
                 topology: PrimitiveTopology::TriangleList,
                 strip_index_format: None,
@@ -76,13 +79,12 @@ impl Pipeline {
                 mask: !0,
                 alpha_to_coverage_enabled: false,
             },
+            cache: None,
         });
-        
+
         Self {
             pipeline,
             bind_group,
         }
     }
-
-    
 }

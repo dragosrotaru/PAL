@@ -11,13 +11,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "fuse-native": "^2.2.6",
-    "multihashes": "^4.0.3",
-    "tslib": "^2.8.1",
-    "varint": "^6.0.0"
-  },
-  "devDependencies": {
-    "@types/varint": "^6.0.1"
+    "fuse-native": "^2.2.6"
   },
   "engines": {
     "node": "24.13.0",

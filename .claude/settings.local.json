@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm outdated:*)",
+      "Bash(cargo outdated:*)",
+      "Bash(pnpm up:*)",
+      "Bash(curl:*)",
+      "Bash(cargo update:*)",
+      "Bash(pnpm install:*)",
+      "Bash(ls:*)",
+      "Bash(cargo build:*)",
+      "Bash(rustup update:*)",
+      "Bash(grep:*)",
+      "Bash(pnpm:*)"
+    ]
+  }
+}

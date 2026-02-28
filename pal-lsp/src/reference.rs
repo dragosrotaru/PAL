@@ -6,7 +6,7 @@
 use std::collections::HashMap;
 use im_rc::Vector;
 use ReferenceSymbol::*;
-use chumsky::Span;
+use chumsky::span::Span as _;
 use crate::chumsky::{Expr, Func, Spanned};
 
 /// Tracks whether we have identified the target symbol yet.

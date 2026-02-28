@@ -7,18 +7,16 @@
  */
 import dotenv from "dotenv";
 import GPT3Tokenizer from "gpt3-tokenizer";
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 import type { Lang } from "../../language/ast.js";
 
 dotenv.config();
 if (!process.env["OPENAI"]) {
   throw new Error("OPENAI environment variable not set");
 }
-export const openai = new OpenAIApi(
-  new Configuration({
-    apiKey: process.env["OPENAI"],
-  }),
-);
+export const openai = new OpenAI({
+  apiKey: process.env["OPENAI"],
+});
 
 const tokenizer = new GPT3Tokenizer({ type: "gpt3" });
 
@@ -49,21 +47,15 @@ export const extractFirstCodeBlock = (input: string, language: string[]) => {
 };
 
 export const requestGPT = (system: string) => async (prompt: string) => {
-  const { data, statusText, status } = await openai.createChatCompletion({
-    model: "gpt-4", // "gpt-3.5-turbo-16k-0613",
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4",
     messages: [
-      {
-        role: "system",
-        content: system,
-      },
-      {
-        role: "user",
-        content: prompt,
-      },
+      { role: "system", content: system },
+      { role: "user", content: prompt },
     ],
   });
-  const content = data.choices[0]?.message?.content;
-  return { content, data, status, statusText };
+  const content = completion.choices[0]?.message?.content;
+  return { content, completion };
 };
 
 export const requestCode = (language: string[], system: string) => async (prompt: string) => {
