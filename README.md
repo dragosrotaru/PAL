@@ -26,15 +26,33 @@ In its current state, it is more a vehicle for learning than a useable tool. The
 
 ## Repo Structure
 
-- `pal-ts` - TS core pal implementation
+- `pal-ts` - pal implementation in TypeScript
+- `pal-rs` - pal implementation in Rust
+
+- `pal-eval` - Rust pal implementation for ts to rust testing 
+- `pal-rs` - Rust pretty format specific macro compilation
+- `pal-lsp` - Rust language server protocol + pal implementation
+
 - `pal-fs-vscode` - TS vscode extension for a virtual filesystem
 - `pal-lsp-example` - TS vscode extension but just for pretty format
-- `pal-eval` - Rust pal implementation for ts to rust testing 
-- `pal-lsp` - Rust language server protocol + pal implementation
-    - `pal-lsp/client` - TS lsp client for the Rust LSP above
-- `pal-fs` - Rust fuse virtual FS stub for pal
-- `pal-rs` - Rust pretty format specific macro compilation
+- `pal-lsp/client` - TS lsp client for the Rust LSP above
+
+- `pal-fs` - fuse VFS stub in Rust
+- `hyper-fs` - fuse VFS experiment for Hyper in TypeScript
+
 - `hyper-ts` - protocol implementation
-- `hyper-fs` - fuse virtual filesystem adapter 
 - `pal-os` - what if it was an operating system?
 - `wingman` - what if it was a webgpu IDE / runtime written in Rust?
+
+
+Opportunities for consolidation
+
+Vs Code Integration:
+- pal-lsp/client
+- pal-fs-vscode
+- pal-lsp-example
+
+typescript
+- pal-ts
+- pal-vscode - virtual FS + LSP integration
+- 
