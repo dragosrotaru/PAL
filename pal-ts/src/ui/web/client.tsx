@@ -4,7 +4,7 @@
  * Exec messages are sent for user-initiated actions (e.g. delete button).
  */
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { parser } from "../../language/parser/index.js";
 import { write } from "../../language/parser/json.js";
 import { log } from "../../libraries/logger/index.js";
@@ -39,9 +39,8 @@ webSocket.onmessage = (event) => {
 
   if (message.type === Type.AST) {
     const ast = parser(message.ast);
-    // TODO: use React state/observables instead of ReactDOM.render directly (deprecated in React 18+)
     // Render the view
-    ReactDOM.render(<Template ast={ast} exec={exec}></Template>, document.getElementById("root"));
+    createRoot(document.getElementById("root")!).render(<Template ast={ast} exec={exec}></Template>);
     return;
   }
 

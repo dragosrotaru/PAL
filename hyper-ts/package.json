@@ -12,14 +12,10 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "fp-ts": "^2.16.9",
-    "io-ts": "^2.2.22",
-    "jsencrypt": "^3.3.2",
-    "multihashes": "^0.4.21",
-    "redis": "^3.1.2"
+    "multihashes": "^4.0.3",
+    "varint": "^6.0.0"
   },
   "devDependencies": {
-    "@types/redis": "^2.8.32",
     "@types/varint": "^6.0.3"
   },
   "engines": {

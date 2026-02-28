@@ -2,8 +2,10 @@
  * Manages GPT conversation history, persisting it to the env (and thus to disk) via
  * HISTORY_ID. Subscribes to env changes so the history file can be hot-edited externally.
  */
-import { ChatCompletionRequestMessage } from "openai";
+import type OpenAI from "openai";
 import { IEnv } from "../interfaces.js";
+
+type Message = OpenAI.Chat.ChatCompletionMessageParam;
 
 const HISTORY_ID = Symbol.for("src/libraries/gpt/history.json");
 const SYSTEM_PROMPT = Symbol.for("pal/src/libraries/system-prompt.md");
@@ -13,11 +15,11 @@ const SYSTEM_PROMPT = Symbol.for("pal/src/libraries/system-prompt.md");
  * `src/libraries/gpt/history.json` so it survives process restarts via filesystem.
  */
 export class GPTMessageHistory {
-  systemPrompt: ChatCompletionRequestMessage = {
+  systemPrompt: Message = {
     role: "system",
     content: "",
   };
-  private _history: ChatCompletionRequestMessage[] = [];
+  private _history: Message[] = [];
 
   constructor(private env: IEnv) {
     this.env.subscribe(HISTORY_ID, (ast: any) => {
@@ -35,7 +37,7 @@ export class GPTMessageHistory {
   }
   /** Appends a message to history and persists to env (triggers filesystem write). */
   // TODO: append writes to env twice (sets _history then calls env.map.set with concat again); deduplicate
-  public append(message: ChatCompletionRequestMessage) {
+  public append(message: Message) {
     console.log("SETTING", this._history.concat(message));
     this._history = this._history.concat(message);
     this.env.map.set(HISTORY_ID, this._history.concat(message) as any);

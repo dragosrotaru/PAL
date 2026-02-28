@@ -1,38 +1,46 @@
-use super::{text::TextRenderService, pipeline::Pipeline, geometry::{rectangle::Rectangle, point::Point2}};
+use super::{
+    geometry::{point::Point2, rectangle::Rectangle},
+    pipeline::Pipeline,
+    text::TextRenderService,
+};
 use std::iter;
+use std::sync::Arc;
 
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
 
 use wgpu::{
-    Backends, CommandEncoderDescriptor, Device, DeviceDescriptor, Features, Instance,
-    InstanceDescriptor, Limits, LoadOp, Operations, PowerPreference, Queue,
+    Backends, BufferUsages, CommandEncoderDescriptor, Device, DeviceDescriptor, Features,
+    Instance, InstanceDescriptor, Limits, LoadOp, Operations, PowerPreference, Queue,
     RenderPassColorAttachment, RenderPassDescriptor, RequestAdapterOptions, StoreOp, Surface,
-    SurfaceConfiguration, SurfaceError, TextureUsages, TextureViewDescriptor, BufferUsages, util::DeviceExt,
+    SurfaceConfiguration, SurfaceError, TextureUsages, TextureViewDescriptor, util::DeviceExt,
 };
 use winit::window::Window;
 
-pub struct RenderService {
-    pub surface: Surface,
+pub struct RenderService<'window> {
+    pub surface: Surface<'window>,
     pub device: Device,
     pub queue: Queue,
     pub config: SurfaceConfiguration,
     pub size: winit::dpi::PhysicalSize<u32>,
-    pub window: Window,
+    pub window: Arc<Window>,
     pub text: TextRenderService,
     pub pipeline: Pipeline,
 }
 
-impl RenderService {
-    pub async fn new(window: Window) -> Self {
+impl<'window> RenderService<'window> {
+    pub async fn new(window: Arc<Window>) -> Self {
         let size = window.inner_size();
 
-        let instance = Instance::new(InstanceDescriptor {
+        let instance = Instance::new(&InstanceDescriptor {
             backends: Backends::all(),
             ..Default::default()
         });
 
-        let surface = unsafe { instance.create_surface(&window) }.expect("Create surface");
+        // In wgpu 28, create_surface is safe and takes impl Into<SurfaceTarget>
+        let surface = instance
+            .create_surface(window.clone())
+            .expect("Create surface");
 
         let adapter = instance
             .request_adapter(&RequestAdapterOptions {
@@ -47,15 +55,14 @@ impl RenderService {
             .request_device(
                 &DeviceDescriptor {
                     label: None,
-                    features: Features::empty(),
-                    limits: if cfg!(target_arch = "wasm32") {
+                    required_features: Features::empty(),
+                    required_limits: if cfg!(target_arch = "wasm32") {
                         Limits::downlevel_webgl2_defaults()
                     } else {
                         Limits::default()
                     },
+                    ..Default::default()
                 },
-                // Some(&std::path::Path::new("trace")), // Trace path
-                None,
             )
             .await
             .unwrap();
@@ -77,6 +84,7 @@ impl RenderService {
             present_mode: surface_caps.present_modes[0],
             alpha_mode: surface_caps.alpha_modes[0],
             view_formats: vec![],
+            desired_maximum_frame_latency: 2,
         };
         surface.configure(&device, &config);
 
@@ -99,7 +107,7 @@ impl RenderService {
             size,
             window,
             text,
-            pipeline
+            pipeline,
         }
     }
 
@@ -113,7 +121,6 @@ impl RenderService {
         self.window.request_redraw();
     }
 
-
     pub fn update(&mut self, text: &str) {
         self.text.update(text);
         self.window.request_redraw();
@@ -121,19 +128,19 @@ impl RenderService {
 
     pub fn render(&mut self) -> Result<(), SurfaceError> {
         let frame = self.surface.get_current_texture()?;
-        let view = frame.texture.create_view(&TextureViewDescriptor::default());
+        let view = frame
+            .texture
+            .create_view(&TextureViewDescriptor::default());
 
-        let rect = Rectangle::new(
-            Point2::new(0.9, 0.9),
-            Point2::new(0.1, 0.1),
-        );
+        let rect = Rectangle::new(Point2::new(0.9, 0.9), Point2::new(0.1, 0.1));
         let vertices = rect.to_vertices();
-        let vertex_buffer = self.device.create_buffer_init(&wgpu::util::BufferInitDescriptor {
-            label: Some("Vertex Buffer"),
-            contents: bytemuck::cast_slice(&vertices),
-            usage: BufferUsages::VERTEX,
-            });
-
+        let vertex_buffer =
+            self.device
+                .create_buffer_init(&wgpu::util::BufferInitDescriptor {
+                    label: Some("Vertex Buffer"),
+                    contents: bytemuck::cast_slice(&vertices),
+                    usage: BufferUsages::VERTEX,
+                });
 
         self.text
             .pre_render(&self.device, &self.queue, self.size.width, self.size.height);
@@ -145,12 +152,12 @@ impl RenderService {
             });
 
         {
-
             let mut pass = encoder.begin_render_pass(&RenderPassDescriptor {
                 label: Some("Render Pass"),
                 color_attachments: &[Some(RenderPassColorAttachment {
                     view: &view,
                     resolve_target: None,
+                    depth_slice: None,
                     ops: Operations {
                         load: LoadOp::Clear(wgpu::Color::BLUE),
                         store: StoreOp::Store,
@@ -159,20 +166,19 @@ impl RenderService {
                 depth_stencil_attachment: None,
                 occlusion_query_set: None,
                 timestamp_writes: None,
+                multiview_mask: None,
             });
 
             pass.set_pipeline(&self.pipeline.pipeline);
             pass.set_bind_group(0, &self.pipeline.bind_group, &[]);
 
             pass.set_vertex_buffer(0, vertex_buffer.slice(..));
-            pass.draw(0..6, 0..1); // Draw 6 vertices making up the rectangle
-
+            pass.draw(0..6, 0..1);
 
             self.text
                 .renderer
-                .render(&self.text.atlas, &mut pass)
+                .render(&self.text.atlas, &self.text.viewport, &mut pass)
                 .unwrap();
-
         }
 
         self.queue.submit(iter::once(encoder.finish()));
