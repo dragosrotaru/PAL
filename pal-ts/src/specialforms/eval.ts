@@ -1,3 +1,8 @@
+/**
+ * `(eval expr)` special form — evaluates expr, then if the result differs from the input,
+ * evaluates again (double-eval). Enables eval of quoted/stored code.
+ * @author claude
+ */
 import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";

@@ -1,4 +1,11 @@
-/* 
+/**
+ * The Pal Abstract Syntax Tree type hierarchy, organized as a three-layer sandwich:
+ * Core primitives → Language extensions (CSV, JSON) → Composite union (Lang.AST).
+ * A PAL List is distinct from a JSON Array even if structurally identical at runtime.
+ * @author claude
+ */
+
+/*
 
 Below are the Abtract Syntax Tree Types of the language.
 
@@ -33,6 +40,7 @@ export namespace Lang {
   /*  CORE */
 
   // Primitives
+  /** Symbol used as a unique identifier/key in the environment; description is the symbol name. */
   export type ID = symbol;
   export type Boolean = boolean;
   export type Number = number;
@@ -40,13 +48,14 @@ export namespace Lang {
   export type Null = null;
   export type Undefined = undefined;
 
+  /** Union of all non-composite atomic types; returned as-is by the evaluator without further reduction. */
   export type Primitive = ID | Boolean | Number | String | Null | Undefined;
 
   export type IDList = Lang.ID[];
   export type IDTree = ID | IDList | IDTree[];
 
-  // PAL (pal assistant language)
-
+  // PAL (pal assistant language) — the core evaluatable sublanguage
+  /** The PAL core language: primitives, lists of PAL, and first-class procedures. */
   export type PAL = Lang.Primitive | PAL.List | PAL.Procedure;
   export namespace PAL {
     export type SyncProcedure = (...ast: PAL[]) => PAL;
@@ -81,11 +90,17 @@ export namespace Lang {
 
   /* Composite */
 
+  /** Runtime type guard registered in TypeSystem.registry; returns true if ast matches a type. */
   export type TypeGuard = (input: Lang.AST) => Lang.Boolean;
   export type SyncProcedure = (...ast: AST[]) => AST;
   export type AsyncProcedure = (...ast: AST[]) => Promise<AST>;
+  /** First-class procedure in the Pal runtime; both sync and async variants are supported. */
   export type Procedure = SyncProcedure | AsyncProcedure;
   export type List = AST[];
 
+  /**
+   * The top-level union of all values that can appear in the Pal environment.
+   * Intentionally broad — narrowing happens via STATIC type guards in typesystem.ts.
+   */
   export type AST = Primitive | List | Procedure | CSV | PAL | JSON;
 }

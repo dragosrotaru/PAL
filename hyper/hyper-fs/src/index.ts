@@ -1,3 +1,20 @@
+/**
+ * @file hyper-fs entry point — FUSE filesystem mount.
+ *
+ * Mounts an encrypted filesystem at `./mount` using `fuse-native`. The filesystem
+ * is backed by a password-encrypted `Device` with a JSON config file.
+ *
+ * CLI usage:
+ * ```
+ * node dist/index.js <password> <config-file-path>
+ * # or via env: PASSWORD=... CONFIG_FILE_PATH=... node dist/index.js
+ * ```
+ *
+ * Unmounts cleanly on SIGINT (Ctrl+C).
+ *
+ * This is the hyper-specific FUSE implementation (TypeScript / fuse-native),
+ * distinct from the Rust-based `pal-fs` crate which uses `fuser`.
+ */
 import path from "path";
 import { promises as fs } from "fs";
 // @ts-ignore

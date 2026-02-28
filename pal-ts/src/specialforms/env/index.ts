@@ -1,3 +1,8 @@
+/**
+ * `env` special form — evaluating the bare `env` symbol returns all environment entries
+ * as a list of [ID, AST] pairs via env.getAll().
+ * @author claude
+ */
 import { GETALL_ID } from "../../core/environment.js";
 import type { IEnv } from "../../interfaces.js";
 import type { Lang } from "../../language/ast.js";

@@ -1,15 +1,27 @@
+//! Find-all-references provider.
+//!
+//! Collects every use site of the symbol under the cursor.
+//! Called by `main.rs::references` and `main.rs::rename`.
+
 use std::collections::HashMap;
 use im_rc::Vector;
 use ReferenceSymbol::*;
 use chumsky::Span;
 use crate::chumsky::{Expr, Func, Spanned};
 
+/// Tracks whether we have identified the target symbol yet.
 #[derive(Debug, Clone)]
 pub enum ReferenceSymbol {
-    Founded(Spanned<String>),
+    /// Still searching — holds the cursor offset to match against declaration sites.
     Founding(usize),
+    /// Found — holds the canonical `(name, span)` of the target declaration.
+    Founded(Spanned<String>),
 }
 
+/// Collect all use sites of the symbol at `ident_offset`.
+///
+/// If `include_self` is `true`, the declaration site is included in the result
+/// (needed for rename). If `false`, only references are returned (needed for find-references).
 pub fn get_reference(
     ast: &HashMap<String, Func>,
     ident_offset: usize,
@@ -59,6 +71,11 @@ pub fn get_reference(
     reference_list
 }
 
+/// Recursive AST walk that appends matching use sites to `reference_list`.
+///
+/// `definition_ass_list` tracks declarations in scope (shadowing is handled by prepending).
+/// `reference_symbol` transitions from `Founding` → `Founded` when the cursor offset
+/// lands on a declaration site.
 pub fn get_reference_of_expr(
     expr: &Spanned<Expr>,
     definition_ass_list: Vector<Spanned<String>>,

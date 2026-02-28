@@ -1,3 +1,20 @@
+/**
+ * @file pal-lsp VS Code client extension.
+ *
+ * Starts the `pal-lsp` Rust binary as a Language Server and wires it to VS Code
+ * via `vscode-languageclient`. Registers the LSP client for `.pretty` and `.pal` files.
+ *
+ * ## Configuration
+ * - Set `SERVER_PATH` env var to override the binary path (default: `"pal-lsp"` on `$PATH`).
+ * - `RUST_LOG=debug` is always passed to the server process.
+ *
+ * ## Known issues
+ * - The `helloworld.helloWorld` command hardcodes `/User/megacuck/projects/pal/pal-lsp/test.pretty`
+ *   which only exists on the original developer's machine. The `uri` argument is also ignored.
+ * - `activateInlayHints` is defined and exported but never called (call is commented out).
+ *   The entire inlay-hint provider implementation is commented out inside it.
+ */
+
 import {
     workspace,
     EventEmitter,
@@ -20,6 +37,12 @@ import {
   let client: LanguageClient;
   // type a = Parameters<>;
   
+  /**
+   * VS Code extension activation entry point.
+   *
+   * Registers a `helloworld.helloWorld` command (broken — see file-level note),
+   * configures the LSP client, and starts it against the `pal-lsp` server binary.
+   */
   export async function activate(context: ExtensionContext) {
     let disposable = commands.registerCommand("helloworld.helloWorld", async uri => {
       // The code you place here will be executed every time your command is executed
@@ -68,6 +91,7 @@ import {
     client.start();
   }
   
+  /** Stops the LSP client when the extension is deactivated. */
   export function deactivate(): Thenable<void> | undefined {
     if (!client) {
       return undefined;
@@ -75,6 +99,14 @@ import {
     return client.stop();
   }
   
+  /**
+   * Inlay-hints provider setup — currently a no-op.
+   *
+   * The `registerInlayHintsProvider` call is fully commented out.
+   * This function is never called from `activate`.
+   * // todo @claude: implement or remove; the provider body needs to be uncommented
+   *   and wired to the LSP `custom/inlay_hint` request.
+   */
   export function activateInlayHints(ctx: ExtensionContext) {
     const maybeUpdater = {
       hintsProvider: null as Disposable | null,

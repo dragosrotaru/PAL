@@ -1,3 +1,9 @@
+/**
+ * Parser/writer dispatch layer: maps file extension / clue strings to the correct
+ * sub-parser (pal, csv, json, txt) and serializer. This is the extension→type dispatch
+ * point for the filesystem's bidirectional sync.
+ * @author claude
+ */
 import type { Lang } from "../ast.js";
 import { parse as csvparser, write as csvwriter } from "./csv.js";
 import { parse as jsonparser, write as jsonwriter } from "./json.js";

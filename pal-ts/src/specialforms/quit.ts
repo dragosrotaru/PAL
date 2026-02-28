@@ -1,6 +1,12 @@
+/**
+ * `quit` special form — immediately terminates the process with code 0.
+ * Identical in behavior to `exit`; could be a stored procedure instead.
+ * @author claude
+ */
 import type { Lang } from "../language/ast.js";
 
 // todo enable a rebuild / restart
+// todo @claude: quit and exit are duplicates; unify into one and register the other as an alias
 
 /* this should be a stored procedure, can call with no params or any params, doesnt matter */
 

@@ -1,3 +1,16 @@
+/**
+ * @file Rabbithole browser extension — background service worker.
+ *
+ * Listens for two events:
+ * 1. `browser.runtime.onMessage` — receives the currently-selected text
+ *    forwarded from the content script via `sendMessage`.
+ * 2. `browser.commands.onCommand("save")` — triggered by the MacCtrl+S keybinding.
+ *    On "save", records the selected text (if any) or the current tab's URL into the
+ *    `saved` array, deduplicating consecutive identical saves via `lastSaved`.
+ *
+ * Current state: accumulates saves in memory only — no persistence, no sync to Pal Env.
+ * // todo @claude: persist `saved` to the Pal environment via a message to pal-ts
+ */
 console.log("hello world");
 
 const saved = [];

@@ -1,6 +1,11 @@
+/**
+ * Concrete implementation of Type<boolean> and UI<boolean> for the Pal type class system.
+ * parse() treats "true" (case-insensitive) as true, everything else as false.
+ * @author claude
+ */
 import { Type, UI } from "../typeclasses.js";
 
-// Implementation for Boolean
+/** Boolean type class implementation — not yet registered in TypeSystem.registry. */
 export class TSBoolean implements Type<boolean>, UI<boolean> {
   is(a: unknown): a is boolean {
     return typeof a === "boolean";

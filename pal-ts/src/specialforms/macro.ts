@@ -1,3 +1,9 @@
+/**
+ * `(macro pattern template)` special form. Defines a syntactic macro: pattern is matched against
+ * incoming ASTs at evaluation time; matching bindings are substituted into the template.
+ * Expansion is non-recursive (single pass) and requires exactly one macro to match.
+ * @author claude
+ */
 import type { IContext, Macro } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
@@ -28,10 +34,7 @@ const IsTemplate = (ast: Lang.AST): boolean => {
   return true;
 };
 
-const PatternTemplateInvariantsMet = (
-  pattern: Lang.AST,
-  template: Lang.AST
-): boolean => {
+const PatternTemplateInvariantsMet = (pattern: Lang.AST, template: Lang.AST): boolean => {
   // todo validate that the combination of pattern and template dont break some rules
   // This function checks that the pattern-template combination is valid.
   // For instance, we might check if every identifier in the template also appears in the pattern.
@@ -47,10 +50,7 @@ const PatternEnvInvariantsMet = (ctx: IContext, pattern: Lang.AST): boolean => {
   return true;
 };
 
-const TemplateEnvInvariantsMet = (
-  ctx: IContext,
-  template: Lang.AST
-): boolean => {
+const TemplateEnvInvariantsMet = (ctx: IContext, template: Lang.AST): boolean => {
   // todo validate that the combination of template and environment dont break some rules
   // Here, we can validate any environment-specific rules that the template must respect.
   // For now, we'll just return true.
@@ -76,30 +76,30 @@ export const Define = (ctx: IContext) => (ast: Form) => {
 };
 
 // macro definition - DSL for the features wanted in macro definition, at define-time
-const defineMacro =
-  (ctx: IContext) => (pattern: Lang.AST, template: Lang.AST) => {
-    if (!PatternTemplateInvariantsMet(pattern, template)) {
-      return undefined;
-    }
-    if (!PatternEnvInvariantsMet(ctx, pattern)) {
-      return undefined;
-    }
-    if (!TemplateEnvInvariantsMet(ctx, pattern)) {
-      return undefined;
-    }
+const defineMacro = (ctx: IContext) => (pattern: Lang.AST, template: Lang.AST) => {
+  if (!PatternTemplateInvariantsMet(pattern, template)) {
+    return undefined;
+  }
+  if (!PatternEnvInvariantsMet(ctx, pattern)) {
+    return undefined;
+  }
+  if (!TemplateEnvInvariantsMet(ctx, pattern)) {
+    return undefined;
+  }
 
-    ctx.macros.push({ pattern, template });
-    return true;
-  };
+  ctx.macros.push({ pattern, template });
+  return true;
+};
 
 /*  EXPANSION Time */
 
-// TODO needs to be recursive
+// todo @claude: Expand is non-recursive; nested macros in sub-lists are not expanded
+/**
+ * Tries to match ast against all registered macros; returns the substituted template
+ * on a unique match, the original ast on no match, and throws on multiple matches.
+ */
 export const Expand = (ctx: IContext) => (ast: Lang.AST) => {
-  const bindingMatch = (
-    pattern: Lang.AST,
-    ast: Lang.AST
-  ): Record<symbol, Lang.AST> | null => {
+  const bindingMatch = (pattern: Lang.AST, ast: Lang.AST): Record<symbol, Lang.AST> | null => {
     if (!STATIC.IsList(pattern) && !STATIC.IsID(pattern)) {
       return ctx.ts.valueEquals(pattern, ast) ? {} : null;
     }
@@ -112,11 +112,7 @@ export const Expand = (ctx: IContext) => (ast: Lang.AST) => {
       }
     }
 
-    if (
-      STATIC.IsList(pattern) &&
-      STATIC.IsList(ast) &&
-      pattern.length === ast.length
-    ) {
+    if (STATIC.IsList(pattern) && STATIC.IsList(ast) && pattern.length === ast.length) {
       const bindings: Record<symbol, Lang.AST> = {};
 
       for (let i = 0; i < pattern.length; i++) {
@@ -147,14 +143,13 @@ export const Expand = (ctx: IContext) => (ast: Lang.AST) => {
     }
   }
   if (matches.length === 0) return ast;
-  if (matches.length > 1)
-    throw new Error("multiple macros match, this is not supported yet");
+  if (matches.length > 1) throw new Error("multiple macros match, this is not supported yet");
   const theOne = matches[0];
 
   return substitute(theOne.macro.template, theOne.binding);
 };
 
-/* 
+/*
 
 TODO add support for these type of things:
 

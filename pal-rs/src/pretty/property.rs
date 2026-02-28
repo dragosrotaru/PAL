@@ -1,3 +1,8 @@
+//! Property parser for the "pretty" DSL.
+//! A property is a snake_case identifier followed by an integer value and semicolon.
+//! PropertyValue currently only supports i32 literals; full value expression support is a TODO.
+//! @author claude
+
 use proc_macro2::TokenStream;
 use quote::ToTokens;
 use syn::{

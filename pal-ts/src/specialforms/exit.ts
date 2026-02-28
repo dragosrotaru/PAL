@@ -1,6 +1,11 @@
+/**
+ * `exit` special form — immediately terminates the process with code 0.
+ * Identical in behavior to `quit`; could be a stored procedure instead.
+ * @author claude
+ */
 import type { Lang } from "../language/ast.js";
 
-/*  like quit this can be a special form / procedure */
+/*  like quit, this can be a special form / procedure */
 
 export const Identifier = Symbol.for("exit");
 

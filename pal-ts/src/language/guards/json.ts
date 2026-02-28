@@ -1,5 +1,11 @@
+/**
+ * Runtime type guards for the JSON extension of the Pal AST.
+ * Used by STATIC.IsJSONObject / STATIC.IsJSON in typesystem.ts.
+ * @author claude
+ */
 import type { Lang } from "../ast.js";
 
+/** Namespace of type guards for the JSON AST extension. @author claude */
 export namespace JSON {
   export const IsPrimitive = (input: unknown): input is Lang.JSON.Primitive =>
     typeof input === "boolean" ||

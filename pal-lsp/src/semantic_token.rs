@@ -1,7 +1,19 @@
+//! Semantic token provider.
+//!
+//! Produces `ImCompleteSemanticToken` lists from the parsed AST.
+//! These are merged with the tokens already collected during lexing (in `chumsky::parse`)
+//! and then delta-encoded in `main.rs::semantic_tokens_full` before sending over LSP.
+//!
+//! `LEGEND_TYPE` must match the `SemanticTokensLegend` advertised in `initialize`.
+
 use std::collections::HashMap;
 use tower_lsp::lsp_types::SemanticTokenType;
 use crate::chumsky::{Expr, Func, ImCompleteSemanticToken, Spanned};
 
+/// The ordered list of semantic token types declared in the server's `initialize` response.
+///
+/// The index of each entry is used as the `token_type` field in `SemanticToken`.
+/// **Order matters** — changing it breaks existing semantic highlighting.
 pub const LEGEND_TYPE: &[SemanticTokenType] = &[
     SemanticTokenType::FUNCTION,
     SemanticTokenType::VARIABLE,
@@ -13,6 +25,10 @@ pub const LEGEND_TYPE: &[SemanticTokenType] = &[
     SemanticTokenType::PARAMETER,
 ];
 
+/// Generate semantic tokens for function names and parameter names from the parsed AST.
+///
+/// These supplement the tokens already emitted during lexing (keywords, literals, operators).
+/// Result is merged with `im_complete_tokens` in `main.rs` before delta-encoding.
 pub fn semantic_token_from_ast(ast: &HashMap<String, Func>) -> Vec<ImCompleteSemanticToken> {
     let mut semantic_tokens = vec![];
 
@@ -42,6 +58,7 @@ pub fn semantic_token_from_ast(ast: &HashMap<String, Func>) -> Vec<ImCompleteSem
     semantic_tokens
 }
 
+/// Recursively walk `expr` and push variable-use tokens into `semantic_tokens`.
 pub fn semantic_token_from_expr(
     expr: &Spanned<Expr>,
     semantic_tokens: &mut Vec<ImCompleteSemanticToken>,

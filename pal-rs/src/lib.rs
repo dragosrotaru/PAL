@@ -1,3 +1,8 @@
+//! pal-rs: Pal language compiler targeting Rust. Reads files from a directory,
+//! parses them into ASTs based on file extension (currently only `.pretty`),
+//! and compiles them to Rust code. `compile()` is a stub — code generation not yet implemented.
+//! @author claude
+
 use std::fs;
 use quote::ToTokens;
 use syn::Error;
@@ -6,6 +11,7 @@ use crate::ast::AST;
 pub mod ast;
 pub mod pretty;
 
+/// Represents a source file with its path, extension (used for parser dispatch), and raw content.
 pub struct File {
     path: String,
     ext: String,
@@ -48,6 +54,8 @@ pub fn parse(file: File) -> Result<AST, Error> {
  Take ASTs and does the magic, turning it into rust code.
  Calls the compiler on the rust code.
 */
+/// Takes compiled ASTs and generates/invokes the Rust compiler. Currently a stub.
+// todo @claude: compile() is unimplemented; add proc_macro2/quote-based code generation for each AST variant
 pub fn compile(ast: Vec<AST>) {
-    
+
 }

@@ -1,3 +1,8 @@
+//! Prophet: a WebGPU-based text editor / IDE runtime built with wgpu + winit.
+//! Builds for native (cargo run) and WASM (wasm-pack --target web).
+//! Modules: control (keyboard/mouse), display (render pipeline, geometry, text), domain (AST).
+//! @author claude
+
 mod control;
 mod display;
 mod domain;

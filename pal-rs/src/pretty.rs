@@ -1,3 +1,8 @@
+//! The "pretty" DSL parser. A component-based UI description language parsed via syn/proc_macro2.
+//! Syntax: `ComponentName[:ParentComponent] [property value; ... ChildComponent [...]]`
+//! check() is a stub — validation logic (circular refs, dependency graph) not implemented.
+//! @author claude
+
 use proc_macro2::TokenStream;
 use syn::Error;
 use component::Component;
@@ -10,7 +15,8 @@ pub fn parse(tokens: TokenStream) -> Result<Component, Error> {
     Ok(component)
 }
 
-/** Check for errors */
+/// Validates a set of parsed Components. Currently returns an empty error list (stub).
+// todo @claude: implement dependency graph, circular reference detection, and inheritance flattening
 pub fn check(components: Vec<Component>) -> Vec<Error> {
     let mut errors = Vec::new();
 
@@ -21,6 +27,6 @@ pub fn check(components: Vec<Component>) -> Vec<Error> {
     // check external dependencies
 
     // flatten inheritance tree
-    
+
     errors
 }

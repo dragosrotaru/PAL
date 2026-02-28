@@ -1,3 +1,8 @@
+/**
+ * Concrete implementation of Type<number>, UI, Order, Numeric, and Fractional for the type class system.
+ * Note: divide() does not guard against division by zero (unlike the standalone libraries/functions/number.ts).
+ * @author claude
+ */
 import { Fractional, Numeric, Order, Type, UI } from "../typeclasses.js";
 // Implementation for Number
 export class TSNumber

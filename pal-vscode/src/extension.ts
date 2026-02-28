@@ -1,8 +1,31 @@
 "use strict";
 
+/**
+ * @file pal-vscode VS Code extension — entry point.
+ *
+ * Registers the `PalFS` in-memory virtual filesystem under the `palfs://` URI scheme
+ * and exposes five commands to drive it:
+ *
+ * | Command | Effect |
+ * |---------|--------|
+ * | `palfs.init` | Seed the filesystem with sample files/folders |
+ * | `palfs.reset` | Delete all entries and mark uninitialized |
+ * | `palfs.addFile` | Write `palfs:/file.txt` (only if initialized) |
+ * | `palfs.deleteFile` | Delete `palfs:/file.txt` (only if initialized) |
+ * | `palfs.workspaceInit` | Add `palfs:/` as a VS Code workspace folder |
+ *
+ * This is a standalone VS Code extension separate from `pal-lsp`. It provides the
+ * virtual filesystem view of the Pal environment inside VS Code, complementing the
+ * LSP extension (which provides language intelligence).
+ */
+
 import * as vscode from "vscode";
 import { PalFS } from "./fileSystemProvider";
 
+/**
+ * Extension activation: registers the `palfs` filesystem provider and all commands.
+ * Called once by VS Code when the extension activates.
+ */
 export function activate(context: vscode.ExtensionContext) {
   console.log('PalFS says "Hello"');
 

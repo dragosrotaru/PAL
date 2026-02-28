@@ -1,3 +1,8 @@
+/**
+ * Shared constants for the web GUI: port numbers, base URLs, and ID↔URI conversions.
+ * IdentifierToURI encodes a Lang.ID symbol as a URL path; CurrentIDToString decodes it on the client.
+ * @author claude
+ */
 import type { Lang } from "../../language/ast.js";
 
 export const port = 3000; // Change this to your desired port number

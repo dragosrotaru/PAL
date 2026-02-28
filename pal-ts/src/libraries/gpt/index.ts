@@ -1,3 +1,10 @@
+/**
+ * OpenAI API client setup and convenience wrappers for the Pal GPT subsystem.
+ * Provides: openai singleton, token counting, code block extraction, and typed requesters
+ * for GPT-4 JSON, JavaScript, and generic code generation.
+ * Requires OPENAI env var to be set.
+ * @author claude
+ */
 import dotenv from "dotenv";
 import GPT3Tokenizer from "gpt3-tokenizer";
 import { Configuration, OpenAIApi } from "openai";
@@ -10,13 +17,12 @@ if (!process.env["OPENAI"]) {
 export const openai = new OpenAIApi(
   new Configuration({
     apiKey: process.env["OPENAI"],
-  })
+  }),
 );
 
 const tokenizer = new GPT3Tokenizer.default({ type: "gpt3" });
 
-const codeBlockRegex = (language: string) =>
-  new RegExp(`\`\`\`${language}([\\s\\S]+?)\`\`\``);
+const codeBlockRegex = (language: string) => new RegExp(`\`\`\`${language}([\\s\\S]+?)\`\`\``);
 
 const matchRegex = (regex: RegExp, string: string) => {
   const match = string.match(regex);
@@ -27,6 +33,11 @@ const matchRegex = (regex: RegExp, string: string) => {
   return null;
 };
 
+/**
+ * Scans the input for the first fenced code block matching any of the given language tags.
+ * Returns {code, language} on match; falls back to {code: input, language: null} if none found.
+ * @author claude
+ */
 export const extractFirstCodeBlock = (input: string, language: string[]) => {
   for (const lang of language) {
     const code = matchRegex(codeBlockRegex(lang), input);
@@ -55,28 +66,24 @@ export const requestGPT = (system: string) => async (prompt: string) => {
   return { content, data, status, statusText };
 };
 
-export const requestCode =
-  (language: string[], system: string) => async (prompt: string) => {
-    const response = await requestGPT(system)(prompt);
-    const extract = response.content
-      ? extractFirstCodeBlock(response.content, language)
-      : null;
-    return {
-      ...response,
-      code: extract?.code,
-      language: extract?.language,
-      parameters: {
-        sysPrompt: system,
-        sysPromptLength: system.length,
-        sysPromptTokens: countTokens(system),
-        promptLength: prompt.length,
-        promptTokens: countTokens(prompt),
-      },
-    };
+export const requestCode = (language: string[], system: string) => async (prompt: string) => {
+  const response = await requestGPT(system)(prompt);
+  const extract = response.content ? extractFirstCodeBlock(response.content, language) : null;
+  return {
+    ...response,
+    code: extract?.code,
+    language: extract?.language,
+    parameters: {
+      sysPrompt: system,
+      sysPromptLength: system.length,
+      sysPromptTokens: countTokens(system),
+      promptLength: prompt.length,
+      promptTokens: countTokens(prompt),
+    },
   };
+};
 
-export const countTokens = (input: string) =>
-  tokenizer.encode(input).bpe.length;
+export const countTokens = (input: string) => tokenizer.encode(input).bpe.length;
 
 export const requestJavascript = async (prompt: string) => {
   const systemPrompt = `return only one correct modern javascript function exported with module.exports.default.

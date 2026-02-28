@@ -1,3 +1,9 @@
+//! Component definition parser for the "pretty" DSL.
+//! A Component has a name (PascalCase), optional parent (inheritance), properties (snake_case key=value),
+//! and child Components. Properties must precede children in the body. `if`, `map`, and string literals
+//! in the body are parsed but return errors (not yet implemented).
+//! @author claude
+
 use proc_macro2::TokenStream;
 use quote::ToTokens;
 use syn::{
@@ -6,6 +12,7 @@ use syn::{
 };
 use super::property::{Property, PropertyIdent};
 
+/// A validated component name: PascalCase, alphanumeric + underscore only.
 pub struct ComponentIdent {
     pub value: Ident,
 }
@@ -45,6 +52,7 @@ impl Parse for ComponentIdent {
     }
 }
 
+// todo @claude: ComponentIdent::to_tokens calls self.to_tokens recursively — infinite loop; implement properly
 impl ToTokens for ComponentIdent {
     fn to_tokens(&self, tokens: &mut TokenStream) {
         self.to_tokens(tokens)
@@ -52,6 +60,7 @@ impl ToTokens for ComponentIdent {
 }
 
 
+/// A parsed UI component: name, optional inheritance, list of properties, and nested child components.
 pub struct Component {
     pub name: ComponentIdent,
     pub inherit_from: Option<ComponentIdent>,

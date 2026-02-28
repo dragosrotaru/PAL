@@ -1,3 +1,8 @@
+/**
+ * `(lambda (args...) body)` special form — creates a first-class async procedure.
+ * Extends the current env with argument bindings at call time (lexical scoping via extend()).
+ * @author claude
+ */
 import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
@@ -20,9 +25,7 @@ export const Apply =
     const body = ast[2];
     return (...values: Lang.AST[]) => {
       const env = ctx.env.extend();
-      argsIdentifiers.forEach((identifier, i) =>
-        env.map.set(identifier, values[i])
-      );
+      argsIdentifiers.forEach((identifier, i) => env.map.set(identifier, values[i]));
       // todo definite trouble from this, should implement a class and have a method for extending context instead of extending just env
       return ctx.eval({ ...ctx, env })(body);
     };

@@ -1,3 +1,8 @@
+/**
+ * Entry point for the Pal runtime. Wires together TypeSystem, Env, FileSystem,
+ * GPTMessageHistory, and the evaluator into a single IContext, then starts the REPL.
+ * @author claude
+ */
 import { Env } from "./core/environment.js";
 import { evaluate } from "./core/evaluator.js";
 import { FileSystem } from "./core/filesystem.js";
@@ -12,6 +17,7 @@ const fs = new FileSystem(env, ts);
 // todo this can be virtualized once we can express json
 const gpt = new GPTMessageHistory(env);
 
+/** Global context shared by all evaluator invocations — the single source of truth for the runtime. */
 export const ctx: IContext = {
   ts,
   env,
@@ -23,7 +29,7 @@ export const ctx: IContext = {
 
 StartRepl(ctx);
 
-/* 
+/*
 - other "top-level" components with state we need to mangage as one
 
 - repl
@@ -31,4 +37,6 @@ StartRepl(ctx);
 - symbol/name registry
 - macro registry
 
+// todo @claude: extract all top-level stateful singletons (macros, server, symbol registry)
+//               into a proper top-level runtime object rather than ad-hoc ctx fields
 */

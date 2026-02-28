@@ -1,3 +1,32 @@
+//! pal-lsp server binary.
+//!
+//! Implements a Language Server Protocol server for the Pal language (`.pretty`, `.pal` files).
+//! Communicates over stdin/stdout using JSON-RPC via the `tower-lsp` framework.
+//!
+//! # Architecture
+//!
+//! ```text
+//! stdin/stdout (JSON-RPC)
+//!   └── tower-lsp Server
+//!         └── Backend
+//!               ├── document_map: DashMap<url, Rope>        (live source text)
+//!               ├── ast_map: DashMap<url, HashMap<fn, Func>> (latest parsed AST)
+//!               └── semantic_token_map: DashMap<url, Vec<ImCompleteSemanticToken>>
+//! ```
+//!
+//! # Supported LSP capabilities
+//!
+//! | Capability | Handler |
+//! |------------|---------|
+//! | Text sync (full) | `did_open`, `did_change` → `on_change` |
+//! | Go-to-definition | `goto_definition` |
+//! | Find references | `references` |
+//! | Semantic tokens | `semantic_tokens_full`, `semantic_tokens_range` |
+//! | Inlay hints | `inlay_hint` (type inference) |
+//! | Completion | `completion` |
+//! | Rename | `rename` |
+//! | Execute command | `execute_command` (stub: "dummy.do_something") |
+
 use std::collections::HashMap;
 use dashmap::DashMap;
 use ropey::Rope;
@@ -16,11 +45,18 @@ use pal_lsp::jump_definition::get_definition;
 use pal_lsp::reference::get_reference;
 use pal_lsp::semantic_token::{semantic_token_from_ast, LEGEND_TYPE};
 
+/// LSP server state, shared across all async handlers via `Arc` (internally by tower-lsp).
+///
+/// All maps are keyed by document URI string. `DashMap` provides concurrent access
+/// without a global lock.
 #[derive(Debug)]
 struct Backend {
     client: Client,
+    /// Latest parsed AST per document: function-name → `Func`.
     ast_map: DashMap<String, HashMap<String, Func>>,
+    /// Live source text per document, stored as a `Rope` for efficient slicing.
     document_map: DashMap<String, Rope>,
+    /// Semantic tokens collected during the last parse (before delta-encoding).
     semantic_token_map: DashMap<String, Vec<ImCompleteSemanticToken>>,
 }
 
@@ -479,6 +515,12 @@ struct TextDocumentItem {
 }
 
 impl Backend {
+    /// Called on every `did_open` and `did_change` event.
+    ///
+    /// 1. Stores the raw source in `document_map` (as a `Rope`).
+    /// 2. Parses the source via `chumsky::parse`.
+    /// 3. Converts parse errors to LSP `Diagnostic` objects and publishes them.
+    /// 4. Stores the new AST and semantic tokens in their respective maps.
     async fn on_change(&self, params: TextDocumentItem) {
         let rope = ropey::Rope::from_str(&params.text);
         self.document_map
@@ -571,6 +613,9 @@ async fn main() {
     Server::new(stdin, stdout, socket).serve(service).await;
 }
 
+/// Convert a char-offset into an LSP `Position` (0-based line + column).
+///
+/// Returns `None` if `offset` is out of bounds in the rope.
 fn offset_to_position(offset: usize, rope: &Rope) -> Option<Position> {
     let line = rope.try_char_to_line(offset).ok()?;
     let first_char_of_line = rope.try_line_to_char(line).ok()?;

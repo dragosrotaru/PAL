@@ -1,3 +1,18 @@
+/**
+ * @file hyper-web entry point — React SPA router.
+ *
+ * Routes:
+ * | Path | View | Purpose |
+ * |------|------|---------|
+ * | `/scratchpad` | `CRDTEditor` | Collaborative Yjs-backed code editor |
+ * | `/tasks` | `Tasks` | Task management view |
+ * | `/ram` | `RAM` | RAM / memory inspector view |
+ * | `/wildcards` | `WildCards` | Wildcards management view |
+ * | `/terminal` | `Terminal` | Terminal emulator view |
+ * | `/editor` | `Editor` | Monaco-based code editor (hardcoded hello-world snippet) |
+ *
+ * Backend: `hyper-server` (port 7777) for WebSocket/Yjs CRDT sync.
+ */
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";

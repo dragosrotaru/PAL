@@ -1,3 +1,9 @@
+/**
+ * Procedure application: `(rator rand)` where rator is already a Lang.Procedure.
+ * Spreads rand as arguments if it is a list; otherwise passes it as a single argument.
+ * Result is re-evaluated through ctx.eval to support procedures returning unevaluated AST.
+ * @author claude
+ */
 import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";

@@ -1,6 +1,11 @@
+/**
+ * Concrete implementation of Type<string>, UI<string>, and Order<string> for the type class system.
+ * write() and parse() are identity functions; compare() uses localeCompare for proper ordering.
+ * @author claude
+ */
 import { Order, Type, UI } from "../typeclasses.js";
 
-// Implementation for String
+/** String type class implementation — not yet registered in TypeSystem.registry. */
 export class TSString implements Type<string>, UI<string>, Order<string> {
   is(a: unknown): a is string {
     return typeof a === "string";

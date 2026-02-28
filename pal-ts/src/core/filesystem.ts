@@ -1,19 +1,18 @@
-import type { IEnv, IUnsubscribe } from "../interfaces.js";
-import type { TypeSystem } from "../language/typesystem.js";
-
+/**
+ * Bidirectional sync between the filesystem and the Env. Uses chokidar to watch
+ * FileSystem.ROOT for file changes and parses them into AST values. Subscribes to
+ * env/new to write newly created env entries back to disk. Prevents loops by
+ * unsubscribing before writing and resubscribing after.
+ * @author claude
+ */
 import chokidar from "chokidar";
 import fs from "fs";
 import path from "path";
-
-import { NEW_ID, NewObservableForm } from "./environment.js";
-
-import {
-  parser,
-  writer,
-  type Clue,
-  type FileExtension,
-} from "../language/parser/index.js";
+import type { IEnv, IUnsubscribe } from "../interfaces.js";
+import { parser, writer, type Clue, type FileExtension } from "../language/parser/index.js";
+import type { TypeSystem } from "../language/typesystem.js";
 import { log } from "../libraries/logger/index.js";
+import { NEW_ID, NewObservableForm } from "./environment.js";
 
 const NAME = "filesystem";
 const ADD = "add";
@@ -22,7 +21,7 @@ const WRITE = "write";
 const NEW = "new";
 const DEFAULT_ENCODING = "utf-8";
 
-/* 
+/*
 TODO:
   - Extract Symbol.for and similar conversions
   - support other filesystem semantics (for instance rename or move)
@@ -30,12 +29,20 @@ TODO:
   - support FUSE based filesystem
 */
 
+/**
+ * Watches ROOT directory for file changes and syncs with Env. File path becomes the
+ * Symbol key; file extension (.pal/.csv/.json/.txt) determines the parser used.
+ * @author claude
+ */
 export class FileSystem {
-  static ROOT = path.join("test");
+  static ROOT = path.join("test"); // todo @claude: ROOT should be configurable via IContext or env var, not hardcoded to "test"
   private filePathSubscriptions = new Map<string, () => void>();
   private unsubscribeToEnvNew: IUnsubscribe;
 
-  constructor(private env: IEnv, private ts: TypeSystem) {
+  constructor(
+    private env: IEnv,
+    private ts: TypeSystem,
+  ) {
     this.watchFileSystem();
     this.unsubscribeToEnvNew = this.subscribeToEnv();
   }
@@ -128,21 +135,17 @@ export class FileSystem {
    * Returns an unsubscriber and sets this.unsubscribeToEnvNew
    */
   subscribeToEnv() {
-    this.unsubscribeToEnvNew = this.env.subscribe(
-      NEW_ID,
-      (ast: NewObservableForm) => {
-        const sym = ast[0];
-        const filepath = sym.description;
-        const content = ast[1];
-        if (!filepath)
-          throw new Error("subscribed to env/new and filepath is empty");
-        // todo refactor the way extensions are handled
-        fs.writeFileSync(
-          path.join(filepath),
-          writer(content, (this.ts.nominalTypeNameOf(sym) as Clue) || "txt")
-        );
-      }
-    );
+    this.unsubscribeToEnvNew = this.env.subscribe(NEW_ID, (ast: NewObservableForm) => {
+      const sym = ast[0];
+      const filepath = sym.description;
+      const content = ast[1];
+      if (!filepath) throw new Error("subscribed to env/new and filepath is empty");
+      // todo refactor the way extensions are handled
+      fs.writeFileSync(
+        path.join(filepath),
+        writer(content, (this.ts.nominalTypeNameOf(sym) as Clue) || "txt"),
+      );
+    });
     return this.unsubscribeToEnvNew;
   }
 }

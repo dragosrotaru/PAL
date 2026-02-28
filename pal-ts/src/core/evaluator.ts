@@ -1,6 +1,15 @@
+/**
+ * Core eval-apply recursion for the Pal language.
+ * Dispatch priority: primitives → JSON objects → macro expansion → special forms
+ * (self, quote, macro, lambda, eval, gpt, ui, env ops, parse, exit/quit) →
+ * procedure application → identifier lookup → list fixpoint.
+ * @author claude
+ */
+
 import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
-
+import { STATIC } from "../language/typesystem.js";
+import { log } from "../libraries/logger/index.js";
 import * as apply from "../specialforms/apply.js";
 import * as del from "../specialforms/env/del.js";
 import * as envGetAll from "../specialforms/env/index.js";
@@ -16,10 +25,7 @@ import * as quote from "../specialforms/quote.js";
 import * as self from "../specialforms/self.js";
 import * as ui from "../specialforms/ui.js";
 
-import { STATIC } from "../language/typesystem.js";
-import { log } from "../libraries/logger/index.js";
-
-/* 
+/*
 The core of evaluation is the eval apply recursion
 
 const eval = env => ast => IsApplyForm(ast) ? eval(env)(ast[0])(eval(env)(ast[1])) : undefined;
@@ -43,6 +49,12 @@ Can we merge the evaluator and environment somehow?
 ocaml attaching "processor" to quote .. like parser?
 */
 
+/**
+ * Curried async evaluator. Returns primitives and JSON objects as-is; expands macros;
+ * dispatches special forms by identity check; applies procedures; resolves identifiers;
+ * and iterates lists to fixpoint (re-evaluates until the list stops changing).
+ * @author claude
+ */
 export const evaluate =
   (ctx: IContext) =>
   async (ast: Lang.AST): Promise<Lang.AST> => {
@@ -81,9 +93,10 @@ export const evaluate =
 
     // Resolve Identifier
     if (STATIC.IsID(ast)) return await ctx.eval(ctx)(env.map.get(ast));
-    ast;
 
-    // Evaluate List (No order)
+    // Evaluate List (No order) — parallel eval to fixpoint; stops when list is stable
+    // evaluation mode for side-effecting forms
+    // todo @claude: list evaluation order is unspecified (Promise.all); consider sequenced
     if (STATIC.IsList(ast)) {
       const next = await Promise.all(ast.map((a) => ctx.eval(ctx)(a)));
       if (ctx.ts.valueEquals(ast, next)) {

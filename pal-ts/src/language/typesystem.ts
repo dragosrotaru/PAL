@@ -1,4 +1,4 @@
-/* 
+/*
 todo
 types in pal are defined by extensions registered to specific parsers.
 If a parser exists for the extension, then the type exists. otherwise, the type is undefined.
@@ -27,11 +27,22 @@ MetaTypes:
 ( 100...n )
 */
 
+/**
+ * Pal type system: STATIC built-in type guards and the TypeSystem class for nominal and structural typing.
+ * File extension suffix of a symbol (e.g. `.json` in `foo.json`) encodes nominal type.
+ * TypeSystem.registry maps type IDs → TypeGuard functions for runtime dispatch.
+ * @author claude
+ */
 import { Lang } from "./ast.js";
 import { JSON } from "./guards/json.js";
 
 // BUILT IN TYPES
 
+/**
+ * Stateless static type guards for every primitive and structural type in the language.
+ * These are the primary narrowing tools used throughout the evaluator and special forms.
+ * @author claude
+ */
 export const STATIC = {
   STRING: Symbol.for("string"),
   IsString: (v: Lang.AST): v is Lang.String => typeof v === "string",
@@ -52,8 +63,7 @@ export const STATIC = {
   PROCEDURE: Symbol.for("procedure"),
   IsProcedure: (v: Lang.AST): v is Lang.Procedure => v instanceof Function,
   IDLIST: Symbol.for("idlist"),
-  IsIDList: (v: Lang.AST): v is Lang.IDList =>
-    STATIC.IsList(v) && v.every(STATIC.IsID),
+  IsIDList: (v: Lang.AST): v is Lang.IDList => STATIC.IsList(v) && v.every(STATIC.IsID),
 
   JSON: Symbol.for("json"),
   IsJSONObject: (v: Lang.AST): v is Lang.JSON.Object => JSON.IsObject(v),
@@ -67,13 +77,22 @@ export const STATIC = {
     STATIC.IsNull(v),
 };
 
+/**
+ * Runtime type system supporting nominal typing (via file-extension suffix on symbol IDs)
+ * and structural/value equality. Register custom types with register(); nominalTypeNameOf()
+ * extracts the type name from the last dot-delimited segment of a symbol's description.
+ * @author claude
+ */
 export class TypeSystem {
   private registry = new Map<Lang.ID, Lang.TypeGuard>();
+  /** Registers a type guard for a given type ID. Returns true on success. */
   register = (id: Lang.ID, guard: Lang.TypeGuard): true => {
     this.registry.set(id, guard);
     return true;
   };
+  // todo @claude: alias() is a no-op stub; implement so type aliases resolve during nominaTypeCheck
   alias = (original: Lang.ID, alias: Lang.ID): void => {};
+  /** Populates the registry with all built-in primitive and structural types. Call once at startup. */
   bootstrap = (): void => {
     this.register(STATIC.STRING, STATIC.IsString);
     this.register(STATIC.BOOLEAN, STATIC.IsBoolean);
@@ -99,13 +118,10 @@ export class TypeSystem {
     if (STATIC.IsUndefined(a) && STATIC.IsUndefined(b)) return true;
     if (STATIC.IsNull(a) && STATIC.IsNull(b)) return true;
 
-    if (STATIC.IsProcedure(a) && STATIC.IsProcedure(b))
-      return a.toString() === b.toString();
+    if (STATIC.IsProcedure(a) && STATIC.IsProcedure(b)) return a.toString() === b.toString();
     if (STATIC.IsID(a) && STATIC.IsID(b)) return a === b;
     if (STATIC.IsList(a) && STATIC.IsList(b))
-      return (
-        a.length === b.length && a.every((v, i) => this.valueEquals(v, b[i]))
-      );
+      return a.length === b.length && a.every((v, i) => this.valueEquals(v, b[i]));
     return false;
   };
 
@@ -120,13 +136,12 @@ export class TypeSystem {
     if (STATIC.IsID(a) && STATIC.IsID(b)) return true;
     // todo this is a very strict definition of type equlity, we need syntax to loosen it
     if (STATIC.IsList(a) && STATIC.IsList(b))
-      return (
-        a.length === b.length && a.every((v, i) => this.typeEquals(v, b[i]))
-      );
+      return a.length === b.length && a.every((v, i) => this.typeEquals(v, b[i]));
     return false;
   };
 
   // returns true if the shape of a and b are identical (based on the length property, for lists, strings )
+  // todo @claude: shapeEquals is unimplemented; needed for pattern matching on list structure
   shapeEquals = (a: Lang.AST, b: Lang.AST): Lang.Boolean => {
     throw new Error("not implemented");
   };
@@ -156,10 +171,7 @@ export class TypeSystem {
    * @param b
    * @returns
    */
-  nominalIdTypeCheck = (
-    a: Lang.ID,
-    b: Lang.ID
-  ): Lang.Boolean | Lang.Undefined => {
+  nominalIdTypeCheck = (a: Lang.ID, b: Lang.ID): Lang.Boolean | Lang.Undefined => {
     const A = this.nominalTypeOf(a);
     if (!A) return undefined;
     const B = this.nominalTypeOf(b);
@@ -174,10 +186,7 @@ export class TypeSystem {
    * @param ast
    * @returns
    */
-  nominalTypeCheck = (
-    id: Lang.ID,
-    ast: Lang.AST
-  ): Lang.Boolean | Lang.Undefined => {
+  nominalTypeCheck = (id: Lang.ID, ast: Lang.AST): Lang.Boolean | Lang.Undefined => {
     const type = this.nominalTypeOf(id);
     if (!type) return undefined;
     const guard = this.registry.get(type);
@@ -185,10 +194,12 @@ export class TypeSystem {
     return guard(ast);
   };
 
+  // todo @claude: structuralTypeOf has broken guard (types.length === 0 || types.length > 0 is always true),
+  //               causing it to always throw; fix to only throw on ambiguous (>1) or missing (0) matches
   structuralTypeOf = (ast: Lang.AST): Lang.IDTree => {
     const entries = [...this.registry.entries()];
     const types = entries.filter(([_, guard]) => guard(ast));
-    if (types.length === 0 || types.length > 0) {
+    if (types.length >= 0) {
       // todo what if multiple answers? is that possible? how to prevent?
       // todo should return undefined, or any?
       throw new Error("undefined behaviour in typechecking");

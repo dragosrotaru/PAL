@@ -1,3 +1,10 @@
+/**
+ * Haskell-inspired type class interfaces for the Pal type system.
+ * Types implement Guard+Equality+Write+Parse to form Type<T>; UI<T> adds DOM rendering.
+ * Higher-kinded abstractions (Functor, Monad, Applicative) are declared but not yet wired into the runtime.
+ * @author claude
+ */
+
 /* Learning from Haskell, here is an attempt at some TypeClasses */
 
 export interface Guard<T> {
@@ -46,6 +53,7 @@ export interface Fractional<T> extends Numeric<T> {
   divide: (a: T, b: T) => T;
 }
 
+// todo @claude: Functor/Applicative/Monad are declared but no runtime types implement them; connect to Lang.Procedure or PAL.List
 export interface Functor<T> {
   fmap: <U>(f: (a: T) => U) => Functor<U>;
 }

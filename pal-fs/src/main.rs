@@ -1,9 +1,15 @@
+//! pal-fs: FUSE filesystem implementation for the Pal environment.
+//! PalFS implements the `fuser::Filesystem` trait — all methods are stubs (empty bodies or minimal replies).
+//! The intent is to expose the Pal reactive environment as a virtual filesystem mountable via FUSE.
+//! @author claude
+
 use std::os::raw::c_int;
 use fuser::{Filesystem, Request, KernelConfig};
 
-pub struct PalFS {
-  
-}
+/// Stub FUSE filesystem. All inode operations are unimplemented placeholders.
+// todo @claude: implement lookup/read/write to proxy inode operations to/from the Pal Env
+pub struct PalFS {}
+
 
 impl Filesystem for PalFS {
     fn init(

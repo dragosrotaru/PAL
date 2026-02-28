@@ -1,3 +1,14 @@
+/**
+ * @file hyper-ts entry point — demo script.
+ *
+ * Creates an agent, opens a session (login → decrypt storage → connect),
+ * then exercises the full HyperGraph API: persist, retrieve, name, search, delete.
+ *
+ * Requires env vars: `AGENT_NAME`, `PRIVATE_KEY`, `PUBLIC_KEY`.
+ *
+ * This is a development smoke-test / demo, not a production server.
+ * Network `connect`/`disconnect` are stubbed (random 0.1% failure rate, see `client.ts`).
+ */
 import { HyperEdge } from "./hyperedge";
 import { HyperNode } from "./hypernode";
 import { Client } from "./client";

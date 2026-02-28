@@ -1,3 +1,9 @@
+/**
+ * CSV parser and serializer for the Pal AST extension Lang.CSV.
+ * Handles quoted fields (double-quote escaping), trims whitespace, skips empty lines.
+ * Does not enforce header rows or consistent column counts.
+ * @author claude
+ */
 import type { Lang } from "../ast.js";
 
 const NEWLINE = "\n";

@@ -1,37 +1,57 @@
+/**
+ * Reactive environment: a Proxy-wrapped Map<Lang.ID, Lang.AST> with pub/sub semantics.
+ * Fires well-known Symbol events (env/new, env/set, env/del, env/sub, env/unsub, env)
+ * so the FileSystem and UI layer can react to state changes without polling.
+ * @author claude
+ */
 import type { IEnv, IObserver, IUnsubscribe } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
 import { type TypeSystem } from "../language/typesystem.js";
 import { log } from "../libraries/logger/index.js";
 
+/** Well-known event symbol fired when a brand-new key is inserted into the env. */
 export const NEW_ID = Symbol.for("env/new");
+
+/** Payload: [id, value] of the newly inserted entry. */
 export type NewObservableForm = [Lang.ID, Lang.AST];
 
+/** Well-known event symbol fired on every set (including updates to existing keys). */
 export const SET_ID = Symbol.for("env/set");
 export type SetForm = [typeof SET_ID, Lang.ID, Lang.AST];
 
+/** Well-known event symbol fired when a key is deleted from the env. */
 export const DELETE_ID = Symbol.for("env/del");
 export type DeleteForm = [typeof DELETE_ID, Lang.ID];
 
+/** Well-known event symbol fired when a new subscription is registered. */
 export const SUBSCRIBE_ID = Symbol.for("env/sub");
 export type SubscribeForm = [typeof SUBSCRIBE_ID, Lang.ID, IObserver<Lang.AST>];
 
+/** Well-known event symbol fired when a subscription is removed. */
 export const UNSUBSCRIBE_ID = Symbol.for("env/unsub");
-export type UnubscribeForm = [
-  typeof UNSUBSCRIBE_ID,
-  Lang.ID,
-  IObserver<Lang.AST>
-];
+export type UnubscribeForm = [typeof UNSUBSCRIBE_ID, Lang.ID, IObserver<Lang.AST>];
 
+/** Well-known event symbol; evaluating this symbol returns the entire env as a list of pairs. */
 export const GETALL_ID = Symbol.for("env");
 export type GetAllForm = typeof GETALL_ID;
 
 // TODO monitor for memory leaks
 
+/**
+ * Reactive environment backed by a Proxy-wrapped Map. All mutations go through the Proxy,
+ * which fires observers for the specific key changed plus global env/set and env/new events.
+ * No-ops if valueEquals(oldValue, newValue) to prevent redundant renders.
+ * extend() creates a child scope sharing the parent's entries (shallow copy).
+ * @author claude
+ */
 export class Env implements IEnv {
   public map: Map<Lang.ID, Lang.AST>;
   private observers = new Map<Lang.ID, IObserver<any>[]>();
 
-  constructor(public ts: TypeSystem, prevMap?: Map<Lang.ID, Lang.AST>) {
+  constructor(
+    public ts: TypeSystem,
+    prevMap?: Map<Lang.ID, Lang.AST>,
+  ) {
     const map = new Map<Lang.ID, Lang.AST>(prevMap);
     this.map = new Proxy(map, {
       get: this.proxyGet,
@@ -39,11 +59,7 @@ export class Env implements IEnv {
     // this.bootstrap();
   }
 
-  private proxyGet = (
-    target: Map<Lang.ID, Lang.AST>,
-    prop: string,
-    receiver: any
-  ) => {
+  private proxyGet = (target: Map<Lang.ID, Lang.AST>, prop: string, receiver: any) => {
     const value = Reflect.get(target, prop, receiver);
     if (typeof value === "function") {
       return (...args: any[]) => {
@@ -52,15 +68,11 @@ export class Env implements IEnv {
 
           // notify subscribers to env/new
           if (!target.has(key)) {
-            this.observers
-              .get(NEW_ID)
-              ?.forEach((observer) => observer([key, val]));
+            this.observers.get(NEW_ID)?.forEach((observer) => observer([key, val]));
           }
 
           // notify subscribers to env/set
-          this.observers
-            .get(SET_ID)
-            ?.forEach((observer) => observer([key, val]));
+          this.observers.get(SET_ID)?.forEach((observer) => observer([key, val]));
 
           const oldValue = target.get(key);
 
@@ -149,10 +161,7 @@ export class Env implements IEnv {
     return list;
   };
 
-  public subscribe = <V extends Lang.AST>(
-    key: Lang.ID,
-    observer: IObserver<V>
-  ): IUnsubscribe => {
+  public subscribe = <V extends Lang.AST>(key: Lang.ID, observer: IObserver<V>): IUnsubscribe => {
     log("env", "subscribing", key);
 
     // notify subscribers to env/sub
@@ -167,10 +176,7 @@ export class Env implements IEnv {
     return () => this.unsubscribe(key, observer);
   };
 
-  public unsubscribe = <V extends Lang.AST>(
-    key: Lang.ID,
-    observer: IObserver<V>
-  ): undefined => {
+  public unsubscribe = <V extends Lang.AST>(key: Lang.ID, observer: IObserver<V>): undefined => {
     log("env", "unsubscribing", key);
 
     // notify subscribers to env/unsub
@@ -179,13 +185,11 @@ export class Env implements IEnv {
     const observersForKey = this.observers.get(key);
 
     if (observersForKey) {
-      const filteredObservers = observersForKey.filter(
-        (obs) => obs !== observer
-      );
+      const filteredObservers = observersForKey.filter((obs) => obs !== observer);
       if (filteredObservers.length > 0) {
         this.observers.set(
           key,
-          observersForKey.filter((obs) => obs !== observer)
+          observersForKey.filter((obs) => obs !== observer),
         );
       } else {
         this.observers.delete(key);

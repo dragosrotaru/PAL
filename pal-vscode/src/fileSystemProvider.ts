@@ -1,6 +1,24 @@
+/**
+ * @file In-memory virtual filesystem provider for VS Code.
+ *
+ * Implements `vscode.FileSystemProvider` so VS Code can treat `palfs://` URIs as
+ * a real filesystem. All files and directories are stored in-memory in a tree of
+ * `File` and `Directory` objects rooted at `PalFS.root`.
+ *
+ * ## File change notifications
+ * Mutations fire change events via `_emitter`, debounced by 5 ms in `_fireSoon`.
+ *
+ * ## Limitations
+ * - No persistence — all data is lost on extension reload.
+ * - `watch()` is a no-op: always fires for all changes (VS Code convention for simple impls).
+ * - Not connected to the actual Pal runtime environment yet.
+ *   // todo @claude: wire PalFS to the live Pal Env (subscribe to env events, reflect changes here)
+ */
+
 import * as path from "path";
 import * as vscode from "vscode";
 
+/** An in-memory file node. Holds raw byte content in `data`. */
 export class File implements vscode.FileStat {
   type: vscode.FileType;
   ctime: number;
@@ -17,6 +35,7 @@ export class File implements vscode.FileStat {
   }
 }
 
+/** An in-memory directory node. Children are stored in `entries` by name. */
 export class Directory implements vscode.FileStat {
   type: vscode.FileType;
   ctime: number;
@@ -34,8 +53,15 @@ export class Directory implements vscode.FileStat {
   }
 }
 
+/** A filesystem node — either a file or a directory. */
 export type Entry = File | Directory;
 
+/**
+ * In-memory `vscode.FileSystemProvider` registered under the `palfs:` scheme.
+ *
+ * The entire tree lives under `root` (an empty-named root `Directory`).
+ * All write operations fire debounced `onDidChangeFile` events via `_fireSoon`.
+ */
 export class PalFS implements vscode.FileSystemProvider {
   root = new Directory("");
   stat(uri: vscode.Uri): vscode.FileStat {

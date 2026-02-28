@@ -1,3 +1,9 @@
+/**
+ * Recursive descent parser and serializer for the PAL s-expression language.
+ * Tokenizes character-by-character; handles parens, strings (with escape), booleans, null,
+ * undefined, numbers (prefixed with #), and bare symbols. Single-expression parse only.
+ * @author claude
+ */
 import { log } from "../../libraries/logger/index.js";
 import type { Lang } from "../ast.js";
 import { STATIC } from "../typesystem.js";
@@ -106,11 +112,18 @@ const parser = (
 };
 
 /** accepts a program and returns an array of tokens. */
+/** Splits source into individual characters for the recursive descent parser. */
 export const tokenizer = (source: string): string[] => source.trim().split("");
 
+/**
+ * Top-level parse entry: tokenizes source, runs the recursive descent parser,
+ * and returns undefined for empty/whitespace-only input.
+ * @author claude
+ */
 export const parse = (source: string) => {
   const tokens = tokenizer(source);
   const parsed = parser(tokens, []);
+  // todo @claude: awful hack — empty-list check uses wrong regex (/S+/ should be /\s+/); fix the regex to correctly detect whitespace-only input
   // TODO get rid of this awful hack
   if (
     STATIC.IsList(parsed) &&

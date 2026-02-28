@@ -1,3 +1,8 @@
+/**
+ * `self` special form — replaces every occurrence of the `self` symbol within the AST
+ * with the entire enclosing AST, enabling anonymous recursion (Y-combinator style).
+ * @author claude
+ */
 import type { Lang } from "../language/ast.js";
 import { STATIC } from "../language/typesystem.js";
 
