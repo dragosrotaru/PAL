@@ -12,9 +12,7 @@ export class FilePath {
   }
   public move(destination: FilePath): FilePath {
     if (this.equals(destination)) {
-      throw new Error(
-        "source filepath cannot be the same as destination filepath"
-      );
+      throw new Error("source filepath cannot be the same as destination filepath");
     }
     const sourceSegments = this.segments;
     const destinationSegments = destination.segments;
@@ -24,10 +22,8 @@ export class FilePath {
     }
     return new FilePath(
       FilePath.DELIMITER +
-        destinationSegments
-          .concat(sourceSegments.slice(i))
-          .join(FilePath.DELIMITER) +
-        (this.isDirectory ? FilePath.DELIMITER : "")
+        destinationSegments.concat(sourceSegments.slice(i)).join(FilePath.DELIMITER) +
+        (this.isDirectory ? FilePath.DELIMITER : ""),
     );
   }
   public static beginsWithForwardSlash(input: string) {
@@ -54,14 +50,12 @@ export class FilePath {
       return new FilePath(
         `${FilePath.DELIMITER}${this.segments
           .slice(0, -1)
-          .join(FilePath.DELIMITER)}${FilePath.DELIMITER}`
+          .join(FilePath.DELIMITER)}${FilePath.DELIMITER}`,
       );
     }
   }
   public get segments() {
-    return this.value
-      .split(FilePath.DELIMITER)
-      .filter((segment) => segment !== "");
+    return this.value.split(FilePath.DELIMITER).filter((segment) => segment !== "");
   }
   public get lastSegment(): string {
     return this.segments[this.segments.length - 1] as string;

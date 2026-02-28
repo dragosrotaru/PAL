@@ -11,7 +11,7 @@ interface FromSerialized {
 type From = FromData | FromSerialized;
 
 export const parseID = (
-  bytes: Buffer
+  bytes: Buffer,
 ): { leftOver: Buffer; dataLength: number; multiHash: Buffer } => {
   if (!(bytes instanceof Uint8Array)) {
     throw new Error("multihash must be a Uint8Array");
@@ -51,10 +51,7 @@ export class ID {
     if ("data" in from) {
       const hash = crypto.createHash(this._HASHING_ALGORITHM);
       hash.update(from.data);
-      this.multiHash = multihash.encode(
-        hash.digest(),
-        this._HASHING_ALGORITHM_MULTIHASH
-      );
+      this.multiHash = multihash.encode(hash.digest(), this._HASHING_ALGORITHM_MULTIHASH);
       this.bytes = from.data.byteLength;
     } else {
       let bytes = from.serialized;
@@ -67,9 +64,6 @@ export class ID {
     }
   }
   get serialized() {
-    return Buffer.concat([
-      this.multiHash,
-      varint.encode(this.bytes, Buffer.from([])),
-    ]);
+    return Buffer.concat([this.multiHash, varint.encode(this.bytes, Buffer.from([]))]);
   }
 }

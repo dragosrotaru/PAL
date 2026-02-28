@@ -66,7 +66,7 @@ const parser = (
   list: Lang.PAL.List,
   chars: string[] = [],
   stringed = false,
-  escaped = false
+  escaped = false,
 ): Lang.PAL => {
   log("parser", tokens, list, chars, stringed, escaped);
   const token = tokens.shift();
@@ -124,11 +124,7 @@ export const parse = (source: string) => {
   const tokens = tokenizer(source);
   const parsed = parser(tokens, []);
   // TODO get rid of this awful hack
-  if (
-    STATIC.IsList(parsed) &&
-    parsed.length === 0 &&
-    source.replace(/\s+/g, "") !== "()"
-  ) {
+  if (STATIC.IsList(parsed) && parsed.length === 0 && source.replace(/\s+/g, "") !== "()") {
     return undefined;
   }
   log("parser", "ast:", parsed);

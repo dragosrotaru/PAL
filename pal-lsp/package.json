@@ -1,23 +1,23 @@
 {
   "name": "pal-lsp",
-  "description": "Pal Language Server",
-  "license": "MIT",
   "version": "0.1.0",
+  "description": "Pal Language Server",
   "categories": [],
   "keywords": [
     "language-server",
     "pal"
   ],
-  "engines": {
-    "vscode": "^1.83.0",
-    "node": "24.13.0",
-    "pnpm": ">=10.0.0"
-  },
-  "enabledApiProposals": [],
-  "activationEvents": [
-    "onLanguage:pal"
-  ],
+  "license": "MIT",
   "main": "./dist/extension.js",
+  "scripts": {
+    "typecheck": "tsgo --noEmit"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.83.0"
+  },
   "contributes": {
     "languages": [
       {
@@ -56,14 +56,14 @@
       }
     }
   },
-  "scripts": {},
-  "devDependencies": {
-    "typescript": "^5.3.3",
-    "@types/vscode": "^1.75.1",
-    "@types/node": "^18.14.6"
+  "activationEvents": [
+    "onLanguage:pal"
+  ],
+  "engines": {
+    "node": "24.13.0",
+    "pnpm": ">=10.0.0",
+    "vscode": "^1.83.0"
   },
-  "dependencies": {
-    "vscode-languageclient": "^9.0.1"
-  },
-  "packageManager": "pnpm@10.29.3"
+  "packageManager": "pnpm@10.29.3",
+  "enabledApiProposals": []
 }

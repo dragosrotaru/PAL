@@ -80,24 +80,14 @@ export const startServer = async (ctx: IContext) => {
             if (!openSubs.has(sym)) {
               log("gui", "subscribing to", sym);
               const unsubscribe = ctx.env.subscribe(sym, (ast) => {
-                ws.send(
-                  writer(
-                    { type: Type.AST, ast: writer(ast) } satisfies ASTMSG,
-                    "json"
-                  )
-                );
+                ws.send(writer({ type: Type.AST, ast: writer(ast) } satisfies ASTMSG, "json"));
               });
               openSubs.set(sym, unsubscribe);
             }
 
             // First time send
             const ast = ctx.env.map.get(sym);
-            ws.send(
-              writer(
-                { type: Type.AST, ast: writer(ast) } satisfies ASTMSG,
-                "json"
-              )
-            );
+            ws.send(writer({ type: Type.AST, ast: writer(ast) } satisfies ASTMSG, "json"));
 
             return;
           }
@@ -116,11 +106,7 @@ export const startServer = async (ctx: IContext) => {
             return;
           }
 
-          log(
-            "gui",
-            "client sent unsupported message: ",
-            writer(message, "json")
-          );
+          log("gui", "client sent unsupported message: ", writer(message, "json"));
         });
 
         /* Keep alive Logic and error/closing conditions */

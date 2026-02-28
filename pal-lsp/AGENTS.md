@@ -25,16 +25,16 @@ stdin/stdout JSON-RPC
 
 ## Module layout
 
-| File | Purpose |
-|------|---------|
-| `src/main.rs` | LSP server binary: `Backend` struct, all LSP handler impls, `on_change`, `offset_to_position` |
-| `src/lib.rs` | Library re-exports: `chumsky`, `completion`, `jump_definition`, `reference`, `semantic_token` |
-| `src/chumsky.rs` | Lexer + AST + parser (`funcs_parser`) + `type_inference` + `parse` entry point |
-| `src/completion.rs` | Collect in-scope symbols at cursor offset |
-| `src/jump_definition.rs` | Go-to-definition: resolve offset → declaration site |
-| `src/reference.rs` | Find-all-references / rename: collect all use sites of a symbol |
-| `src/semantic_token.rs` | `LEGEND_TYPE` constant + AST→semantic-token conversion |
-| `client/src/extension.ts` | VS Code client extension: spawns server, registers for `.pretty` / `.pal` |
+| File                      | Purpose                                                                                       |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| `src/main.rs`             | LSP server binary: `Backend` struct, all LSP handler impls, `on_change`, `offset_to_position` |
+| `src/lib.rs`              | Library re-exports: `chumsky`, `completion`, `jump_definition`, `reference`, `semantic_token` |
+| `src/chumsky.rs`          | Lexer + AST + parser (`funcs_parser`) + `type_inference` + `parse` entry point                |
+| `src/completion.rs`       | Collect in-scope symbols at cursor offset                                                     |
+| `src/jump_definition.rs`  | Go-to-definition: resolve offset → declaration site                                           |
+| `src/reference.rs`        | Find-all-references / rename: collect all use sites of a symbol                               |
+| `src/semantic_token.rs`   | `LEGEND_TYPE` constant + AST→semantic-token conversion                                        |
+| `client/src/extension.ts` | VS Code client extension: spawns server, registers for `.pretty` / `.pal`                     |
 
 ## Language (chumsky.rs)
 
@@ -42,6 +42,7 @@ The parser implements a "Nano Rust" / "Foo" language (chumsky tutorial origin).
 This is **not yet wired to the actual Pal Lisp grammar** — it is a placeholder.
 
 Grammar summary:
+
 - Top-level: `fn name(args) { body }`
 - Expressions: literals, identifiers, `let x = e; rest`, `if cond { a } else { b }`, binary ops, calls, lists
 - Keywords: `fn`, `let`, `print`, `if`, `else`
@@ -50,26 +51,26 @@ Grammar summary:
 
 ## LSP capabilities
 
-| Capability | File | Notes |
-|------------|------|-------|
-| Text sync (full) | `main.rs::on_change` | Triggered by `did_open` and `did_change` |
-| Go-to-definition | `main.rs::goto_definition` + `jump_definition.rs` | |
-| Find references | `main.rs::references` + `reference.rs` | |
-| Semantic tokens (full + range) | `main.rs::semantic_tokens_full/range` | Delta-encoded from `semantic_token_map` |
-| Inlay hints | `main.rs::inlay_hint` | Shows inferred type labels for `let` bindings |
-| Completion | `main.rs::completion` + `completion.rs` | In-scope variables and functions |
-| Rename | `main.rs::rename` + `reference.rs::get_reference(include_self=true)` | |
-| Execute command | `main.rs::execute_command` | Stub — "dummy.do_something" only |
+| Capability                     | File                                                                 | Notes                                         |
+| ------------------------------ | -------------------------------------------------------------------- | --------------------------------------------- |
+| Text sync (full)               | `main.rs::on_change`                                                 | Triggered by `did_open` and `did_change`      |
+| Go-to-definition               | `main.rs::goto_definition` + `jump_definition.rs`                    |                                               |
+| Find references                | `main.rs::references` + `reference.rs`                               |                                               |
+| Semantic tokens (full + range) | `main.rs::semantic_tokens_full/range`                                | Delta-encoded from `semantic_token_map`       |
+| Inlay hints                    | `main.rs::inlay_hint`                                                | Shows inferred type labels for `let` bindings |
+| Completion                     | `main.rs::completion` + `completion.rs`                              | In-scope variables and functions              |
+| Rename                         | `main.rs::rename` + `reference.rs::get_reference(include_self=true)` |                                               |
+| Execute command                | `main.rs::execute_command`                                           | Stub — "dummy.do_something" only              |
 
 ## Entry points
 
-| Task | Where |
-|------|-------|
-| Build server | `cargo build -p pal-lsp` |
-| Run server (stdin/stdout) | `cargo run -p pal-lsp` |
-| Parse a file | `chumsky::parse(src)` → `ParserResult { ast, parse_errors, semantic_tokens }` |
-| Add a new LSP handler | Implement in `main.rs` in the `LanguageServer` impl block |
-| Add AST node type | `chumsky.rs::Expr` enum |
+| Task                      | Where                                                                         |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| Build server              | `cargo build -p pal-lsp`                                                      |
+| Run server (stdin/stdout) | `cargo run -p pal-lsp`                                                        |
+| Parse a file              | `chumsky::parse(src)` → `ParserResult { ast, parse_errors, semantic_tokens }` |
+| Add a new LSP handler     | Implement in `main.rs` in the `LanguageServer` impl block                     |
+| Add AST node type         | `chumsky.rs::Expr` enum                                                       |
 
 ## Key data structures
 

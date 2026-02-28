@@ -85,7 +85,7 @@ export class PalFS implements vscode.FileSystemProvider {
   writeFile(
     uri: vscode.Uri,
     content: Uint8Array,
-    options: { create: boolean; overwrite: boolean }
+    options: { create: boolean; overwrite: boolean },
   ): void {
     const basename = path.posix.basename(uri.path);
     const parent = this._lookupParentDirectory(uri);
@@ -110,11 +110,7 @@ export class PalFS implements vscode.FileSystemProvider {
 
     this._fireSoon({ type: vscode.FileChangeType.Changed, uri });
   }
-  rename(
-    oldUri: vscode.Uri,
-    newUri: vscode.Uri,
-    options: { overwrite: boolean }
-  ): void {
+  rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean }): void {
     if (!options.overwrite && this._lookup(newUri, true)) {
       throw vscode.FileSystemError.FileExists(newUri);
     }
@@ -127,7 +123,7 @@ export class PalFS implements vscode.FileSystemProvider {
     newParent.entries.set(newName, entry);
     this._fireSoon(
       { type: vscode.FileChangeType.Deleted, uri: oldUri },
-      { type: vscode.FileChangeType.Created, uri: newUri }
+      { type: vscode.FileChangeType.Created, uri: newUri },
     );
   }
   delete(uri: vscode.Uri): void {
@@ -142,7 +138,7 @@ export class PalFS implements vscode.FileSystemProvider {
     parent.size -= 1;
     this._fireSoon(
       { type: vscode.FileChangeType.Changed, uri: dirname },
-      { uri, type: vscode.FileChangeType.Deleted }
+      { uri, type: vscode.FileChangeType.Deleted },
     );
   }
   createDirectory(uri: vscode.Uri): void {
@@ -155,7 +151,7 @@ export class PalFS implements vscode.FileSystemProvider {
     parent.size += 1;
     this._fireSoon(
       { type: vscode.FileChangeType.Changed, uri: dirname },
-      { type: vscode.FileChangeType.Created, uri }
+      { type: vscode.FileChangeType.Created, uri },
     );
   }
   private _lookup(uri: vscode.Uri, silent: false): Entry;
@@ -202,9 +198,8 @@ export class PalFS implements vscode.FileSystemProvider {
   }
   private _emitter = new vscode.EventEmitter<vscode.FileChangeEvent[]>();
   private _bufferedEvents: vscode.FileChangeEvent[] = [];
-  private _fireSoonHandle?: NodeJS.Timer;
-  readonly onDidChangeFile: vscode.Event<vscode.FileChangeEvent[]> = this
-    ._emitter.event;
+  private _fireSoonHandle?: ReturnType<typeof setTimeout>;
+  readonly onDidChangeFile: vscode.Event<vscode.FileChangeEvent[]> = this._emitter.event;
   watch(_resource: vscode.Uri): vscode.Disposable {
     // ignore, fires for all changes...
     return new vscode.Disposable(() => {});

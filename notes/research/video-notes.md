@@ -5,10 +5,12 @@
 URL: https://www.youtube.com/watch?v=HgtRAbE1nBM
 
 Write From Scratch Challenges
+
 - Linux Binay Compatibility as an Anti Corruption Later
 - Second System Syndrome
 
 Alternatives
+
 - Rust InKernel Components
 - Rust OS Components - rewrite SystemD ? Rust!
 - Rust-based Firmware - rewrite OpenBMC? Rust!
@@ -30,9 +32,9 @@ Author: Rein Gottschalk
 - Any Query forms a Category
 - Schema (Data) = Type (Programs)
 - Categories Examples
-    - Monoidal Cats - Ordering of Instructions - Turing Tape - De Brujin Sequence - Tensor Product
-    - Closed Cartesian - Set Product (Relational)
-    - Trace - Feedback (DataFlow with Backpressure)
+  - Monoidal Cats - Ordering of Instructions - Turing Tape - De Brujin Sequence - Tensor Product
+  - Closed Cartesian - Set Product (Relational)
+  - Trace - Feedback (DataFlow with Backpressure)
 - We need a new type of machine - Categorical Machine
 - Developer Ergonomics
 - Multix - next video
@@ -58,10 +60,10 @@ References in Video:
 - Categories for the working Mathematician - Saunders Mac Land
 - Multics
 - NCatLab
-    - Site: [https://ncatlab.org/nlab/show/HomePage](https://ncatlab.org/nlab/show/HomePage)
-    - Forum: [https://nforum.ncatlab.org](https://nforum.ncatlab.org/)
-    - Wiki: [https://en.wikipedia.org/wiki/NLab](https://en.wikipedia.org/wiki/NLab)
-    - Git: [https://github.com/ncatlab](https://github.com/ncatlab)
+  - Site: [https://ncatlab.org/nlab/show/HomePage](https://ncatlab.org/nlab/show/HomePage)
+  - Forum: [https://nforum.ncatlab.org](https://nforum.ncatlab.org/)
+  - Wiki: [https://en.wikipedia.org/wiki/NLab](https://en.wikipedia.org/wiki/NLab)
+  - Git: [https://github.com/ncatlab](https://github.com/ncatlab)
 
 ## The First Real Operating Systems
 

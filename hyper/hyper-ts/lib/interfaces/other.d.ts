@@ -4,8 +4,8 @@ import { ID } from "../id";
 import { SymmetricKey } from "./agent";
 export interface Traversal {
 }
-export declare type Name = string;
-export declare type TimeStamp = string;
+export type Name = string;
+export type TimeStamp = string;
 export interface IDevice {
     public: boolean;
     lastOnline: TimeStamp;
@@ -16,11 +16,11 @@ export interface IPeer {
 }
 export interface INetwork {
 }
-export declare type HyperGraphPersistOptions = {};
-export declare type HyperGraphRetrieveOptions = {};
-export declare type HyperGraphDeleteOptions = {};
-export declare type HyperGraphTraverseOptions = {};
-export declare type HyperGraphSearchOptions = {};
+export type HyperGraphPersistOptions = {};
+export type HyperGraphRetrieveOptions = {};
+export type HyperGraphDeleteOptions = {};
+export type HyperGraphTraverseOptions = {};
+export type HyperGraphSearchOptions = {};
 export interface IHyperGraph {
     persist: (entities: HyperEdge | HyperNode | (HyperEdge | HyperNode)[], options: HyperGraphPersistOptions) => Promise<Error | null>;
     retrieve: (ids: ID | ID[], options: HyperGraphRetrieveOptions) => Promise<Error | null | HyperEdge | HyperNode | (HyperEdge | HyperNode)[]>;

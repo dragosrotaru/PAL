@@ -31,9 +31,7 @@ export class Device {
   }
   async initialize() {
     const nodeManifests = await Promise.all(
-      this.storageDeviceArray.map(
-        async (dev) => await dev.getDeviceManifest(this.id)
-      )
+      this.storageDeviceArray.map(async (dev) => await dev.getDeviceManifest(this.id)),
     );
   }
   private get storageDeviceArray(): StorageBackend[] {

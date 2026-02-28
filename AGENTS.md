@@ -15,6 +15,7 @@ of experimental sub-systems converging around a core vision:
 ## Core vision (in one paragraph)
 
 Pal is a Lisp interpreter where:
+
 - The **environment** is a reactive, pub/sub map backed by a real directory on disk.
 - **File path = Symbol key; file extension = type**. Writing a `.json` file creates a JSON value; a `.ts` file creates code.
 - **`(gpt expr)`** is a first-class special form that calls an LLM and returns the result as a value.
@@ -23,19 +24,19 @@ Pal is a Lisp interpreter where:
 
 ## Sub-projects overview
 
-| Project | Language | Status | Purpose |
-|---------|----------|--------|---------|
-| [`pal-ts/`](pal-ts/AGENTS.md) | TypeScript | Most complete prototype | Lisp interpreter with GPT, filesystem-mapped env, web UI |
-| [`pal-rs/`](pal-rs/AGENTS.md) | Rust | Early prototype | `.pretty` DSL parser → Rust codegen (compile() is a stub) |
-| [`pal-fs/`](pal-fs/AGENTS.md) | Rust | Skeleton | FUSE filesystem (fuser crate) — all methods are stubs |
-| [`wingman/`](wingman/AGENTS.md) | Rust | Visible rendering | WebGPU text editor / IDE runtime (no text editing yet) |
-| [`pal-lsp/`](pal-lsp/AGENTS.md) | Rust + TS | Working LSP | Language server for `.pretty`/`.pal` files (chumsky parser, not Pal grammar yet) |
-| [`pal-vscode/`](pal-vscode/AGENTS.md) | TypeScript | Working | VS Code extension: in-memory virtual filesystem (`palfs://`) |
-| [`hyper/`](hyper/AGENTS.md) | TypeScript | Older experiments | P2P encrypted hypergraph DB, FUSE FS, Yjs CRDT editor, React web UI |
-| [`rabbithole/`](rabbithole/AGENTS.md) | JavaScript | Minimal stub | Browser extension: save selected text / URLs (in-memory only) |
-| [`pal-os/`](pal-os/AGENTS.md) | Dockerfile | Incomplete | Linux From Scratch starting point for a custom Pal OS |
-| [`pal-lsp-example/`](pal-lsp-example/AGENTS.md) | TypeScript | Template | Minimal VS Code LSP client skeleton (server command is empty) |
-| `notes/` | Markdown | Reference | Design notes, research links, BNF grammars, architecture sketches |
+| Project                                         | Language   | Status                  | Purpose                                                                          |
+| ----------------------------------------------- | ---------- | ----------------------- | -------------------------------------------------------------------------------- |
+| [`pal-ts/`](pal-ts/AGENTS.md)                   | TypeScript | Most complete prototype | Lisp interpreter with GPT, filesystem-mapped env, web UI                         |
+| [`pal-rs/`](pal-rs/AGENTS.md)                   | Rust       | Early prototype         | `.pretty` DSL parser → Rust codegen (compile() is a stub)                        |
+| [`pal-fs/`](pal-fs/AGENTS.md)                   | Rust       | Skeleton                | FUSE filesystem (fuser crate) — all methods are stubs                            |
+| [`wingman/`](wingman/AGENTS.md)                 | Rust       | Visible rendering       | WebGPU text editor / IDE runtime (no text editing yet)                           |
+| [`pal-lsp/`](pal-lsp/AGENTS.md)                 | Rust + TS  | Working LSP             | Language server for `.pretty`/`.pal` files (chumsky parser, not Pal grammar yet) |
+| [`pal-vscode/`](pal-vscode/AGENTS.md)           | TypeScript | Working                 | VS Code extension: in-memory virtual filesystem (`palfs://`)                     |
+| [`hyper/`](hyper/AGENTS.md)                     | TypeScript | Older experiments       | P2P encrypted hypergraph DB, FUSE FS, Yjs CRDT editor, React web UI              |
+| [`rabbithole/`](rabbithole/AGENTS.md)           | JavaScript | Minimal stub            | Browser extension: save selected text / URLs (in-memory only)                    |
+| [`pal-os/`](pal-os/AGENTS.md)                   | Dockerfile | Incomplete              | Linux From Scratch starting point for a custom Pal OS                            |
+| [`pal-lsp-example/`](pal-lsp-example/AGENTS.md) | TypeScript | Template                | Minimal VS Code LSP client skeleton (server command is empty)                    |
+| `notes/`                                        | Markdown   | Reference               | Design notes, research links, BNF grammars, architecture sketches                |
 
 ## Architecture layers
 
@@ -80,40 +81,40 @@ ComponentName[:ParentComponent] [
 
 ## Known critical bugs
 
-| Location | Bug |
-|----------|-----|
-| `pal-rs/src/pretty/component.rs` | `ComponentIdent::to_tokens()` and `Component::to_tokens()` call `self.to_tokens()` recursively → infinite loop |
-| `pal-rs/src/lib.rs` | `compile()` is completely empty — no Rust codegen happens |
-| `pal-ts/src/language/typesystem.ts` | `structuralTypeOf` guard always returns `true` (broken condition) |
-| `pal-ts/src/language/parser/pal.ts` | Regex `/S+/` should be `/\s+/` |
-| `pal-ts/src/core/messageHistory.ts` | `append()` writes to env AND disk separately — potential double-write inconsistency |
-| `pal-lsp/src/main.rs` | Inlay hints use hardcoded location `(0,4)-(0,5)` instead of actual span |
-| `pal-lsp/client/src/extension.ts` | `helloWorld` command hardcodes dev machine's absolute path |
+| Location                            | Bug                                                                                                            |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `pal-rs/src/pretty/component.rs`    | `ComponentIdent::to_tokens()` and `Component::to_tokens()` call `self.to_tokens()` recursively → infinite loop |
+| `pal-rs/src/lib.rs`                 | `compile()` is completely empty — no Rust codegen happens                                                      |
+| `pal-ts/src/language/typesystem.ts` | `structuralTypeOf` guard always returns `true` (broken condition)                                              |
+| `pal-ts/src/language/parser/pal.ts` | Regex `/S+/` should be `/\s+/`                                                                                 |
+| `pal-ts/src/core/messageHistory.ts` | `append()` writes to env AND disk separately — potential double-write inconsistency                            |
+| `pal-lsp/src/main.rs`               | Inlay hints use hardcoded location `(0,4)-(0,5)` instead of actual span                                        |
+| `pal-lsp/client/src/extension.ts`   | `helloWorld` command hardcodes dev machine's absolute path                                                     |
 
 ## Entry points for common tasks
 
-| Task | Where to start |
-|------|----------------|
-| Run the Lisp REPL | `pal-ts/`: `npm start` |
-| Parse a `.pretty` file | `pal-rs/`: `cargo run -p pal-rs -- <directory>` |
-| Start the LSP server | `pal-lsp/`: `cargo run -p pal-lsp` |
+| Task                    | Where to start                                          |
+| ----------------------- | ------------------------------------------------------- |
+| Run the Lisp REPL       | `pal-ts/`: `npm start`                                  |
+| Parse a `.pretty` file  | `pal-rs/`: `cargo run -p pal-rs -- <directory>`         |
+| Start the LSP server    | `pal-lsp/`: `cargo run -p pal-lsp`                      |
 | Mount a FUSE filesystem | `hyper/hyper-fs/`: `node dist/index.js <pass> <config>` |
-| Launch the WebGPU IDE | `wingman/`: `cargo run -p wingman` |
-| Run the web UI | `hyper/hyper-web/`: `npm start` |
+| Launch the WebGPU IDE   | `wingman/`: `cargo run -p wingman`                      |
+| Run the web UI          | `hyper/hyper-web/`: `npm start`                         |
 
 ## Notes directory
 
 `notes/` contains only Markdown — no executable code. It is the intellectual history
 of the project. Key files:
 
-| File | Content |
-|------|---------|
-| `notes/pal-ts.bnf` | BNF grammar for the Pal S-expression language |
-| `notes/pretty-pal.bnf` | BNF grammar for the `.pretty` DSL |
-| `notes/focus/` | Current focus areas and motivation |
-| `notes/work-in-progress/` | In-flight design decisions |
-| `notes/research/` | Research notes: CRDTs, editors, P2P, Lisp, filesystems, etc. |
-| `notes/old-notes/changetheweb/` | Original 2019 design documents |
+| File                            | Content                                                      |
+| ------------------------------- | ------------------------------------------------------------ |
+| `notes/pal-ts.bnf`              | BNF grammar for the Pal S-expression language                |
+| `notes/pretty-pal.bnf`          | BNF grammar for the `.pretty` DSL                            |
+| `notes/focus/`                  | Current focus areas and motivation                           |
+| `notes/work-in-progress/`       | In-flight design decisions                                   |
+| `notes/research/`               | Research notes: CRDTs, editors, P2P, Lisp, filesystems, etc. |
+| `notes/old-notes/changetheweb/` | Original 2019 design documents                               |
 
 ## What's NOT connected yet
 

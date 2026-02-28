@@ -7,13 +7,13 @@ Notion turned to HyperGraph
 - Page - an Edge with the Page Encoding
 - List - an Edge with the List Encoding
 - Text - a Node with a UTF-8 + Markdown Encoding
-    - HyperGraph Semantics
-        - URL Link Node
-        - Code Node
-        - Equation Node
-        - Person Node
-        - Page Node
-        - Date Node
+  - HyperGraph Semantics
+    - URL Link Node
+    - Code Node
+    - Equation Node
+    - Person Node
+    - Page Node
+    - Date Node
 - Media - a Node with File Encoding
 - Code - a Node with a Code Encoding
 - Equation - a Node with LaTeX Encoding
@@ -33,7 +33,7 @@ LaTeX (.tex)
 
 JavaScript (.js) and later GraphScript
 
-File (.pdf, .png, .jpg, .csv,  .mp3, .mp4) 
+File (.pdf, .png, .jpg, .csv, .mp3, .mp4)
 
 Char Encoding: ASCII
 

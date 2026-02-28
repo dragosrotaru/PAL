@@ -46,13 +46,9 @@ export interface IAgentRepository {
   persistAgent: (
     publicKey: PublicKey,
     encryptedAgent: EncryptedAgent,
-    encryptedSymmetricKey: EncryptedSymmetricKey
+    encryptedSymmetricKey: EncryptedSymmetricKey,
   ) => Promise<Error | null>;
-  retrieveEncryptedAgent: (
-    publicKey: PublicKey
-  ) => Promise<Error | EncryptedAgent>;
-  retrieveEncryptedSymmetricKey: (
-    publicKey: PublicKey
-  ) => Promise<Error | EncryptedSymmetricKey>;
+  retrieveEncryptedAgent: (publicKey: PublicKey) => Promise<Error | EncryptedAgent>;
+  retrieveEncryptedSymmetricKey: (publicKey: PublicKey) => Promise<Error | EncryptedSymmetricKey>;
   retrieveAgentPublicKeys: () => Promise<Error | Name[]>;
 }

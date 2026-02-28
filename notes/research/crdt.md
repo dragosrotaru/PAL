@@ -1,7 +1,7 @@
 # CRDT
 
 1. A string-wise CR DT algorithm for smart and large-scale collaborative
-editing systems
+   editing systems
 2. Causal trees: towards real-time read-write hypertext
 3. CRDTs: Making CRDTs Delta-Based
 4. Bouillon: a wiki-wiki social web
@@ -14,7 +14,6 @@ editing systems
 11. PaPoC '21: Proceedings of the 8th Workshop on Principles and Practice of Consistency for Distributed Data
 12. Consistency, Availability, and Convergence - Mahajan et. al.
 13. Pure Operation-Based Replicated Data Types - Carlos Baquero et. al. (2017)
-
 
 - https://github.com/josephg
 - https://derbyjs.com

@@ -5,12 +5,12 @@
 
 ## Crates
 
-| Crate | Description | Maturity |
-|-------|-------------|---------|
-| `pal-rs` | `.pretty` DSL parser → Pal language compiler targeting Rust. Uses syn/proc_macro2. | Early prototype — compile() is a stub, recursive ToTokens bug. |
-| `pal-fs` | FUSE filesystem exposing the Pal environment as a mountable virtual FS. | Skeleton only — all FUSE methods are empty stubs. |
-| `wingman` (Prophet) | WebGPU text editor / IDE runtime. Targets native + WASM. | Visible rendering; no text editing. |
-| `pal-lsp` | Language Server Protocol implementation for Pal. | Unknown — see pal-lsp/. |
+| Crate               | Description                                                                        | Maturity                                                       |
+| ------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `pal-rs`            | `.pretty` DSL parser → Pal language compiler targeting Rust. Uses syn/proc_macro2. | Early prototype — compile() is a stub, recursive ToTokens bug. |
+| `pal-fs`            | FUSE filesystem exposing the Pal environment as a mountable virtual FS.            | Skeleton only — all FUSE methods are empty stubs.              |
+| `wingman` (Prophet) | WebGPU text editor / IDE runtime. Targets native + WASM.                           | Visible rendering; no text editing.                            |
+| `pal-lsp`           | Language Server Protocol implementation for Pal.                                   | Unknown — see pal-lsp/.                                        |
 
 ## Relationships
 

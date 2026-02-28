@@ -1,20 +1,23 @@
 # Lisp
 
 ## Levels
+
 - Machine
 - OS
 - Shell
 - Editor
 
 ## Links
+
 - https://github.com/lisper/cpus-caddr
 - https://3lproject.org
 - https://github.com/vygr/ChrysaLisp
 - https://github.com/froggey/Mezzano
 - https://github.com/AlexNisnevich/ECMAchine
 - https://github.com/ghosthamlet/awesome-lisp-machine
-  
+
 ## Reasonable Level
+
 - GNU Guile
 - GNU GUIX
 - GNU Emacs
@@ -35,7 +38,7 @@ Baloney. ObjC started as just a preprocessor written by Brad Cox. It's not that 
 
 ObjC did not succeed because there were so few options that the community was able to coalesce. ObjC succeeded because NeXT and then Apple invested in it to ensure it met the needs of its apps, developers, and platforms. The language was not the point - the platforms were the point.
 
-We use ObjC because it lets us do cool shit on OS X and iOS. We use JavaScript not because it's awesome, but because it runs on web pages - and no amount of Turing-completeness in your type system can accomplish that. Build something awesome in Lisp that's not just some self-referential modification of Lisp (*cough* Arc) and you'll get traction, just like Ruby did with Rails.
+We use ObjC because it lets us do cool shit on OS X and iOS. We use JavaScript not because it's awesome, but because it runs on web pages - and no amount of Turing-completeness in your type system can accomplish that. Build something awesome in Lisp that's not just some self-referential modification of Lisp (_cough_ Arc) and you'll get traction, just like Ruby did with Rails.
 
 ## Two
 

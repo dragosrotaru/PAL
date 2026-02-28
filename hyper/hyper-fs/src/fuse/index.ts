@@ -26,7 +26,7 @@ type DataCallback = (code: number, data?: any) => void;
 const DEVICE = 16777220; // device 100000004 in octal (1,4)
 const BLOCK_SIZE = 4096;
 
-/* 
+/*
 
 - does inode get automatically managed?
 - does device get automatically managed?
@@ -34,7 +34,7 @@ const BLOCK_SIZE = 4096;
 
 */
 
-/* 
+/*
 http://fuse.sourceforge.net/doxygen/structfuse__operations.html
 In general the callback for each op should be called with `cb(returnCode, [value])` where the return code is a number (`0` for OK and `< 0` for errors). See below for a list of POSIX error codes.
 */
@@ -147,22 +147,12 @@ export class FuseHandlers {
     process.nextTick(callback, 0);
   }
   // Called when a file descriptor is being fsync'ed.
-  fsync(
-    path: Path,
-    fileDescriptor: FileDescriptor,
-    datasync: DataSync,
-    callback: Callback
-  ) {
+  fsync(path: Path, fileDescriptor: FileDescriptor, datasync: DataSync, callback: Callback) {
     console.log(`fsync ${path} ${fileDescriptor} ${datasync}`);
     process.nextTick(callback, 0);
   }
   // Same as above but on a directory
-  fsyncdir(
-    path: Path,
-    fileDescriptor: FileDescriptor,
-    datasync: DataSync,
-    callback: Callback
-  ) {
+  fsyncdir(path: Path, fileDescriptor: FileDescriptor, datasync: DataSync, callback: Callback) {
     console.log(`fsyncdir ${path} ${fileDescriptor} ${datasync}`);
     process.nextTick(callback, 0);
   }
@@ -177,12 +167,7 @@ export class FuseHandlers {
     process.nextTick(callback, 0);
   }
   // Same as above but on a file descriptor
-  ftruncate(
-    path: Path,
-    fileDescriptor: FileDescriptor,
-    size: Size,
-    callback: Callback
-  ) {
+  ftruncate(path: Path, fileDescriptor: FileDescriptor, size: Size, callback: Callback) {
     console.log(`ftruncate ${path} ${fileDescriptor} ${size}`);
     process.nextTick(callback, 0);
   }
@@ -206,7 +191,7 @@ export class FuseHandlers {
     console.log(`mknod ${path} ${mode} ${dev}`);
     process.nextTick(callback, 0);
   }
-  /* 
+  /*
     Called when extended attributes is being set (see the extended docs for your platform).
     Copy the `value` buffer somewhere to store it.
     The position argument is mostly a legacy argument only used on MacOS but see the getxattr docs
@@ -218,12 +203,12 @@ export class FuseHandlers {
     value: AttrValue,
     position: Position,
     flags: Flags,
-    callback: Callback
+    callback: Callback,
   ) {
     console.log(`setxattr ${path} ${name} ${value} ${position} ${flags}`);
     process.nextTick(callback, 0);
   }
-  /* 
+  /*
     Called when extended attributes is being read.
     Return the extended attribute as the second argument to the callback (needs to be a buffer).
     If no attribute is stored return `null` as the second argument.
@@ -234,7 +219,7 @@ export class FuseHandlers {
     console.log(`getxattr ${path} ${name} ${position}`);
     process.nextTick(callback, 0, Buffer.from("hello"));
   }
-  /* 
+  /*
     Called when extended attributes of a path are being listed.
     Return a list of strings of the names of the attributes you have stored as the second argument to the callback.
   */
@@ -247,7 +232,7 @@ export class FuseHandlers {
     console.log(`removexattr ${path} ${name}`);
     process.nextTick(callback, 0);
   }
-  /* 
+  /*
     Called when a path is being opened.
     `flags` in a number containing the permissions being requested.
     Accepts a file descriptor after the return code in the callback.
@@ -263,7 +248,7 @@ export class FuseHandlers {
     const fileDescriptor = 0;
     process.nextTick(callback, 0, fileDescriptor);
   }
-  /* 
+  /*
     Called when contents of a file is being read.
     You should write the result of the read to the `buffer` and return
     the number of bytes written as the first argument in the callback.
@@ -275,14 +260,12 @@ export class FuseHandlers {
     buffer: Buffer,
     length: number,
     position: Position,
-    callback: DataCallback
+    callback: DataCallback,
   ) {
-    console.log(
-      `read ${path} ${fileDescriptor} ${buffer} ${length} ${position}`
-    );
+    console.log(`read ${path} ${fileDescriptor} ${buffer} ${length} ${position}`);
     process.nextTick(callback, 0, 0);
   }
-  /* 
+  /*
     Called when a file is being written to.
     You can get the data being written in `buffer` and you should return
     the number of bytes written in the callback as the first argument.
@@ -293,11 +276,9 @@ export class FuseHandlers {
     buffer: Buffer,
     length: number,
     position: Position,
-    callback: DataCallback
+    callback: DataCallback,
   ) {
-    console.log(
-      `write ${path} ${fileDescriptor} ${buffer} ${length} ${position}`
-    );
+    console.log(`write ${path} ${fileDescriptor} ${buffer} ${length} ${position}`);
     process.nextTick(callback, 0, 0);
   }
   // Called when a file descriptor is being released. Happens when a read/write is done etc.

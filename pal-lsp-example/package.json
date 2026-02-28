@@ -1,27 +1,23 @@
 {
   "name": "pal-lsp-client",
-  "description": "Pal VSCode Language Server Protocol Client",
   "version": "0.0.1",
-  "publisher": "dragos-rotaru",
+  "description": "Pal VSCode Language Server Protocol Client",
   "categories": [],
   "keywords": [],
-  "engines": {
-    "vscode": "^1.75.0",
-    "node": "24.13.0",
-    "pnpm": ">=10.0.0"
+  "publisher": "dragos-rotaru",
+  "main": "./build/extension",
+  "scripts": {
+    "build": "tsgo",
+    "watch": "tsgo --watch",
+    "typecheck": "tsgo --noEmit",
+    "vscode:prepublish": "pnpm run build"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
   },
   "devDependencies": {
-    "@types/vscode": "^1.75.1",
-    "@types/node": "^18.14.6",
-    "typescript": "^5.3.3"
+    "@types/vscode": "^1.75.1"
   },
-  "activationEvents": [
-    "onLanguage:pretty"
-  ],
-  "main": "./build/extension",
   "contributes": {
     "configuration": {
       "type": "object",
@@ -47,10 +43,13 @@
       }
     }
   },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -b",
-    "watch": "tsc -b -w"
+  "activationEvents": [
+    "onLanguage:pretty"
+  ],
+  "engines": {
+    "node": "24.13.0",
+    "pnpm": ">=10.0.0",
+    "vscode": "^1.75.0"
   },
   "packageManager": "pnpm@10.29.3"
 }

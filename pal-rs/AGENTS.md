@@ -27,12 +27,12 @@ ComponentName[:ParentComponent] [
 
 ## Entry Points
 
-| Task | File |
-|------|------|
-| CLI | `src/main.rs` — takes a directory path, parses all files, calls compile() |
-| Add a file type | `src/lib.rs` → `parse()` match arm |
-| Edit DSL grammar | `src/pretty/component.rs` Parse impl |
-| Add property types | `src/pretty/property.rs` → `src/pretty/value/` |
+| Task               | File                                                                      |
+| ------------------ | ------------------------------------------------------------------------- |
+| CLI                | `src/main.rs` — takes a directory path, parses all files, calls compile() |
+| Add a file type    | `src/lib.rs` → `parse()` match arm                                        |
+| Edit DSL grammar   | `src/pretty/component.rs` Parse impl                                      |
+| Add property types | `src/pretty/property.rs` → `src/pretty/value/`                            |
 
 ## Data Flow
 

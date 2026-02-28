@@ -6,6 +6,7 @@
 ## What this is
 
 A minimal browser extension (Manifest V2) that lets users "save" things from the web:
+
 - **Selected text** — captured via `mouseup` in the content script.
 - **Current tab URL** — used if nothing is selected when the save command fires.
 
@@ -13,12 +14,12 @@ Saving is triggered by `MacCtrl+S` (the "save" command).
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `manifest.json` | Extension manifest: permissions, content scripts, background scripts, keyboard command |
-| `background.js` | Service worker: receives selected text; handles "save" command; accumulates `saved[]` |
-| `content.js` | Content script: watches `mouseup`, sends selected text to background |
-| `browser-polyfill.js` | `webextensions-polyfill` — normalises Chrome/Firefox browser API differences |
+| File                  | Purpose                                                                                |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| `manifest.json`       | Extension manifest: permissions, content scripts, background scripts, keyboard command |
+| `background.js`       | Service worker: receives selected text; handles "save" command; accumulates `saved[]`  |
+| `content.js`          | Content script: watches `mouseup`, sends selected text to background                   |
+| `browser-polyfill.js` | `webextensions-polyfill` — normalises Chrome/Firefox browser API differences           |
 
 ## Data flow
 

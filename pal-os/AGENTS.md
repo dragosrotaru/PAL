@@ -14,11 +14,11 @@ the Pal programming environment natively.
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `Dockerfile` | LFS chapters 2–5 automated in Docker (Ubuntu 20.04 base) |
+| File               | Purpose                                                  |
+| ------------------ | -------------------------------------------------------- |
+| `Dockerfile`       | LFS chapters 2–5 automated in Docker (Ubuntu 20.04 base) |
 | `version-check.sh` | LFS tool version verification script (run inside Docker) |
-| `README.md` | Brief build instructions |
+| `README.md`        | Brief build instructions                                 |
 
 ## How to build
 

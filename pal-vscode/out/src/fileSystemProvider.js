@@ -15,12 +15,51 @@
  * - Not connected to the actual Pal runtime environment yet.
  *   // todo @claude: wire PalFS to the live Pal Env (subscribe to env events, reflect changes here)
  */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PalFS = exports.Directory = exports.File = void 0;
-const path = require("path");
-const vscode = require("vscode");
+const path = __importStar(require("path"));
+const vscode = __importStar(require("vscode"));
 /** An in-memory file node. Holds raw byte content in `data`. */
 class File {
+    type;
+    ctime;
+    mtime;
+    size;
+    name;
+    data;
     constructor(name) {
         this.type = vscode.FileType.File;
         this.ctime = Date.now();
@@ -32,6 +71,12 @@ class File {
 exports.File = File;
 /** An in-memory directory node. Children are stored in `entries` by name. */
 class Directory {
+    type;
+    ctime;
+    mtime;
+    size;
+    name;
+    entries;
     constructor(name) {
         this.type = vscode.FileType.Directory;
         this.ctime = Date.now();
@@ -49,13 +94,7 @@ exports.Directory = Directory;
  * All write operations fire debounced `onDidChangeFile` events via `_fireSoon`.
  */
 class PalFS {
-    constructor() {
-        this.root = new Directory("");
-        this._emitter = new vscode.EventEmitter();
-        this._bufferedEvents = [];
-        this.onDidChangeFile = this
-            ._emitter.event;
-    }
+    root = new Directory("");
     stat(uri) {
         return this._lookup(uri, false);
     }
@@ -173,6 +212,11 @@ class PalFS {
         const dirname = uri.with({ path: path.posix.dirname(uri.path) });
         return this._lookupAsDirectory(dirname, false);
     }
+    _emitter = new vscode.EventEmitter();
+    _bufferedEvents = [];
+    _fireSoonHandle;
+    onDidChangeFile = this
+        ._emitter.event;
     watch(_resource) {
         // ignore, fires for all changes...
         return new vscode.Disposable(() => { });

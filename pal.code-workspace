@@ -1,10 +1,33 @@
 {
-	"folders": [],
-	"settings": {
-		"rust-analyzer.showUnlinkedFileNotification": false,
-		"rust-analyzer.cargo.buildScripts.enable": true,
-		"rust-analyzer.cargo.buildScripts.rebuildOnSave": true,
-		// "rust-analyzer.procMacro.enable": true,
-	},
-	
+  "folders": [
+    { "name": "pal", "path": "." },
+    { "name": "pal-ts", "path": "pal-ts" },
+    { "name": "pal-vscode", "path": "pal-vscode" },
+    { "name": "pal-lsp", "path": "pal-lsp" },
+    { "name": "pal-lsp-example", "path": "pal-lsp-example" },
+    { "name": "hyper-ts", "path": "hyper/hyper-ts" },
+    { "name": "hyper-fs", "path": "hyper/hyper-fs" },
+    { "name": "hyper-server", "path": "hyper/hyper-server" },
+    { "name": "hyper-web", "path": "hyper/hyper-web" },
+  ],
+  "settings": {
+    "typescript.experimental.useTsgo": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "always",
+      "source.organizeImports": "always",
+      "source.removeUnusedImports": "always",
+    },
+    "editor.formatOnSaveMode": "file",
+    "[typescript]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "oxc.oxc-vscode",
+    },
+    "rust-analyzer.showUnlinkedFileNotification": false,
+    "rust-analyzer.cargo.buildScripts.enable": true,
+    "rust-analyzer.cargo.buildScripts.rebuildOnSave": true,
+  },
 }

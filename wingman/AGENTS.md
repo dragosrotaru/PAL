@@ -20,26 +20,26 @@ lib.rs::run()
 
 ### Modules
 
-| Module | Purpose |
-|--------|---------|
-| `display/render.rs` | wgpu device/surface/pipeline setup; `render()` and `update()` |
-| `display/text.rs` | Text rendering |
-| `display/pipeline.rs` | Render pipeline configuration |
-| `display/picking.rs` | Click/cursor hit testing |
-| `display/geometry/` | Geometric primitives: point, line, rectangle, circle, triangle, prism, sphere, vertex, dimension |
-| `display/components.rs` | UI component abstractions for the display layer |
-| `control/keyboard.rs` | Key action registry: maps VirtualKeyCode+ModifiersState → closures |
-| `control/mouse.rs` | Mouse event handling |
-| `domain/ast.rs` | Editor document AST (empty stub) |
+| Module                  | Purpose                                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------------------ |
+| `display/render.rs`     | wgpu device/surface/pipeline setup; `render()` and `update()`                                    |
+| `display/text.rs`       | Text rendering                                                                                   |
+| `display/pipeline.rs`   | Render pipeline configuration                                                                    |
+| `display/picking.rs`    | Click/cursor hit testing                                                                         |
+| `display/geometry/`     | Geometric primitives: point, line, rectangle, circle, triangle, prism, sphere, vertex, dimension |
+| `display/components.rs` | UI component abstractions for the display layer                                                  |
+| `control/keyboard.rs`   | Key action registry: maps VirtualKeyCode+ModifiersState → closures                               |
+| `control/mouse.rs`      | Mouse event handling                                                                             |
+| `domain/ast.rs`         | Editor document AST (empty stub)                                                                 |
 
 ## Entry Points
 
-| Task | File |
-|------|------|
-| Application startup | `src/lib.rs::run()` |
-| Render loop | `src/display/render.rs` |
-| Keyboard shortcuts | `src/lib.rs` — `keyboard_service.set_key_action()` calls |
-| WGSL shader | `src/display/render.wgsl` |
+| Task                | File                                                     |
+| ------------------- | -------------------------------------------------------- |
+| Application startup | `src/lib.rs::run()`                                      |
+| Render loop         | `src/display/render.rs`                                  |
+| Keyboard shortcuts  | `src/lib.rs` — `keyboard_service.set_key_action()` calls |
+| WGSL shader         | `src/display/render.wgsl`                                |
 
 ## Build
 

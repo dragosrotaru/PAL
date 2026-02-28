@@ -1,15 +1,14 @@
-/// <reference types="node" />
 interface FromData {
     data: Buffer;
 }
 interface FromSerialized {
     serialized: Buffer;
 }
-declare type From = FromData | FromSerialized;
-export declare const parseID: (bytes: Buffer) => {
-    leftOver: Buffer;
+type From = FromData | FromSerialized;
+export declare const parseID: (bytes: Buffer<ArrayBufferLike>) => {
+    leftOver: Buffer<ArrayBufferLike>;
     dataLength: number;
-    multiHash: Buffer;
+    multiHash: Buffer<ArrayBufferLike>;
 };
 export declare class ID {
     readonly _HASHING_ALGORITHM = "sha256";
@@ -17,7 +16,7 @@ export declare class ID {
     readonly multiHash: Buffer;
     readonly bytes: number;
     constructor(from: From);
-    get serialized(): Buffer;
+    get serialized(): Buffer<ArrayBuffer>;
 }
 export {};
 //# sourceMappingURL=index.d.ts.map

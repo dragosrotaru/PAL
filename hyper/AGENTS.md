@@ -12,13 +12,13 @@ named, retrieved, and searched.
 
 ## Sub-projects
 
-| Directory | Language | Purpose |
-|-----------|----------|---------|
-| `hyper-ts/` | TypeScript | Core library: `HyperGraph`, `HyperNode`, `HyperEdge`, `Client`, crypto |
-| `hyper-fs/` | TypeScript | FUSE filesystem that exposes a `Device`'s encrypted HyperGraph as a mountable directory |
-| `hyper-server/` | TypeScript | Express + WebSocket + Y-WebSocket server for Yjs CRDT collaboration |
-| `hyper-web/` | React/TypeScript | Browser SPA: editor, CRDT editor, tasks, RAM view, wildcards, terminal |
-| `livecoding/` | JavaScript | Minimal live-coding server/client (file watcher + hot-reload via WebSocket) |
+| Directory       | Language         | Purpose                                                                                 |
+| --------------- | ---------------- | --------------------------------------------------------------------------------------- |
+| `hyper-ts/`     | TypeScript       | Core library: `HyperGraph`, `HyperNode`, `HyperEdge`, `Client`, crypto                  |
+| `hyper-fs/`     | TypeScript       | FUSE filesystem that exposes a `Device`'s encrypted HyperGraph as a mountable directory |
+| `hyper-server/` | TypeScript       | Express + WebSocket + Y-WebSocket server for Yjs CRDT collaboration                     |
+| `hyper-web/`    | React/TypeScript | Browser SPA: editor, CRDT editor, tasks, RAM view, wildcards, terminal                  |
+| `livecoding/`   | JavaScript       | Minimal live-coding server/client (file watcher + hot-reload via WebSocket)             |
 
 ## Architecture
 
@@ -55,12 +55,12 @@ hyper-web (UI)
 
 ## Entry points
 
-| Task | File |
-|------|------|
-| Smoke-test hyper-ts | `hyper-ts/src/index.ts` (demo: create agent, persist/retrieve/name/search/delete) |
-| Mount FUSE filesystem | `hyper-fs/src/index.ts` (args: password, config-file) |
-| Start CRDT server | `hyper-server/src/index.ts` (port 7777) |
-| Run web UI | `hyper-web/src/index.tsx` (CRA dev server) |
+| Task                  | File                                                                              |
+| --------------------- | --------------------------------------------------------------------------------- |
+| Smoke-test hyper-ts   | `hyper-ts/src/index.ts` (demo: create agent, persist/retrieve/name/search/delete) |
+| Mount FUSE filesystem | `hyper-fs/src/index.ts` (args: password, config-file)                             |
+| Start CRDT server     | `hyper-server/src/index.ts` (port 7777)                                           |
+| Run web UI            | `hyper-web/src/index.tsx` (CRA dev server)                                        |
 
 ## Known stubs / missing pieces
 

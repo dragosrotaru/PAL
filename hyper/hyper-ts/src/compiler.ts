@@ -1,219 +1,221 @@
 class ASTEdge {
-    public id!: string;
-    public content: (AST)[];
-    constructor(
-        ...args: (AST)[]
-    ) {
-        this.content = args;
-    }
+  public id!: string;
+  public content: AST[];
+  constructor(...args: AST[]) {
+    this.content = args;
+  }
 }
 class Sym {
-    constructor(public id: string) {}
+  constructor(public id: string) {}
 }
 
 class Atom {
-    public id!: string;
-    constructor(public content: string) {}
+  public id!: string;
+  constructor(public content: string) {}
 }
 
 class Edge {
-    public id!: string;
-    public content: string[];
-    constructor(
-        ...args: (Sym|Edge|Atom)[]
-    ) {
-        this.content = args.map((arg) => arg.id);
-    }
+  public id!: string;
+  public content: string[];
+  constructor(...args: (Sym | Edge | Atom)[]) {
+    this.content = args.map((arg) => arg.id);
+  }
 }
 
 type AST = ASTEdge | Sym | Atom;
 
-const TYPE = new Sym('type');
+const TYPE = new Sym("type");
 
 export class Compiler {
-    TYPE = TYPE;
-    data = new Map<string, Sym | Atom | Edge>();
-    extensions = new Map<string, Function>();
+  TYPE = TYPE;
+  data = new Map<string, Sym | Atom | Edge>();
+  extensions = new Map<string, Function>();
 
-    addToMap(node: Sym | Atom | Edge) {
-        if (!this.data.has(node.id)) {
-            this.data.set(node.id, node);
-        }
+  addToMap(node: Sym | Atom | Edge) {
+    if (!this.data.has(node.id)) {
+      this.data.set(node.id, node);
     }
+  }
 
-    addExtension (type: Sym, code: string) {
-        const extension = this.extensions.get(type.id);
-        if (!extension) {
-            // TODO validate code
-            this.extensions.set(type.id , new Function (code));
-        }
+  addExtension(type: Sym, code: string) {
+    const extension = this.extensions.get(type.id);
+    if (!extension) {
+      // TODO validate code
+      this.extensions.set(type.id, new Function(code));
     }
+  }
 
-    addType(content: (Sym|Atom|Edge)[]): void {
-        const type = content[1];
-        const code = content[2];
-        if (type instanceof Sym && code instanceof Atom) {
-            this.addExtension(type, code.content);
+  addType(content: (Sym | Atom | Edge)[]): void {
+    const type = content[1];
+    const code = content[2];
+    if (type instanceof Sym && code instanceof Atom) {
+      this.addExtension(type, code.content);
+    } else {
+      throw new Error("Invalid type definition");
+    }
+  }
+
+  resolveExtension(node: Sym): Function {
+    const extension = this.extensions.get(node.id);
+    if (!extension) {
+      // TODO add network resolver
+      throw new Error("Extension Not Found");
+    }
+    return extension;
+  }
+
+  resolveEdgeContent(node: Edge): (Sym | Atom | Edge)[] {
+    return node.content.map((childID) => {
+      const child = this.data.get(childID);
+      if (!child) {
+        throw new Error("Could Not Resolve Edge Gild");
+      }
+      return child;
+    });
+  }
+
+  loadProgram() {
+    // TODO given a list of nodes, add them to the map
+  }
+
+  parse(node: Edge): AST {
+    return new ASTEdge(
+      ...node.content.map((id): AST => {
+        const child = this.data.get(id);
+        if (!child) {
+          // TODO add network resolver
+          throw new Error("Could Not Resolve Child");
+        } else if (child instanceof Sym) {
+          return child;
+        } else if (child instanceof Atom) {
+          return child;
+        } else if (child instanceof Edge) {
+          return this.parse(child);
         } else {
-            throw new Error("Invalid type definition");
+          throw new Error("Unknown child type");
         }
-    }
+      }),
+    );
+  }
 
-    resolveExtension(node: Sym): Function {
-        const extension = this.extensions.get(node.id);
-        if (!extension) {
-            // TODO add network resolver
-            throw new Error("Extension Not Found");
-        }
-        return extension;
-    }
+  compile(node: AST) {
+    if (node instanceof ASTEdge) {
+      const { content } = node;
+      const first = content[0];
 
-    resolveEdgeContent(node: Edge): (Sym|Atom|Edge)[] {
-        return node.content.map(childID => {
-            const child = this.data.get(childID);
-            if (!child) {
-                throw new Error("Could Not Resolve Edge Gild");
-            }
-            return child;
-        })
-    }
+      if (!(first instanceof Sym)) {
+        throw new Error("Unknown Edge");
+      }
 
-    loadProgram() {
-        // TODO given a list of nodes, add them to the map
+      if (first.id === this.TYPE.id) {
+        this.addType(content);
+        return node;
+      }
 
+      try {
+        const extension = this.resolveExtension(first);
+        // TODO block access to global scope
+        return extension.apply({ context: this, node });
+      } catch (error) {
+        throw new Error("Unknown Type");
+      }
     }
-    
-    parse(node: Edge): AST {
-        return new ASTEdge(...node.content.map((id): AST => {
-            const child = this.data.get(id);
-            if (!child) {
-                // TODO add network resolver
-                throw new Error("Could Not Resolve Child");
-            } else if (child instanceof Sym) {
-                return child;
-            } else if (child instanceof Atom) {
-                return child;
-            } else if (child instanceof Edge) {
-                return this.parse(child);
-            } else {
-                throw new Error("Unknown child type");
-            }
-        }));
-    }
-
-    compile(node: AST) {
-        if (node instanceof ASTEdge) {
-            const { content } = node;
-            const first = content[0];
-           
-            if (!(first instanceof Sym)) {
-                throw new Error("Unknown Edge");
-            }
-           
-            if (first.id === this.TYPE.id) {
-                this.addType(content);
-                return node;
-            } 
-            
-            try {
-                const extension = this.resolveExtension(first);
-                // TODO block access to global scope
-                return extension.apply({ context: this, node });
-            } catch (error) {
-                throw new Error('Unknown Type');
-            }
-        }
-        return node; 
-    }
+    return node;
+  }
 }
-
 
 /* COMPILER EXTENSIONS */
 
 type ExtensionScope = {
-    context: Compiler;
-    node: ASTEdge;
+  context: Compiler;
+  node: ASTEdge;
 };
 
 /**
-* Type:String Atom:Value
-*/
+ * Type:String Atom:Value
+ */
 function String(this: ExtensionScope) {
-    const { node: { content } } = this;
-    if (content.length !== 2) {
-        throw new Error("Invalid String Edge");
-    }
+  const {
+    node: { content },
+  } = this;
+  if (content.length !== 2) {
+    throw new Error("Invalid String Edge");
+  }
 
-    const value = content[1];
-    if (!(value instanceof Atom)) {
-        throw new Error("Invalid String Edge");
-    }
+  const value = content[1];
+  if (!(value instanceof Atom)) {
+    throw new Error("Invalid String Edge");
+  }
 
-    return value.content;
-};
+  return value.content;
+}
 
-const StringType = new ASTEdge(TYPE, new Sym('String'), new Atom(String.toString()));
-
+const StringType = new ASTEdge(TYPE, new Sym("String"), new Atom(String.toString()));
 
 /**
  * Type:Property Atom:Name Atom:Value
  */
 function Property(this: ExtensionScope) {
-    const { node: { content }, context } = this;
-    if (content.length !== 3) {
-        throw new Error("Invalid Property Edge");
-    }
-    const name = content[1];
-    const value = content[3];
-    if (!(name instanceof Atom && value instanceof ASTEdge)) {
-        throw new Error("Invalid Property Edge");
-    }
-    return { name, value: context.compile(value) }
+  const {
+    node: { content },
+    context,
+  } = this;
+  if (content.length !== 3) {
+    throw new Error("Invalid Property Edge");
+  }
+  const name = content[1];
+  const value = content[3];
+  if (!(name instanceof Atom && value instanceof ASTEdge)) {
+    throw new Error("Invalid Property Edge");
+  }
+  return { name, value: context.compile(value) };
 }
 
-const PropertyType = new ASTEdge(TYPE, new Sym('Property'), new Atom(Property.toString()));
-
+const PropertyType = new ASTEdge(TYPE, new Sym("Property"), new Atom(Property.toString()));
 
 /**
  * Type:Object Edge:Property Edge:Property
  */
 function Object(this: ExtensionScope) {
-    const { node: { content }, context } = this;
-    if (content.length < 2) {
-        throw new Error("Invalid Object Edge: Must Have a Type");
+  const {
+    node: { content },
+    context,
+  } = this;
+  if (content.length < 2) {
+    throw new Error("Invalid Object Edge: Must Have a Type");
+  }
+  const type = content[1];
+  if (!(type instanceof Sym)) {
+    throw new Error("Invalid Object Edge: Must Have a Type");
+  }
+  const obj: Record<string, unknown> = {};
+  const properties = content.slice(2);
+  properties.forEach((property) => {
+    if (property instanceof ASTEdge) {
+      const { name, value } = context.compile(property);
+      obj[name as string] = value;
     }
-    const type = content[1];
-    if (!(type instanceof Sym)) {
-        throw new Error("Invalid Object Edge: Must Have a Type");
-    }
-    const obj: Record<string, unknown> = {};
-    const properties = content.slice(2);
-    properties.forEach(property => {
-        if (property instanceof ASTEdge) {
-            const { name, value } = context.compile(property);
-            obj[name as string] = value;
-        }
-        
-    })
-    return { type, properties: content.slice(2) }
+  });
+  return { type, properties: content.slice(2) };
 }
 
-
-const ObjectType = new ASTEdge(TYPE, new Sym('Object'), new Atom(Object.toString()));
-
+const ObjectType = new ASTEdge(TYPE, new Sym("Object"), new Atom(Object.toString()));
 
 /* USER DEFINED TYPES */
 
-
 const Task = new ASTEdge(
-    ObjectType,
-    new Sym("Task"),
-    new ASTEdge(PropertyType, new Atom("name"), new ASTEdge(StringType, new Atom("write a compiler"))),
-    new ASTEdge(PropertyType, new Atom("status"), new ASTEdge(StringType, new Atom("in progress")))
+  ObjectType,
+  new Sym("Task"),
+  new ASTEdge(
+    PropertyType,
+    new Atom("name"),
+    new ASTEdge(StringType, new Atom("write a compiler")),
+  ),
+  new ASTEdge(PropertyType, new Atom("status"), new ASTEdge(StringType, new Atom("in progress"))),
 );
 
 // TODO implement Classes, or Object Templates / Projections
-/* 
+/*
 const Task = new Edge(
     TaskType,
     new Atom("status"),
@@ -223,80 +225,77 @@ const Task = new Edge(
 const compiler = new Compiler();
 compiler.compile(Task);
 
-
-
 class Obj {
-    data!: object;
-    meta!: {
-        id: string;
-        defaultInterface: string;
-        type: string;
-    }
+  data!: object;
+  meta!: {
+    id: string;
+    defaultInterface: string;
+    type: string;
+  };
 }
 
 class Type extends Obj {
-    declare data: {
-        name: string;
-        defaultInterface: string;
-        knownInterfaces: string[];
-        schema: string;
-    }
-    constructor(id: string) {
-        super();
-        this.meta = {
-            id,
-            defaultInterface: "typeInterface",
-            type: "type"
-        }
-    }
+  declare data: {
+    name: string;
+    defaultInterface: string;
+    knownInterfaces: string[];
+    schema: string;
+  };
+  constructor(id: string) {
+    super();
+    this.meta = {
+      id,
+      defaultInterface: "typeInterface",
+      type: "type",
+    };
+  }
 }
 
-class Interface  extends Obj {
-    declare data: {
-        name: string;
-        defaultType: string;
-        knownTypes: string[];
-        schema: string;
-    }
-    constructor(id: string) {
-        super();
-        this.meta = {
-            id,
-            defaultInterface: "typeInterface",
-            type: "type"
-        }
-    }
+class Interface extends Obj {
+  declare data: {
+    name: string;
+    defaultType: string;
+    knownTypes: string[];
+    schema: string;
+  };
+  constructor(id: string) {
+    super();
+    this.meta = {
+      id,
+      defaultInterface: "typeInterface",
+      type: "type",
+    };
+  }
 }
 
 class Schema {
-    meta!: {
-        id: string;
-    }
+  meta!: {
+    id: string;
+  };
 }
 
-
 export class UserInterface {
-    interfaces = new Map<string, Interface>();
-    schemas = new Map<string, Schema>();
-    types = new Map<string, Type>();
-    objects = new Map<string, Obj>();
+  interfaces = new Map<string, Interface>();
+  schemas = new Map<string, Schema>();
+  types = new Map<string, Type>();
+  objects = new Map<string, Obj>();
 
-    selectInterface(obj: Obj) {        
-        const objDefaultInterface = this.interfaces.get(obj.meta.defaultInterface);
-        if (objDefaultInterface) return objDefaultInterface;
-        
-        const type = this.types.get(obj.meta.type);
-        if (!type) throw new Error("Type not found");
-        const typeDefaultInterface = this.interfaces.get(type.data.defaultInterface);
-        if (typeDefaultInterface) return typeDefaultInterface;
+  selectInterface(obj: Obj) {
+    const objDefaultInterface = this.interfaces.get(obj.meta.defaultInterface);
+    if (objDefaultInterface) return objDefaultInterface;
 
-        const firstknownInterface = this.interfaces.get(type.data.knownInterfaces[0]);
-        if (firstknownInterface) return firstknownInterface;
+    const type = this.types.get(obj.meta.type);
+    if (!type) throw new Error("Type not found");
+    const typeDefaultInterface = this.interfaces.get(type.data.defaultInterface);
+    if (typeDefaultInterface) return typeDefaultInterface;
 
-        throw new Error("No interface found");
-    }
+    const firstknownInterface = this.interfaces.get(type.data.knownInterfaces[0]);
+    if (firstknownInterface) return firstknownInterface;
 
-    render(obj: Obj) {
-        throw new Error("Not Implemented");
-    }
+    throw new Error("No interface found");
+  }
+
+  render(obj: Obj) {
+    throw new Error("Not Implemented");
+  }
 }

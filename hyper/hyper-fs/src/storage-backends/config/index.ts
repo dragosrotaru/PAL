@@ -27,34 +27,32 @@ export class LocalStorageBackendConfig {
 
   static parse(input: unknown): LocalStorageBackendConfig {
     if (!isUnknownObject(input)) {
-      throw new ParsingError(
-        `${LocalStorageBackendConfig.name} expected object`
-      );
+      throw new ParsingError(`${LocalStorageBackendConfig.name} expected object`);
     }
     if (input.type !== LocalStorageBackendConfig.type) {
       throw new ParsingError(
-        `${LocalStorageBackendConfig.name} expected type property with value ${LocalStorageBackendConfig.type} but received ${input.type} `
+        `${LocalStorageBackendConfig.name} expected type property with value ${LocalStorageBackendConfig.type} but received ${input.type} `,
       );
     }
     if (typeof input.name !== "string") {
       throw new ParsingError(
-        `${LocalStorageBackendConfig.name} expected name property of type string`
+        `${LocalStorageBackendConfig.name} expected name property of type string`,
       );
     }
     if (typeof input.rootPath !== "string") {
       throw new ParsingError(
-        `${LocalStorageBackendConfig.name} expected rootPath property of type string`
+        `${LocalStorageBackendConfig.name} expected rootPath property of type string`,
       );
     }
     if (typeof input.id !== "string") {
       throw new ParsingError(
-        `${LocalStorageBackendConfig.name} expected id property of type string`
+        `${LocalStorageBackendConfig.name} expected id property of type string`,
       );
     }
     return new LocalStorageBackendConfig(
       input.name,
       input.rootPath,
-      new StorageBackendID(input.id)
+      new StorageBackendID(input.id),
     );
   }
 }

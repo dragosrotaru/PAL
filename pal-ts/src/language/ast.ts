@@ -79,11 +79,7 @@ export namespace Lang {
   export type JSON = JSON.JSON;
   export namespace JSON {
     export type JSON = JSON.Primitive | JSON.Object | JSON.Array;
-    export type Primitive =
-      | Lang.Boolean
-      | Lang.Number
-      | Lang.String
-      | Lang.Null;
+    export type Primitive = Lang.Boolean | Lang.Number | Lang.String | Lang.Null;
     export type Object = { [member: Lang.String]: JSON };
     export type Array = JSON[];
   }

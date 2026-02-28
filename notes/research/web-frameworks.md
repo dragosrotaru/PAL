@@ -45,7 +45,6 @@ There is so much shit you have to waddle through just to build some fucking feat
   - deploy staging branch
   - deploy production branch
 
-
 # Top contenders
 
 - https://blitzjs.com
@@ -66,7 +65,6 @@ There is so much shit you have to waddle through just to build some fucking feat
 - non-JS Web Frameworks
 - TS boilerplates
 
-
 ## Existing Frameworks
 
 - https://sailsjs.com/
@@ -78,10 +76,12 @@ There is so much shit you have to waddle through just to build some fucking feat
 - https://adonisjs.com/
 
 Small
+
 - https://tsed.io/
 - https://kretes.dev/
 
 Super Small
+
 - https://www.kaviarjs.com/
 - https://typetron.org/
 
@@ -90,6 +90,7 @@ next.js
 strapi.js
 prisma.js
 apollo.js
+
 - https://alpinejs.dev/
 - https://lit.dev/
 
@@ -130,12 +131,11 @@ View
 Controller
 Validation
 Correctness
-  Testing
-  Compiling
-  Linting
+Testing
+Compiling
+Linting
 Deployment
 Platform-specific Customizations
 State
 Rendering
 Caching
-

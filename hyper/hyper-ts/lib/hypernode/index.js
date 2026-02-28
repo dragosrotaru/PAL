@@ -1,9 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HyperNode = void 0;
-var id_1 = require("../id");
-var HyperNode = (function () {
-    function HyperNode(from) {
+const id_1 = require("../id");
+class HyperNode {
+    static type = Buffer.from("0", "binary");
+    id;
+    data;
+    constructor(from) {
         if ("data" in from) {
             this.data = from.data;
         }
@@ -15,15 +18,9 @@ var HyperNode = (function () {
         }
         this.id = new id_1.ID({ data: this.serialized });
     }
-    Object.defineProperty(HyperNode.prototype, "serialized", {
-        get: function () {
-            return Buffer.concat([HyperNode.type, this.data]);
-        },
-        enumerable: false,
-        configurable: true
-    });
-    HyperNode.type = Buffer.from("0", "binary");
-    return HyperNode;
-}());
+    get serialized() {
+        return Buffer.concat([HyperNode.type, this.data]);
+    }
+}
 exports.HyperNode = HyperNode;
 //# sourceMappingURL=index.js.map

@@ -45,7 +45,6 @@ add notion import/integration so I can actually use it with my personal data
   - sort
   - scroll through view variants
 - edit content capability
-
   - structured text edit
   - drag to rearrange
 

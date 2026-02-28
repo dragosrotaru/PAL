@@ -1,13 +1,13 @@
 {
-	"compilerOptions": {
-		"strictNullChecks": true,
-		"module": "commonjs",
-		"target": "es2019",
-		"lib": ["ES2019"],
-		"outDir": "out",
-		"sourceMap": true,
-		"strict": true,
-		"rootDir": "."
-	},
-	"exclude": ["node_modules", ".vscode-test"]
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "out",
+    "rootDir": ".",
+    "types": ["node", "vscode"]
+  },
+  "exclude": ["node_modules", ".vscode-test", "out"]
 }

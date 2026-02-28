@@ -8,43 +8,37 @@
  * Prefer `pal-lsp/client/src/extension.ts` for the real implementation.
  * // todo @claude: fill in `serverOptions.command` with the actual pal-lsp binary path
  */
-import * as path from 'path';
-import { ExtensionContext } from 'vscode';
+import * as path from "path";
+import { ExtensionContext } from "vscode";
 
 import {
-	LanguageClient,
-	LanguageClientOptions,
-	ServerOptions,
-	TransportKind
-} from 'vscode-languageclient/node';
+  LanguageClient,
+  LanguageClientOptions,
+  ServerOptions,
+  TransportKind,
+} from "vscode-languageclient/node";
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
+  const serverOptions: ServerOptions = {
+    command: "",
+    transport: TransportKind.stdio,
+    options: {},
+  };
 
-	const serverOptions: ServerOptions = {
-		command: '',
-		transport: TransportKind.stdio,
-		options: {}
-	};
+  const clientOptions: LanguageClientOptions = {
+    documentSelector: [{ scheme: "file", language: "pretty", pattern: "**/*.pretty" }],
+  };
 
-	const clientOptions: LanguageClientOptions = {
-		documentSelector: [{ scheme: 'file', language: 'pretty', pattern: '**/*.pretty' }],
-	};
+  client = new LanguageClient("pal", "Pal", serverOptions, clientOptions);
 
-	client = new LanguageClient(
-		'pal',
-		'Pal',
-		serverOptions,
-		clientOptions
-	);
-
-	client.start();
+  client.start();
 }
 
 export function deactivate(): Thenable<void> | undefined {
-	if (!client) {
-		return undefined;
-	}
-	return client.stop();
+  if (!client) {
+    return undefined;
+  }
+  return client.stop();
 }

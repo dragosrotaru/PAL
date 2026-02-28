@@ -21,9 +21,7 @@ export class HyperGraphRepository implements IHyperGraphRepository {
   }
   async retrieve(ids: ID | ID[]) {
     if (Array.isArray(ids)) {
-      const entities = ids
-        .map((id) => this.map.get(id))
-        .filter((entity) => entity !== undefined);
+      const entities = ids.map((id) => this.map.get(id)).filter((entity) => entity !== undefined);
       if (entities.length === 0) return null;
       return entities as (HyperEdge | HyperNode)[];
     } else {

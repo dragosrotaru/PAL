@@ -13,14 +13,14 @@ A Lisp interpreter with three unique properties:
 
 ## Entry Points
 
-| Task | Start here |
-|------|-----------|
-| Start the runtime | `src/index.ts` → wires context, starts REPL |
-| Understand evaluation | `src/core/evaluator.ts` — the `evaluate()` function |
-| Add a special form | Create `src/specialforms/myform.ts`, import+dispatch in `evaluator.ts` |
-| Change GPT behavior | `src/specialforms/gpt.ts` → `callGPT()` and `Apply()` |
-| Add a file type | `src/language/parser/index.ts` → add to `parser()` and `writer()` dispatch |
-| Change UI views | `src/ui/web/views/` |
+| Task                  | Start here                                                                 |
+| --------------------- | -------------------------------------------------------------------------- |
+| Start the runtime     | `src/index.ts` → wires context, starts REPL                                |
+| Understand evaluation | `src/core/evaluator.ts` — the `evaluate()` function                        |
+| Add a special form    | Create `src/specialforms/myform.ts`, import+dispatch in `evaluator.ts`     |
+| Change GPT behavior   | `src/specialforms/gpt.ts` → `callGPT()` and `Apply()`                      |
+| Add a file type       | `src/language/parser/index.ts` → add to `parser()` and `writer()` dispatch |
+| Change UI views       | `src/ui/web/views/`                                                        |
 
 ## Key Data Flow
 

@@ -1,0 +1,9 @@
+packages:
+  - "pal-ts"
+  - "pal-vscode"
+  - "pal-lsp"
+  - "pal-lsp-example"
+  - "hyper/hyper-ts"
+  - "hyper/hyper-fs"
+  - "hyper/hyper-server"
+  - "hyper/hyper-web"

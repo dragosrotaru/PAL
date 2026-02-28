@@ -7,11 +7,11 @@ import * as awarenessProtocol from "y-protocols/awareness";
 // @ts-ignore
 import { MonacoBinding } from "y-monaco";
 import * as monaco from "monaco-editor";
-import "./style.css"
+import "./style.css";
 
 type Props = {
-  namespace: string
-}
+  namespace: string;
+};
 
 export const CRDTEditor = ({ namespace }: Props) => {
   const WEBSOCKET_URL = "ws://localhost:7777";
@@ -56,7 +56,6 @@ export const CRDTEditor = ({ namespace }: Props) => {
         fontSize: 16,
         scrollbar: {
           alwaysConsumeMouseWheel: false,
-          
         },
         minimap: { enabled: false },
         readOnly: false,

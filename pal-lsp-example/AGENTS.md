@@ -12,8 +12,8 @@ The real LSP client lives in `pal-lsp/client/src/extension.ts`.
 
 ## File
 
-| File | Purpose |
-|------|---------|
+| File               | Purpose                                                        |
+| ------------------ | -------------------------------------------------------------- |
 | `src/extension.ts` | `activate`/`deactivate` skeleton; LanguageClient for `.pretty` |
 
 ## Status

@@ -13,7 +13,7 @@ export class File {
     data: Buffer,
     versioning: FileVersioning = NO_VERSIONING,
     compression: FileCompression = NO_COMPRESSION,
-    encryption: FileEncryption = AES_256_GCM
+    encryption: FileEncryption = AES_256_GCM,
   ) {
     this.data = data;
     this.id = new FileID({ data: this.data });

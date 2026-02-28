@@ -18,11 +18,12 @@ The entire rationale behind using macros is to avoid writing a language server.
 But seeing the pain points in integrating my tooling together, Its starting to seem like maybe I need to look at the whole thing a different way.
 
 I can challenge some assumptions:
-- could I just have one big file with the entire UI? 
+
+- could I just have one big file with the entire UI?
 - could I write a virtual VSCode view of the code which breaks that file into separate ones?
 - could I write a transpiler with a unique file extension that has its own importing syntax and embed rust inside of it somehow?
 
-The idea of embedding rust in the language sort of makes sense, the issue I see with it is that since I want to primarily use observables, it breaks the immersion. 
+The idea of embedding rust in the language sort of makes sense, the issue I see with it is that since I want to primarily use observables, it breaks the immersion.
 
 Most of the logic you see in React for example has to do with managing state, there is a bit of other stuff but Its minor in comparison. most importantly the other stuff should just be done straight up in rust. build libraries which own observables, and you're good to go.
 
@@ -30,14 +31,12 @@ You have libraries which are depended on by the View later, then the view layer 
 
 pretty imports rust code. pretty is transpiled to rust code. rust code is compiled and ran.
 
-The ideal behaviour would be that .pretty files import rust code, and the rust based compiler can read it pretty well. then it can allow certain things to be imported. it can provide autocomplete, but in the form that is appropriate for pretty. maybe by implementing a trait, we can determine if some code is importable, i.e. if its an Observable or a Service or something. 
+The ideal behaviour would be that .pretty files import rust code, and the rust based compiler can read it pretty well. then it can allow certain things to be imported. it can provide autocomplete, but in the form that is appropriate for pretty. maybe by implementing a trait, we can determine if some code is importable, i.e. if its an Observable or a Service or something.
 
 The files would live side by side. And when you compile, the process is simple:
 
 build.rs goes to rust, rust goes to binary. boom. Then the definitions are simple, the line between the systems is clear.
 
-The question is, what tooling should I use for the AST? because using Rust AST provides certain benefits, writing my own provides some other ones. 
+The question is, what tooling should I use for the AST? because using Rust AST provides certain benefits, writing my own provides some other ones.
 
 I think its best to use the Rust AST because if not i will have a whole lot more work cut out for me, plus I can learn an actually useful api.
-
-

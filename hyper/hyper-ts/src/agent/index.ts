@@ -1,10 +1,4 @@
-import {
-  encryptAES,
-  decryptAES,
-  decryptRSA,
-  encryptRSA,
-  generateAESKey,
-} from "../encryption";
+import { encryptAES, decryptAES, decryptRSA, encryptRSA, generateAESKey } from "../encryption";
 import {
   IAgent,
   Name,
@@ -47,13 +41,8 @@ export class Agent implements IAgent {
       this.publicKey = props.publicKey;
       if (props.preferences) this.preferences = props.preferences;
     } else {
-      const symmetricKey = decryptRSA(
-        props.privateKey,
-        props.encryptedSymmetricKey
-      );
-      const agent = JSON.parse(
-        decryptAES(symmetricKey, props.encryptedAgent).toString()
-      );
+      const symmetricKey = decryptRSA(props.privateKey, props.encryptedSymmetricKey);
+      const agent = JSON.parse(decryptAES(symmetricKey, props.encryptedAgent).toString());
       console.log(agent);
       this.name = agent.name;
       this.symmetricKey = symmetricKey;
@@ -77,9 +66,9 @@ export class Agent implements IAgent {
             devices: this.devices,
             peers: this.peers,
             preferences: this.preferences,
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
   }
   get encryptedSymmetricKey() {

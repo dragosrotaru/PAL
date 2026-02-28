@@ -31,11 +31,11 @@ export class HyperGraph implements IHyperGraph {
   constructor(
     private graphRepo: IHyperGraphRepository,
     private nameRepo: IPetNameRepository,
-    private net: INetwork
+    private net: INetwork,
   ) {}
   async persist(
     entities: HyperEdge | HyperNode | (HyperEdge | HyperNode)[],
-    options: HyperGraphPersistOptions
+    options: HyperGraphPersistOptions,
   ) {
     const persistLocally = this.graphRepo.persist(entities);
     return persistLocally;

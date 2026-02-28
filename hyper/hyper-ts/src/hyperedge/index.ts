@@ -25,10 +25,7 @@ export class HyperEdge {
       let incomplete = true;
       while (incomplete) {
         const { leftOver, dataLength, multiHash } = parseID(bytes);
-        const serializedID = Buffer.concat([
-          multiHash,
-          varint.encode(dataLength, Buffer.from([])),
-        ]);
+        const serializedID = Buffer.concat([multiHash, varint.encode(dataLength, Buffer.from([]))]);
         const id = new ID({ serialized: serializedID });
         this.data.push(id);
         bytes = leftOver;
@@ -40,9 +37,6 @@ export class HyperEdge {
     this.id = new ID({ data: this.serialized });
   }
   get serialized(): Buffer {
-    return Buffer.concat([
-      HyperEdge.type,
-      ...this.data.map((id) => id.serialized),
-    ]);
+    return Buffer.concat([HyperEdge.type, ...this.data.map((id) => id.serialized)]);
   }
 }

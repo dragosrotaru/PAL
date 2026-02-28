@@ -81,4 +81,3 @@
 - the protocol works with NAT (udp hole punching, stun, turn)
 - there is a simulator to test the network protocol
 - the cryptography system can be upgraded in the future
-

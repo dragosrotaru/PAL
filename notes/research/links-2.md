@@ -47,6 +47,7 @@ https://en.wikipedia.org/wiki/Psychology_of_programming
 https://www.apa.org/careers/resources/profiles/callan
 
 ## Lisp OS
+
 - https://linuxfinances.info/info/lisposes.html
 - https://en.wikipedia.org/wiki/Genera_(operating_system)
 - http://metamodular.com/Common-Lisp/lispos.html
@@ -276,7 +277,7 @@ https://www.gnu.org/software/hurd/microkernel/coyotos.html
 https://www.imore.com/m1-apples-maniacal-focus-silicon-comes-mac
 https://www.ioccc.org/2012/tromp/hint.html
 https://www.linkedin.com/in/katherine-baney-18899360/
-https://www.notion.so/Future-of-Programming-Lab-241d162461a04064ae1fd9ae32bf4cb1 
+https://www.notion.so/Future-of-Programming-Lab-241d162461a04064ae1fd9ae32bf4cb1
 https://www.pubinv.org/
 https://www.quora.com/What-is-the-best-co-browsing-tool-to-use-when-talking-chatting
 https://www.reddit.com/r/hardware/comments/e5dfqz/can_an_fpga_be_reprogrammed_on_the_fly_how_fast/

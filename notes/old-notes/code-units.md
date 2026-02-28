@@ -6,8 +6,8 @@ import NameSpaceCaseStringType from "some-hash";
 export default "value:country" as NameSpaceCaseStringType;
 // 001 (Countries)
 export default {
-	CA: null,
-	US: null,
+  CA: null,
+  US: null,
 };
 // 010 (Default)
 export default "CA";
@@ -36,13 +36,13 @@ import Type from "100";
 import Constructor from "101";
 import Is from "110";
 export default {
-	Name,
-	Countries,
-	Default,
-	Codec,
-	Type,
-	Constructor,
-	Is,
+  Name,
+  Countries,
+  Default,
+  Codec,
+  Type,
+  Constructor,
+  Is,
 };
 // 1000 (Some Country Dependant)
 import Country from "@dynamic/111";
@@ -52,10 +52,10 @@ if (Country.Is(myCountry)) console.log("hurrah");
 import Country from "@static/111";
 // @stable
 export default (data: any) => {
-	const decodedMaybe = Country.Codec.decode(data);
-	// do something
-	return "Wrong Country";
-}
+  const decodedMaybe = Country.Codec.decode(data);
+  // do something
+  return "Wrong Country";
+};
 ```
 
 ## Basic Definitions
@@ -64,11 +64,11 @@ export default (data: any) => {
 
 - A **Unit** is a piece of code that:
 
-    a ) has exactly one export;
+  a ) has exactly one export;
 
-    b ) has any number of imports;
+  b ) has any number of imports;
 
-    c ) has any number of internal, non-exported elements;
+  c ) has any number of internal, non-exported elements;
 
 - A well designed Unit should not have any extraneous imports or unused code. It should be kept as simple and reusable as possible.
 
@@ -85,7 +85,7 @@ export default (data: any) => {
 
 ### UnitGraph
 
-- The **UnitGraph** is the composite graph of the DependencyGraph ****and the MutationGraph.
+- The **UnitGraph** is the composite graph of the DependencyGraph \*\*\*\*and the MutationGraph.
 
 ### EditorContext
 
@@ -120,38 +120,38 @@ export default (data: any) => {
 
 ### Mutation Propagation
 
-- On Mutation from Unit A to Unit B,  Dependants of A are updated according to **MutationPropagationRules.**
+- On Mutation from Unit A to Unit B, Dependants of A are updated according to **MutationPropagationRules.**
 - These rules exist at multiple levels - the EditorContext, the WorkSpace and the Unit.
 - The keywords **static and dynamic** are used to annotate import statements.
 - The keyword **stable might be** used to annotate exports and provide insight into the intention of the Unit maintainer. This idea still needs to be explored.
 
 ### Saving
 
-- In User Interfaces, the commonly expected behaviour of "save" is: persist the desired state of the artifact to local non-volatile memory. Usually the artifact is implied by the Interface, i.e.  "the artifact" really means "the artifact currently in focus in the UI".
+- In User Interfaces, the commonly expected behaviour of "save" is: persist the desired state of the artifact to local non-volatile memory. Usually the artifact is implied by the Interface, i.e. "the artifact" really means "the artifact currently in focus in the UI".
 - As tech advances we see increasingly complicated behaviours overloading the concept of save. Executing the save command in any modern code editor is likely to trigger a whole gamut of complex behaviours - auto-linting and hot module replacement for instance. In business software, see behaviours like collaborative editing (Google Docs), automatic publishing (WordPress) and automatic cloud backups (Dropbox). Even if an artifact hasn't been saved, The user often expects their work to be recoverable under most conditions short of an act of god (and sometimes even then!).
 - In the software community we use words like commit, push, merge, deploy, sync, persist, publish. We combine various tools and techniques to get a variety of desired outcomes that are disconnected from our intentions. When we say "git commit", What we are really saying is "please set a checkpoint for my progress". When we say "git push", What we are really saying is "please backup my progress and share it with my peers".
 - Going down this type of thinking, I've identified 3 core intentions to any save-like functionality:
-    - preserve progress
-    - get feedback
-    - distribute to consumers
+  - preserve progress
+  - get feedback
+  - distribute to consumers
 - 2 axes to persistance mediums
-    - Local/Remote
-    - Volatile / Non-Volatile
+  - Local/Remote
+  - Volatile / Non-Volatile
 - Save Strategies
-    - instantanous on input
-    - every x seconds
-    - after x seconds of no input
-    - on user input
+  - instantanous on input
+  - every x seconds
+  - after x seconds of no input
+  - on user input
 - Common Actions
-    - apply autocorrect (i.e. lint)
-    - apply autocomplete
-    - run Automated Static Analyses
-    - run Automated Runtime Analyses
-    - persist Unit Edit History
-    - create a new Unit (with comments/tags optional)
-    - propagate a new Unit to Dependants
-    - persist new Units in a shared WorkSpace (with comments/tags optional)
-    - deploy to an environment
+  - apply autocorrect (i.e. lint)
+  - apply autocomplete
+  - run Automated Static Analyses
+  - run Automated Runtime Analyses
+  - persist Unit Edit History
+  - create a new Unit (with comments/tags optional)
+  - propagate a new Unit to Dependants
+  - persist new Units in a shared WorkSpace (with comments/tags optional)
+  - deploy to an environment
 
 ## Example Workflow
 
@@ -159,24 +159,24 @@ export default (data: any) => {
 - Editor loads Unit runtime.
 - Editor runs static and runtime analysis.
 - On User Input:
-    - Immediately, Edit and EditLink are added to the EditGraph in RAM.
-    - If a non-special token is being typed, autocomplete is applied and a dropdown appears with contextualized information.
-    - If there is a change to dependencies, The editor resolves the dependency and modifies the runtime.
-    - If there is a pause of 200 ms without input static analysis is run. If the static analysis completes successfully, the runtime analysis is run.
-    - If there is a pause of 2 sec without input the EditGraph is persisted to Disk.
-    - Every 1 min the EditGraph is saved to a remote backup disk.
+  - Immediately, Edit and EditLink are added to the EditGraph in RAM.
+  - If a non-special token is being typed, autocomplete is applied and a dropdown appears with contextualized information.
+  - If there is a change to dependencies, The editor resolves the dependency and modifies the runtime.
+  - If there is a pause of 200 ms without input static analysis is run. If the static analysis completes successfully, the runtime analysis is run.
+  - If there is a pause of 2 sec without input the EditGraph is persisted to Disk.
+  - Every 1 min the EditGraph is saved to a remote backup disk.
 - On Save Command:
-    - EditGraph is persited to disk.
-    - autocorrect is applied.
-    - static analysis and runtime analysis is run.
-    - If both are successful then the new Unit + Mutation is added to the local UnitGraph.
-    - Static and Runtime Analysis is run on Dependant Units.
-    - Dependency Graph is displayed, enabling Dev to see which Dependant Units, if any, throw errors/warnings.
-    - Dev can click through the graph to open another Unit in the Editor.
-    - Analysis deeper down the Dependency graph for children of Dependant Units without errors to correct can be run.
-    - Dev can revert Dependant Unit updates in part or in whole for the entire graph.
-    - The workspace can be configured to require comments per every new Unit.
-    - Dev can revert Mutation.
+  - EditGraph is persited to disk.
+  - autocorrect is applied.
+  - static analysis and runtime analysis is run.
+  - If both are successful then the new Unit + Mutation is added to the local UnitGraph.
+  - Static and Runtime Analysis is run on Dependant Units.
+  - Dependency Graph is displayed, enabling Dev to see which Dependant Units, if any, throw errors/warnings.
+  - Dev can click through the graph to open another Unit in the Editor.
+  - Analysis deeper down the Dependency graph for children of Dependant Units without errors to correct can be run.
+  - Dev can revert Dependant Unit updates in part or in whole for the entire graph.
+  - The workspace can be configured to require comments per every new Unit.
+  - Dev can revert Mutation.
 - Dev can revert Edits by going backwards through the EditHistory.
 - With a command, the additions to UnitGraph are persisted to the global UnitGraph and WorkSpaceChanges in WorkSpaceHistory. A Comment/tag may be added. Merging is the process of rebuilding the UnitGraph for each WorkSpaceHistory
 

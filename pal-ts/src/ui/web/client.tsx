@@ -21,7 +21,7 @@ webSocket.onopen = () => {
     write({
       type: Type.Open,
       id: CurrentIDToString(),
-    } satisfies Open)
+    } satisfies Open),
   );
 };
 
@@ -30,7 +30,7 @@ const exec = async (code: string) => {
     write({
       type: Type.Exec,
       code,
-    } satisfies Exec)
+    } satisfies Exec),
   );
 };
 
@@ -42,10 +42,7 @@ webSocket.onmessage = (event) => {
     const ast = parser(message.ast);
     // todo @claude: use React state/observables instead of ReactDOM.render directly (deprecated in React 18+)
     // Render the view
-    ReactDOM.render(
-      <Template ast={ast} exec={exec}></Template>,
-      document.getElementById("root")
-    );
+    ReactDOM.render(<Template ast={ast} exec={exec}></Template>, document.getElementById("root"));
     return;
   }
 

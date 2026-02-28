@@ -24,10 +24,11 @@ Every person and group has a unique subdomain: vivcrowe.wild.cards
 Every subdomain has its own namespace
 Atoms have possible views: a terminal, an editor and/or a custom rendered html UI
 Every Atom has source code and may implement one of a number of standard interfaces:
+
 - cell: able to send and receive messages with postMessage/API
 - stateful: serializeable and deserializeable into JSON for persistance
-- renderable: able to display in an iframe 
-Every Atom may have methods accessible from the terminal
+- renderable: able to display in an iframe
+  Every Atom may have methods accessible from the terminal
 
 Atoms have hash names for every iteration of the source code
 they can depend on other Atoms, import external code from npm/ urls.
@@ -57,7 +58,6 @@ Atoms compose as follows:
 - Every Internal Node of the Namespace is a collection. This can behave as a message bus or Page UI
 - The default behaviour of Collections is that they Render flattened when they are nested
 
-
 there is a marketplace with code reviews for using atoms
 
 TODO
@@ -72,7 +72,6 @@ TODO
 - add linting on save
 - you could execute the code in sandbox and postMessage, but the data types will be restricted
 - you could return React Components
-
 
 The structured clone algorithm is an algorithm defined by the HTML5 specification for copying complex JavaScript objects. It is used internally when transferring data to and from Workers via postMessage() or when storing objects with IndexedDB. It builds up a clone by recursing through the input object while maintaining a map of previously visited references in order to avoid infinitely traversing cycles.
 
@@ -101,7 +100,6 @@ Array
 Object (Note: This just includes plain objects (e.g. from object literals))
 Map
 Set
-
 
 DOCS
 

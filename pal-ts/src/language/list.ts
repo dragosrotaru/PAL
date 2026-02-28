@@ -15,7 +15,7 @@ class TSList implements Type<Lang.PAL.List>, UI<Lang.PAL.List> {
   write(a: Lang.PAL.List): string {
     throw new Error("Method not implemented.");
   }
-  parse(v: string): Lang.PAL.List  {
+  parse(v: string): Lang.PAL.List {
     throw new Error("Method not implemented.");
   }
 
