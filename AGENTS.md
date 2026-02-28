@@ -37,7 +37,6 @@ Pal is a Lisp interpreter where:
 | [`hyper-fs/`](hyper-fs/AGENTS.md)                 | TypeScript | Broken build      | FUSE filesystem over hyper-ts (blocked by same missing module impls)             |
 | [`pal-os/`](pal-os/AGENTS.md)                     | Dockerfile | Incomplete        | Linux From Scratch starting point for a custom Pal OS                            |
 | [`pal-lsp-example/`](pal-lsp-example/AGENTS.md)   | TypeScript | Template          | Minimal VS Code LSP client skeleton (server command is empty)                    |
-| `notes/`                                          | Markdown   | Reference         | Design notes, research links, BNF grammars, architecture sketches                |
 
 ## Architecture layers
 
@@ -105,20 +104,7 @@ ComponentName[:ParentComponent] [
 | Mount a FUSE filesystem | `hyper-fs/`: `pnpm run build && node build/index.js <pass> <config>`|
 | Launch the WebGPU IDE   | `wingman/`: `cargo run -p wingman`                                  |
 
-## Notes directory
-
-`notes/` contains only Markdown — no executable code. It is the intellectual history
-of the project. Key files:
-
-| File                            | Content                                                      |
-| ------------------------------- | ------------------------------------------------------------ |
-| `notes/pal-ts.bnf`              | BNF grammar for the Pal S-expression language                |
-| `notes/pretty-pal.bnf`          | BNF grammar for the `.pretty` DSL                            |
-| `notes/focus/`                  | Current focus areas and motivation                           |
-| `notes/work-in-progress/`       | In-flight design decisions                                   |
-| `notes/research/`               | Research notes: CRDTs, editors, P2P, Lisp, filesystems, etc. |
-| `notes/old-notes/changetheweb/` | Original 2019 design documents                               |
-
+#
 ## What's NOT connected yet
 
 - None of the Rust crates are wired together (pal-rs, pal-fs, pal-eval, wingman are independent).

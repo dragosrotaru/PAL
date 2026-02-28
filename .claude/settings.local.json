@@ -11,7 +11,9 @@
       "Bash(cargo build:*)",
       "Bash(rustup update:*)",
       "Bash(grep:*)",
-      "Bash(pnpm:*)"
+      "Bash(pnpm:*)",
+      "Bash(do mv:*)",
+      "Bash(mkdir:*)"
     ]
   }
 }
