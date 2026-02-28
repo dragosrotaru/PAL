@@ -1,3 +1,4 @@
+//! Pixel unit value parser: parses `<u8>px` (e.g. `100px`).
 use syn::{parse::{Parse, ParseStream}, LitInt, Ident};
 use syn::Result;
 

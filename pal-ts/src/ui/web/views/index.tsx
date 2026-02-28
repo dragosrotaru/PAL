@@ -1,3 +1,8 @@
+/**
+ * Root view dispatcher: routes AST values to the correct React component based on type.
+ * View: ID→Identifier, Procedure→Procedure, List→List, otherwise→Default.
+ * Template: composes View (main) + Executables (aside) into the full page layout.
+ */
 import * as React from "react";
 import { STATIC } from "../../../language/typesystem.js";
 import type { DefaultProps, ExecProps } from "./interface.js";

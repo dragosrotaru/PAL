@@ -1,3 +1,7 @@
+/**
+ * JSON parser/serializer for the Pal AST extension Lang.JSON.
+ * parse() wraps JSON.parse and returns null on error. write() is pretty-printed JSON.
+ */
 import { log } from "../../libraries/logger/index.js";
 import type { Lang } from "../ast.js";
 

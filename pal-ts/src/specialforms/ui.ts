@@ -1,3 +1,8 @@
+/**
+ * `(ui)` or `(ui id/expr)` special form — opens the browser GUI for a given env entry.
+ * If the argument is not already an ID, stores the value in a random env key under `ui/`.
+ * Starts the Express+WebSocket server lazily on first use.
+ */
 import path from "path";
 import type { IContext } from "../interfaces.js";
 import type { Lang } from "../language/ast.js";
@@ -11,8 +16,7 @@ export type Form = [typeof Identifier, Lang.AST] | typeof Identifier;
 export const Identifier = Symbol.for("ui");
 
 export const Is = (ast: Lang.AST): ast is Form =>
-  (STATIC.IsList(ast) && ast.length === 2 && ast[0] === Identifier) ||
-  ast === Identifier;
+  (STATIC.IsList(ast) && ast.length === 2 && ast[0] === Identifier) || ast === Identifier;
 
 export const Apply = (ctx: IContext) => (ast: Form) => {
   if (ast === Identifier) {

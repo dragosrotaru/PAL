@@ -1,12 +1,25 @@
+//! Completion provider: collects in-scope symbols at a given cursor offset.
+//!
+//! Called by `main.rs::completion` to produce LSP `CompletionItem` candidates.
+//! Traverses the AST and accumulates variables and function names that are
+//! lexically visible at `ident_offset`.
+
 use std::collections::HashMap;
 use crate::chumsky::{Expr, Func, Spanned};
 
+/// A completion candidate, before it is converted to an LSP `CompletionItem`.
 pub enum ImCompleteCompletionItem {
+    /// A local variable or function parameter.
     Variable(String),
+    /// A function with its parameter names (used to generate a snippet insert).
     Function(String, Vec<String>),
 }
 
-/// return (need_to_continue_search, founded reference)
+/// Collect completion candidates visible at `ident_offset` in the given `ast`.
+///
+/// Returns a map of name → `ImCompleteCompletionItem`. Includes:
+/// - Functions defined before `ident_offset` (name + args).
+/// - Parameters and let-bindings in scope at `ident_offset`.
 pub fn completion(
     ast: &HashMap<String, Func>,
     ident_offset: usize,
@@ -40,6 +53,10 @@ pub fn completion(
     map
 }
 
+/// Walk `expr` accumulating completions into `definition_map`.
+///
+/// Returns `true` to signal "keep searching further in the AST",
+/// `false` to signal "cursor is inside this node — stop here".
 pub fn get_completion_of(
     expr: &Spanned<Expr>,
     definition_map: &mut HashMap<String, ImCompleteCompletionItem>,

@@ -1,0 +1,4 @@
+- run build and test on all projects. fix any pre-existing issues
+- update all project dependencies. migrate to more modern tooling - vitest, oxclint/fmt, tsgo
+- write a test harness to test pal-rs and pal-ts against each other for equivalence
+- reorganize documentation

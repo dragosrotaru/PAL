@@ -1,3 +1,7 @@
+/**
+ * Module-level logger with static enable/disable switches per subsystem.
+ * Set CONFIG[module] = true to enable logging for that subsystem; all logs go to console.log.
+ */
 const CONFIG = {
   filesystem: false,
   parser: false,

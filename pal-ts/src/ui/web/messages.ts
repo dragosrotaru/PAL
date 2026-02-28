@@ -1,3 +1,8 @@
+/**
+ * WebSocket message protocol between server and browser client.
+ * Open/Close subscribe/unsubscribe to an env key by ID string.
+ * Exec sends PAL code to be evaluated server-side. AST carries the serialized AST string.
+ */
 export type Message = Open | Close | Exec | AST;
 
 export enum Type {

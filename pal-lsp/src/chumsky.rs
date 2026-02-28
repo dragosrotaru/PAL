@@ -1,3 +1,24 @@
+//! Parser and AST for the Pal language ("Foo" placeholder in comments).
+//!
+//! Implements a two-phase pipeline using the `chumsky` parser-combinator library:
+//! 1. **Lexer** (`lexer()`) — tokenises source text into `Vec<(Token, Span)>`.
+//! 2. **Parser** (`funcs_parser()`) — parses a token stream into `HashMap<String, Func>`.
+//!
+//! # Language features (lexer + parser)
+//!
+//! - Literals: `null`, booleans, integers/floats, double-quoted strings
+//! - Identifiers and keywords: `fn`, `let`, `print`, `if`, `else`
+//! - Operators: `+`, `-`, `*`, `/`, `==`, `!=`
+//! - Control characters: `()`, `[]`, `{}`, `;`, `,`
+//! - Single-line comments: `//`
+//! - Top-level functions: `fn name(args) { body }`
+//! - Expressions: let bindings, binary ops, function calls, if/else, lists
+//!
+//! # Entry point
+//!
+//! [`parse`] is the main public entry: tokenise + parse + collect semantic tokens.
+//! [`type_inference`] does a lightweight walk over `let` nodes to fill a span→value table.
+
 use core::fmt;
 use std::collections::HashMap;
 use tower_lsp::lsp_types::SemanticTokenType;
@@ -7,15 +28,24 @@ use chumsky::{prelude::*, stream::Stream};
 
 use crate::semantic_token::LEGEND_TYPE;
 
-/// This is the parser and interpreter for the 'Foo' language. See `tutorial.md` in the repository's root to learn
-/// about it.
+/// Byte-offset range within the source string.
 pub type Span = std::ops::Range<usize>;
+
+/// A semantic token produced during lexing, before delta-encoding for the LSP wire format.
+///
+/// The LSP protocol requires tokens to be delta-encoded (relative to the previous token),
+/// but that encoding happens in `main.rs`. Here we store absolute positions.
 #[derive(Debug)]
 pub struct ImCompleteSemanticToken {
+    /// Absolute byte offset of the token's first character.
     pub start: usize,
+    /// Length of the token in bytes.
     pub length: usize,
+    /// Index into [`semantic_token::LEGEND_TYPE`].
     pub token_type: usize,
 }
+
+/// Lexical token types produced by the lexer.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Token {
     Null,
@@ -105,6 +135,7 @@ fn lexer() -> impl Parser<char, Vec<(Token, Span)>, Error = Simple<char>> {
         .repeated()
 }
 
+/// Runtime value types; also used by [`type_inference`] to annotate let-bindings for inlay hints.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum Value {
     Null,
@@ -112,6 +143,7 @@ pub enum Value {
     Num(f64),
     Str(String),
     List(Vec<Value>),
+    /// Named function reference (stores the function name).
     Func(String),
 }
 
@@ -135,6 +167,7 @@ impl std::fmt::Display for Value {
     }
 }
 
+/// Arithmetic and comparison operators.
 #[derive(Clone, Debug)]
 pub enum BinaryOp {
     Add,
@@ -145,9 +178,10 @@ pub enum BinaryOp {
     NotEq,
 }
 
+/// A value paired with its source [`Span`].
 pub type Spanned<T> = (T, Span);
 
-// An expression node in the AST. Children are spanned so we can generate useful runtime errors.
+/// An expression node in the AST. Children are spanned so we can generate useful runtime errors.
 #[derive(Debug)]
 pub enum Expr {
     Error,
@@ -202,12 +236,16 @@ impl Expr {
     }
 }
 
-// A function node in the AST.
+/// A top-level function definition.
+///
+/// The parsed representation of `fn name(a, b) { body }`.
+/// `span` covers the entire function; `name.1` covers just the identifier.
 #[derive(Debug)]
 pub struct Func {
     pub args: Vec<Spanned<String>>,
     pub body: Spanned<Expr>,
     pub name: Spanned<String>,
+    /// Span of the entire function definition (including `fn` keyword).
     pub span: Span,
 }
 
@@ -412,6 +450,10 @@ fn expr_parser() -> impl Parser<Token, Spanned<Expr>, Error = Simple<Token>> + C
     })
 }
 
+/// Parser for a sequence of top-level `fn` definitions.
+///
+/// Returns `HashMap<String, Func>` keyed by function name.
+/// Emits a custom error on duplicate function names.
 pub fn funcs_parser() -> impl Parser<Token, HashMap<String, Func>, Error = Simple<Token>> + Clone {
     let ident = filter_map(|span, tok| match tok {
         Token::Ident(ident) => Ok(ident),
@@ -476,6 +518,10 @@ pub fn funcs_parser() -> impl Parser<Token, HashMap<String, Func>, Error = Simpl
         .then_ignore(end())
 }
 
+/// Lightweight type inference: walks `let` nodes and records the literal value type at the
+/// binding's name span in `symbol_type_table`.
+///
+/// Used by `main.rs::inlay_hint` to display inferred types next to variable declarations.
 pub fn type_inference(expr: &Spanned<Expr>, symbol_type_table: &mut HashMap<Span, Value>) {
     match &expr.0 {
         Expr::Error => {}
@@ -506,13 +552,21 @@ pub fn type_inference(expr: &Spanned<Expr>, symbol_type_table: &mut HashMap<Span
     }
 }
 
+/// Combined output from a full parse run.
 #[derive(Debug)]
 pub struct ParserResult {
+    /// Parsed AST — `None` if the lexer itself failed.
     pub ast: Option<HashMap<String, Func>>,
+    /// Lexer and parser errors, unified as `Simple<String>`.
     pub parse_errors: Vec<Simple<String>>,
+    /// Semantic tokens collected during lexing (before delta-encoding).
     pub semantic_tokens: Vec<ImCompleteSemanticToken>,
 }
 
+/// Parse `src` end-to-end: lex → classify semantic tokens → parse functions.
+///
+/// Always returns a `ParserResult`; errors are accumulated rather than returned as `Err`.
+/// Callers should inspect `parse_errors` and publish LSP diagnostics from them.
 pub fn parse(src: &str) -> ParserResult {
     let (tokens, errs) = lexer().parse_recovery(src);
 

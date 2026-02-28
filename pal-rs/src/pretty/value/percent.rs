@@ -1,3 +1,4 @@
+//! Percentage value parser: parses `<u8>%` (e.g. `50%`).
 use syn::{parse::{Parse, ParseStream}, LitInt, Token};
 use syn::Result;
 

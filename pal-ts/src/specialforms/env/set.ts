@@ -1,3 +1,7 @@
+/**
+ * `(env/set id value)` special form — sets a key in the environment to the given AST value.
+ * Triggers env/set observers and, if the key is new, env/new observers.
+ */
 import { SET_ID } from "../../core/environment.js";
 import type { IEnv } from "../../interfaces.js";
 import type { Lang } from "../../language/ast.js";

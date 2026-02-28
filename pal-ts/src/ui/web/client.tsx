@@ -1,3 +1,8 @@
+/**
+ * Browser-side WebSocket client. Connects to the server, sends an Open message for the current
+ * URL path (env ID), and re-renders the React tree whenever the server pushes an updated AST.
+ * Exec messages are sent for user-initiated actions (e.g. delete button).
+ */
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { parser } from "../../language/parser/index.js";
@@ -34,7 +39,7 @@ webSocket.onmessage = (event) => {
 
   if (message.type === Type.AST) {
     const ast = parser(message.ast);
-    // TODO implement observables
+    // TODO: use React state/observables instead of ReactDOM.render directly (deprecated in React 18+)
     // Render the view
     ReactDOM.render(
       <Template ast={ast} exec={exec}></Template>,

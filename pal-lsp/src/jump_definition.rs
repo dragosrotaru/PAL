@@ -1,8 +1,17 @@
+//! Go-to-definition provider.
+//!
+//! Given a cursor offset inside a source file, resolves it to the declaration site
+//! (the `Spanned<String>` of the name at its definition point).
+//! Called by `main.rs::goto_definition`.
+
 use std::collections::HashMap;
 use im_rc::Vector;
 use crate::chumsky::{Expr, Func, Spanned};
 
-/// return (need_to_continue_search, founded reference)
+/// Find the declaration site of the symbol at `ident_offset`.
+///
+/// Searches function names first, then walks function bodies via [`get_definition_of_expr`].
+/// Returns the `(name, span)` of the declaration, or `None` if not found.
 pub fn get_definition(ast: &HashMap<String, Func>, ident_offset: usize) -> Option<Spanned<String>> {
     let mut vector = Vector::new();
     for (_, v) in ast.iter() {
@@ -25,6 +34,13 @@ pub fn get_definition(ast: &HashMap<String, Func>, ident_offset: usize) -> Optio
     None
 }
 
+/// Recursive AST walk for definition lookup.
+///
+/// `definition_ass_list` is an association list of names in scope (most-recently-bound first).
+/// Returns `(continue_search, result)`:
+/// - `(true, None)` — cursor not found here; keep looking.
+/// - `(false, Some(_))` — found the declaration site.
+/// - `(false, None)` — cursor is here but no declaration found (unbound reference).
 pub fn get_definition_of_expr(
     expr: &Spanned<Expr>,
     definition_ass_list: Vector<Spanned<String>>,

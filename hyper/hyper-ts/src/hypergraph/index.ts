@@ -1,3 +1,15 @@
+/**
+ * @file HyperGraph — the core data structure of the Hyper sub-system.
+ *
+ * A `HyperGraph` stores `HyperNode` (data blobs) and `HyperEdge` (typed
+ * relationships between nodes) via a `IHyperGraphRepository` (local storage)
+ * and a `IPetNameRepository` (human-readable name → ID mapping).
+ *
+ * The `INetwork` is injected but `traverse()` is a stub — P2P graph traversal
+ * is not yet implemented.
+ *
+ * All storage operations are local-only; network sync is a no-op.
+ */
 import {
   IHyperGraph,
   IHyperGraphRepository,

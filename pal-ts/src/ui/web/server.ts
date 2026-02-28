@@ -1,3 +1,9 @@
+/**
+ * Express + WebSocket server for the Pal browser GUI. Serves the React client on port 3000
+ * and opens a WebSocket server on port 3001. Protocol: Open/Close messages subscribe/unsubscribe
+ * env keys; AST messages push serialized AST to the client; Exec messages evaluate PAL code.
+ * Server is lazy-started on first `(ui ...)` call.
+ */
 import express from "express";
 import open from "open";
 import { WebSocketServer } from "ws";
@@ -15,6 +21,7 @@ const app = express();
 export const startServer = async (ctx: IContext) => {
   return new Promise((resolve) => {
     // TODO authentication
+    // TODO: add proper authentication middleware; currently any client can eval arbitrary PAL code via Exec messages
     app.use("/public/.env", (_, res) => {
       res.status(404).end(); // Not Found
     });

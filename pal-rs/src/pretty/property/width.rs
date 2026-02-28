@@ -1,3 +1,5 @@
+//! Width property parser: accepts `width <px | %>`. Currently unused — not integrated into Property parsing.
+// TODO: Width struct is not used in property.rs parsing; wire it in as a special-case property handler
 use proc_macro2::Ident;
 use syn::{parse::{Parse, ParseStream}, Error};
 

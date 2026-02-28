@@ -56,10 +56,7 @@ export function multiply(a: Lang.Number, b: Lang.Number): Lang.Number {
  * @param b - The second number.
  * @returns The result of dividing a by b.
  */
-export function divide(
-  a: Lang.Number,
-  b: Lang.Number
-): Lang.Number | Lang.Undefined {
+export function divide(a: Lang.Number, b: Lang.Number): Lang.Number | Lang.Undefined {
   if (b === 0) return undefined;
   return a / b;
 }

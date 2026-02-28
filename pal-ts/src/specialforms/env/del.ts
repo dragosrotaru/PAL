@@ -1,3 +1,7 @@
+/**
+ * `(env/delete id)` special form — removes a key from the environment map.
+ * Triggers env/del observers and notifies per-key subscribers with undefined.
+ */
 import { DELETE_ID } from "../../core/environment.js";
 import type { IEnv } from "../../interfaces.js";
 import type { Lang } from "../../language/ast.js";

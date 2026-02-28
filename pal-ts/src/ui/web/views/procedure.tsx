@@ -1,3 +1,7 @@
+/**
+ * Renders a Lang.Procedure as its source string (via .toString()).
+ * Displays raw function source — useful for debugging but not user-facing.
+ */
 import * as React from "react";
 import type { Lang } from "../../../language/ast.js";
 
