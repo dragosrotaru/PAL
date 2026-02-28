@@ -13,7 +13,8 @@
       "Bash(grep:*)",
       "Bash(pnpm:*)",
       "Bash(do mv:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(node:*)"
     ]
   }
 }
