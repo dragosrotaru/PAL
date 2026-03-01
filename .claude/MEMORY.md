@@ -1,5 +1,21 @@
 # Pal project memory
 
+## Long Term Goal
+
+We are looking to converge ideas from Pal into the target system SWM, a commercial grade version of Pal. its an Agentic Software Engineering platform. There are many parallels
+
+SWM is a sibling repo, just next to pal.
+You can read the typed declarations of the most important code and doc files on demand at these locations (base: `/Users/megacuck/Projects/_good_shit/`):
+
+swm/declarations/src/modules/system/agent/_domain/*
+swm/declarations/src/modules/system/knowledge/*
+swm/declarations/src/modules/system/toolbox/_domain/*
+
+Run `pnpm pal:ctx` in swm to regenerate declarations after code changes.
+
+start with the knowledge repo since that is the core of what we're working on right now.
+
+
 ## Notes system
 
 - All notes live in `notes/` — flat directory, ~70 files, all with frontmatter (date, tags, summary)

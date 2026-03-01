@@ -1,8 +1,17 @@
 # Tag Clusters
 
-_2026-02-28 · 75 shared tags · 70 notes_
+_2026-02-28 · 83 shared tags · 74 notes_
+
+## agent
+- claude-hooks.md
+- constrained-decoding-llm.md
+- first-principles-agent-guidance.md
+- initial-swm-pal-convergence-chat.md
+- reinforcement-learning-and-agent-system-model.md
 
 ## architecture
+- first-principles-agent-guidance.md
+- initial-swm-pal-convergence-chat.md
 - universal-ast-and-interlanguage-parsing-architecture.md
 - why-rust-was-chosen-as-pal-host-language.md
 - wingman-control-display-domain-architecture-and-fsm.md
@@ -43,10 +52,19 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - hypergraph-interpreter-and-view-runtime.md
 - wingman-control-display-domain-architecture-and-fsm.md
 
+## constrained-decoding
+- constrained-decoding-llm.md
+- first-principles-agent-guidance.md
+- initial-swm-pal-convergence-chat.md
+
 ## content-addressing
 - content-addressed-code-unit-model.md
 - hash-addressed-atom-component-model.md
 - naming-petnames-and-resolution.md
+
+## crane
+- constrained-decoding-llm.md
+- initial-swm-pal-convergence-chat.md
 
 ## crdt
 - crdt-research-papers-and-implementations.md
@@ -74,6 +92,10 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - crdt-research-papers-and-implementations.md
 - p2p-protocol-landscape-and-network-concepts.md
 
+## dsl
+- initial-swm-pal-convergence-chat.md
+- pretty-module-system.md
+
 ## editor
 - ideal-code-editor-feature-requirements.md
 - vscode-and-emacs-keybindings-cheatsheet.md
@@ -97,6 +119,7 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - fuse-as-unified-storage-layer.md
 - fuse-filesystem-implementation-references.md
 - graph-projection-onto-filesystem.md
+- initial-swm-pal-convergence-chat.md
 - pal-ts-implementation-task-list.md
 - universal-ast-and-interlanguage-parsing-architecture.md
 
@@ -114,6 +137,10 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - fuse-filesystem-implementation-references.md
 - graph-projection-onto-filesystem.md
 - operational-upload-scripts.md
+
+## grammar
+- constrained-decoding-llm.md
+- pal-language-syntax-specification.md
 
 ## graph
 - graph-projection-onto-filesystem.md
@@ -183,7 +210,9 @@ _2026-02-28 · 75 shared tags · 70 notes_
 
 ## lisp
 - changetheweb-reading-list.md
+- constrained-decoding-llm.md
 - cs-books-reading-list.md
+- initial-swm-pal-convergence-chat.md
 - lisp-as-computing-environment-and-the-lisp-curse.md
 - lisp-os-research.md
 - pal-language-extension-and-type-system-design.md
@@ -193,6 +222,8 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - universal-parser-and-interpreter-design-references.md
 
 ## llm
+- constrained-decoding-llm.md
+- first-principles-agent-guidance.md
 - neurosymbolic-compiler-combining-formal-and-natural-language.md
 - wingman-crdt-ast-representation-and-transformer-integration.md
 
@@ -207,6 +238,8 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - process-scoped-namespace-and-binding.md
 
 ## neurosymbolic
+- constrained-decoding-llm.md
+- initial-swm-pal-convergence-chat.md
 - neurosymbolic-compiler-combining-formal-and-natural-language.md
 - open-research-areas-neurosymbolic-and-program-synthesis.md
 - universal-parser-and-interpreter-design-references.md
@@ -219,6 +252,10 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - cs-books-reading-list.md
 - miscellaneous-research-links-lambda-calculus-pl-theory.md
 - os-design-rust-rewrite-and-history-video-notes.md
+
+## orchestration
+- claude-hooks.md
+- first-principles-agent-guidance.md
 
 ## os
 - linux-os-building-and-minimal-systems.md
@@ -236,6 +273,8 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - p2p-protocol-landscape-and-network-concepts.md
 
 ## pal
+- constrained-decoding-llm.md
+- initial-swm-pal-convergence-chat.md
 - lisp-as-computing-environment-and-the-lisp-curse.md
 - neurosymbolic-compiler-combining-formal-and-natural-language.md
 - pal-extension-and-plugin-system.md
@@ -308,6 +347,7 @@ _2026-02-28 · 75 shared tags · 70 notes_
 ## research
 - categorical-machines-category-theory-and-compute-graphs-video-notes.md
 - changetheweb-reading-list.md
+- constrained-decoding-llm.md
 - crdt-research-papers-and-implementations.md
 - cs-books-reading-list.md
 - cyberpsychology-and-computational-cognition-research.md
@@ -366,6 +406,14 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - wingman-editor-ux-philosophy-and-structural-editing-actions.md
 - wingman-pretty-language-and-structural-editor-design.md
 
+## structured-output
+- constrained-decoding-llm.md
+- first-principles-agent-guidance.md
+
+## taxonomy
+- elemental-computing-taxonomy-of-primitives.md
+- first-principles-agent-guidance.md
+
 ## transformers
 - transformer-architecture-attention-mechanism-notes.md
 - wingman-crdt-ast-representation-and-transformer-integration.md
@@ -388,6 +436,7 @@ _2026-02-28 · 75 shared tags · 70 notes_
 - pal-extension-and-plugin-system.md
 
 ## typescript
+- constrained-decoding-llm.md
 - typescript-browser-research-and-inspiration.md
 - web-framework-landscape-fullstack-and-lowcode-survey.md
 

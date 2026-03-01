@@ -14,7 +14,8 @@
       "Bash(pnpm:*)",
       "Bash(do mv:*)",
       "Bash(mkdir:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(node_modules/.bin/tsgo:*)"
     ]
   }
 }
