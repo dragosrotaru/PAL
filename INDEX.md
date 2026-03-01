@@ -1,6 +1,6 @@
 # Notes Index
 
-_2026-02-28 · 70 notes_
+_2026-02-28 · 74 notes_
 
 ### atom-edge-primitive-data-model.md
 `2024-01-21` · data-model, hypergraph, atom, edge, hash
@@ -25,6 +25,14 @@ Curated reading list from the changetheweb.xyz research phase (2019–2020). Cov
 ### changetheweb-seeds.md
 `2024-01-21` · scratch, seeds, hypergraph, web, changetheweb
 
+
+### claude-hooks.md
+`2026-02-28` · claude-code, hooks, agent, orchestration, ioc
+Complete reference list of Claude Code hook event types — from SessionStart through SessionEnd, including PreToolUse, PostToolUse, SubagentStart/Stop, PreCompact, and worktree lifecycle events. Hooks are the inversion-of…
+
+### constrained-decoding-llm.md
+`2026-02-28` · constrained-decoding, llm, research, neurosymbolic, grammar
+Comprehensive research report (Feb 2026) on constrained decoding as a force multiplier for LLMs. Core finding: a smaller self-hosted model with grammar-constrained decoding reliably outperforms a larger unconstrained mod…
 
 ### content-addressed-code-unit-model.md
 `2024-01-21` · code-graph, code-units, dependency-graph, mutation-graph, edit-history
@@ -57,6 +65,10 @@ A first-principles taxonomy of computing. Three elements (information, computati
 ### file-versioning-and-change-group-model.md
 `2024-01-21` · versioning, crdt, persistence, hyper-ts, filesystem
 File versioning model with configurable granularity and change-group commit semantics before propagation to peers.
+
+### first-principles-agent-guidance.md
+`2026-02-28` · agent, llm, taxonomy, first-principles, guidance
+First-principles taxonomy of LLM guidance and control mechanisms, organized around two core frames: (1) data flow — input → black box → output, with state decomposed into chat history + environment; (2) locus of control …
 
 ### fuse-as-unified-storage-layer.md
 `2024-01-21` · fuse, filesystem, database, storage, hyper-ts
@@ -93,6 +105,10 @@ Runtime design for a HyperGraph-driven UI — ViewStack with push/pop subscribe/
 ### ideal-code-editor-feature-requirements.md
 `2024-01-21` · editor, ide, requirements, vscode, wingman
 Two-part note on editor requirements. First, a list of VSCode extension points relevant to building Pal's IDE layer (Monaco, Language Servers, Debug Adapters, TextMate grammars, XTerm). Second, a list of desirable editor…
+
+### initial-swm-pal-convergence-chat.md
+`2026-02-28` · architecture, convergence, pal, swm, neurosymbolic
+Full transcript of the Claude Code session (Feb 2026) that identified the structural convergence between Pal and swm's system module. The session progressed: LLM error correction taxonomy → constrained decoding deep rese…
 
 ### knowledge-management-tools-and-research.md
 `2024-01-21` · research, knowledge-management, zettelkasten, tools-for-thought, second-brain
