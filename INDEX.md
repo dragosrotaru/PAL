@@ -106,9 +106,6 @@ Runtime design for a HyperGraph-driven UI — ViewStack with push/pop subscribe/
 `2024-01-21` · editor, ide, requirements, vscode, wingman
 Two-part note on editor requirements. First, a list of VSCode extension points relevant to building Pal's IDE layer (Monaco, Language Servers, Debug Adapters, TextMate grammars, XTerm). Second, a list of desirable editor…
 
-### initial-swm-pal-convergence-chat.md
-`2026-02-28` · architecture, convergence, pal, swm, neurosymbolic
-Full transcript of the Claude Code session (Feb 2026) that identified the structural convergence between Pal and swm's system module. The session progressed: LLM error correction taxonomy → constrained decoding deep rese…
 
 ### knowledge-management-tools-and-research.md
 `2024-01-21` · research, knowledge-management, zettelkasten, tools-for-thought, second-brain

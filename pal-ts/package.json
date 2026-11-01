@@ -1,7 +1,7 @@
 {
   "name": "pal-ts",
   "version": "1.0.0",
-  "description": "PAL Awesome Language",
+  "description": "Lisp interpreter whose environment is the filesystem, with an LLM as a first-class special form",
   "keywords": [
     "Interpreter",
     "Lambda",
@@ -12,15 +12,15 @@
     "TS",
     "TypeScript"
   ],
-  "homepage": "https://github.com/DragosRotaru/lisp.ts#readme",
+  "homepage": "https://github.com/dragosrotaru/PAL/tree/main/pal-ts#readme",
   "bugs": {
-    "url": "https://github.com/DragosRotaru/lisp.ts/issues"
+    "url": "https://github.com/dragosrotaru/PAL/issues"
   },
   "license": "SEE LICENSE IN LICENSE",
   "author": "Dragos Rotaru",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DragosRotaru/lisp.ts.git"
+    "url": "git+https://github.com/dragosrotaru/PAL.git"
   },
   "bin": {
     "pal": "pal.sh"

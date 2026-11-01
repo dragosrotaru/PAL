@@ -90,7 +90,6 @@ ComponentName[:ParentComponent] [
 | `pal-ts/src/language/parser/pal.ts` | Regex `/S+/` should be `/\s+/`                                                                                 |
 | `pal-ts/src/core/messageHistory.ts` | `append()` writes to env AND disk separately — potential double-write inconsistency                            |
 | `pal-lsp/src/main.rs`               | Inlay hints use hardcoded location `(0,4)-(0,5)` instead of actual span                                        |
-| `pal-lsp/client/src/extension.ts`   | `helloWorld` command hardcodes dev machine's absolute path                                                     |
 
 ## Entry points for common tasks
 

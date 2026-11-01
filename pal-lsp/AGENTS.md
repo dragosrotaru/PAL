@@ -89,8 +89,7 @@ Expr { Error | Value(Value) | List | Local | Let | Then | Binary | Call | If | P
 - The chumsky parser implements a generic tutorial language — not the actual Pal Lisp grammar.
   The real `.pretty` DSL (component tree syntax) is implemented separately in `pal-rs/src/pretty/`.
 - `execute_command` is a stub that only calls `apply_edit(default())`.
-- The VS Code client's `helloworld.helloWorld` command hardcodes an absolute path on the
-  developer's machine (`~/projects/pal/pal-lsp/test.pretty`).
+- The VS Code client's `helloworld.helloWorld` command is a leftover demo.
 - `activateInlayHints` in the client extension is defined but never called; its provider
   body is fully commented out.
 - Inlay hints use a hardcoded location range `(0,4)-(0,5)` instead of the actual span.

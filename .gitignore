@@ -13,3 +13,8 @@ pnpm-lock.yaml
 # rust
 target
 pkg
+# local-only: personal notes and machine-specific Claude settings
+.private
+.claude/MEMORY.md
+.claude/settings.local.json
+*.tsbuildinfo

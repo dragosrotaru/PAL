@@ -9,8 +9,7 @@
  * - `RUST_LOG=debug` is always passed to the server process.
  *
  * ## Known issues
- * - The `helloworld.helloWorld` command hardcodes `~/projects/pal/pal-lsp/test.pretty`
- *   which only exists on the original developer's machine. The `uri` argument is also ignored.
+ * - The `helloworld.helloWorld` command is a leftover demo that only opens the given document.
  * - `activateInlayHints` is defined and exported but never called (call is commented out).
  *   The entire inlay-hint provider implementation is commented out inside it.
  */
@@ -22,7 +21,6 @@ import {
   Range,
   Selection,
   TextDocumentChangeEvent,
-  Uri,
   window,
   workspace,
 } from "vscode";
@@ -47,11 +45,9 @@ export async function activate(context: ExtensionContext) {
   let disposable = commands.registerCommand("helloworld.helloWorld", async (uri) => {
     // The code you place here will be executed every time your command is executed
     // Display a message box to the user
-    const url = Uri.parse("~/projects/pal/pal-lsp/test.pretty");
     let document = await workspace.openTextDocument(uri);
     await window.showTextDocument(document);
 
-    console.log(url);
     let editor = window.activeTextEditor;
     let range = new Range(1, 1, 1, 1);
     if (editor) {

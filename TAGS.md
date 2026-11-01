@@ -6,12 +6,10 @@ _2026-02-28 · 83 shared tags · 74 notes_
 - claude-hooks.md
 - constrained-decoding-llm.md
 - first-principles-agent-guidance.md
-- initial-swm-pal-convergence-chat.md
 - reinforcement-learning-and-agent-system-model.md
 
 ## architecture
 - first-principles-agent-guidance.md
-- initial-swm-pal-convergence-chat.md
 - universal-ast-and-interlanguage-parsing-architecture.md
 - why-rust-was-chosen-as-pal-host-language.md
 - wingman-control-display-domain-architecture-and-fsm.md
@@ -55,7 +53,6 @@ _2026-02-28 · 83 shared tags · 74 notes_
 ## constrained-decoding
 - constrained-decoding-llm.md
 - first-principles-agent-guidance.md
-- initial-swm-pal-convergence-chat.md
 
 ## content-addressing
 - content-addressed-code-unit-model.md
@@ -64,7 +61,6 @@ _2026-02-28 · 83 shared tags · 74 notes_
 
 ## crane
 - constrained-decoding-llm.md
-- initial-swm-pal-convergence-chat.md
 
 ## crdt
 - crdt-research-papers-and-implementations.md
@@ -93,7 +89,6 @@ _2026-02-28 · 83 shared tags · 74 notes_
 - p2p-protocol-landscape-and-network-concepts.md
 
 ## dsl
-- initial-swm-pal-convergence-chat.md
 - pretty-module-system.md
 
 ## editor
@@ -119,7 +114,6 @@ _2026-02-28 · 83 shared tags · 74 notes_
 - fuse-as-unified-storage-layer.md
 - fuse-filesystem-implementation-references.md
 - graph-projection-onto-filesystem.md
-- initial-swm-pal-convergence-chat.md
 - pal-ts-implementation-task-list.md
 - universal-ast-and-interlanguage-parsing-architecture.md
 
@@ -212,7 +206,6 @@ _2026-02-28 · 83 shared tags · 74 notes_
 - changetheweb-reading-list.md
 - constrained-decoding-llm.md
 - cs-books-reading-list.md
-- initial-swm-pal-convergence-chat.md
 - lisp-as-computing-environment-and-the-lisp-curse.md
 - lisp-os-research.md
 - pal-language-extension-and-type-system-design.md
@@ -239,7 +232,6 @@ _2026-02-28 · 83 shared tags · 74 notes_
 
 ## neurosymbolic
 - constrained-decoding-llm.md
-- initial-swm-pal-convergence-chat.md
 - neurosymbolic-compiler-combining-formal-and-natural-language.md
 - open-research-areas-neurosymbolic-and-program-synthesis.md
 - universal-parser-and-interpreter-design-references.md
@@ -274,7 +266,6 @@ _2026-02-28 · 83 shared tags · 74 notes_
 
 ## pal
 - constrained-decoding-llm.md
-- initial-swm-pal-convergence-chat.md
 - lisp-as-computing-environment-and-the-lisp-curse.md
 - neurosymbolic-compiler-combining-formal-and-natural-language.md
 - pal-extension-and-plugin-system.md

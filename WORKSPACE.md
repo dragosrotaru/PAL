@@ -1,6 +1,6 @@
 # Rust Workspace — Pal
 
-> Overview of the Cargo workspace at `~/projects/pal`.
+> Overview of the Cargo workspace in this repository.
 
 ## Crates
 
